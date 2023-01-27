@@ -1,6 +1,8 @@
-# `@aemforms/react-native`
+# `@aemforms/af-react-native`
 
-React Native components to render Adaptive Form Fields. These components are based on Native Base and are completely optional to use.
+React Native components to render Adaptive Form. These components are based on Native Base and are completely optional to use.
+
+## [WIP]
 
 ## License
 
