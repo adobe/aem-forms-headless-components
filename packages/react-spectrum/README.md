@@ -1,7 +1,6 @@
-# `@aemforms/react-spectrum`
+# `@aemforms/af-react-spectrum`
 
-React Spectrum based components to render Adaptive Form Fields. These components are based on React Spectrum and
-are completely optional to use.
+React Spectrum based components to render Adaptive Form. These components are based on React Spectrum and are completely optional to use.
 
 ## License
 
