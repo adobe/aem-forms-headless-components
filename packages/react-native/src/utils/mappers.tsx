@@ -188,20 +188,10 @@ export const dateFieldConvertor: Convertor<FieldViewState> = (a, b, f) => {
     ...field,
     inputProps: {
       ...field.inputProps,
-      date: a.value,
-      mode: a.format,
+      mode: a.format || 'date',
       confirmBtnText: 'Confirm',
       cancelBtnText: 'Cancel',
-      onDateChange: b.dispatchChange,
-      style: { width: '100%' },
-      customStyles: {
-        dateIcon: {
-          position: 'absolute',
-          right: 0
-        },
-        dateInput: {
-        }
-      }
+      onChange: b.dispatchChange
     }
   };
 };
