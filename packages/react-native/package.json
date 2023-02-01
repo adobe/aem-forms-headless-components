@@ -4,6 +4,7 @@
   "description": "React Spectrum based componets form headless",
   "author": "Adobe Systems",
   "license": "Adobe Proprietary",
+  "homepage": "",
   "main": "lib/index.js",
   "directories": {
     "lib": "lib",
