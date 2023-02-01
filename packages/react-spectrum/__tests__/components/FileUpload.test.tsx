@@ -333,6 +333,7 @@ test('file input with change in view should update model', async () => {
     const {input, form, element} = await helper(f);
     let file = new File(['(⌐□_□)'], 'chucknorris.png', { type: 'image/png' });
     // in case of png this is called
+    // @ts-ignore
     global.URL.createObjectURL = jest.fn();
     // simulate upload event
     userEvent.upload(input as HTMLInputElement, file);
@@ -381,6 +382,7 @@ test('file input with value set as null in module should reflect view', async ()
     const {input, element, container} = await helper(f);
     let file = new File(['(⌐□_□)'], 'chucknorris.png', { type: 'image/png' });
     // in case of png this is called
+    // @ts-ignore
     global.URL.createObjectURL = jest.fn();
     // simulate upload event
     userEvent.upload(input as HTMLInputElement, file);
