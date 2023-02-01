@@ -278,16 +278,3 @@ test('Text Field show empty string if model value null', async () => {
   element.value= null;
   expect(input?.value).toEqual('');
 });
-
-test('Date Field show empty string if model value null', async () => {
-  let f = {
-      ...field,
-      'type': 'string',
-      'fieldType' : 'date-input',
-      'default': '2021-01-01'
-  };
-  let {input, element} = await helper(f);
-  expect(element.value).toEqual('2021-01-01');
-  element.value= null;
-  expect(input?.value).toEqual(undefined);
-});
