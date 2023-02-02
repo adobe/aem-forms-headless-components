@@ -24,9 +24,9 @@ jobs:
           registry-url: https://registry.npmjs.org/
       - name: Version and publish
         run: |
-          git config --global credential.helper cache
-          git config --global user.name ${USER_NAME}
-          git config --global user.email ${USER_EMAIL}
+          # git config --global credential.helper cache
+          # git config --global user.name ${USER_NAME}
+          # git config --global user.email ${USER_EMAIL}
           npx lerna version --conventional-commits --conventional-graduate --yes
           npx lerna publish from-git --yes
           # npx lerna publish from-package --yes
