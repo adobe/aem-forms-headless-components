@@ -3,7 +3,7 @@ on:
   pull_request:
     types: [opened, synchronize]
     branches:
-      - main
+      - dev
 
 jobs:
   checks:
@@ -15,7 +15,7 @@ jobs:
       with:
         fetch-depth: 0
 
-    - name: "Use NodeJS 14"
+    - name: "Use NodeJS 16"
       uses: actions/setup-node@v2
       with:
         node-version: '16'

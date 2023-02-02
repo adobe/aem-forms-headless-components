@@ -1,9 +1,9 @@
 {
-  "name": "@aemforms/af-react-spectrum",
+  "name": "@eamit24/abc-react",
   "version": "0.0.1",
-  "description": "React Spectrum Based Components for Forms",
-  "author": "Adobe Systems",
-  "license": "Adobe Proprietary",
+  "description": "React Spectrum Based Components for headless",
+  "author": "",
+  "license": "",
   "homepage": "",
   "main": "lib/index.js",
   "directories": {
@@ -20,10 +20,6 @@
     "lib",
     "LICENSE"
   ],
-  "publishConfig": {
-    "registry": "https://artifactory.corp.adobe.com/artifactory/api/npm/npm-aem-release-local",
-    "access": "public"
-  },
   "scripts": {
     "clean": "rm -rf lib target",
     "eslint": "npx eslint src/**/*.ts*",
