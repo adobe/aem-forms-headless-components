@@ -22,13 +22,11 @@ jobs:
         with:
           node-version: 16
           registry-url: https://registry.npmjs.org/
-      - name: Version and publish
+      - name: Version Bump
         run: |
-          # git config --global credential.helper cache
-          # git config --global user.name ${USER_NAME}
-          # git config --global user.email ${USER_EMAIL}
           npx lerna version --conventional-commits --conventional-graduate --yes
-          npx lerna publish from-git --yes
-          # npx lerna publish from-package --yes
+      - name: Publish packages
+        run: |
+          npx lerna publish from-package --yes
         env:
           NODE_AUTH_TOKEN: ${NPM_TOKEN}
