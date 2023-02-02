@@ -5,28 +5,30 @@ env:
   NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 on:
   pull_request:
-    types: [closed]
+    # types:
+    #   - closed
+    types: [opened, synchronize]
     branches:
       - dev
 jobs:
   publish:
-    if: github.event.pull_request.merged == true
+    # if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
-    - name: "Checkout & Use NodeJS 16"
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-      with:
-        node-version: 16
-        registry-url: https://registry.npmjs.org/
-
-    - name: "Version and publish"
-      run: |
-        git config --global credential.helper cache
-        git config --global user.name ${USER_NAME}
-        git config --global user.email ${USER_EMAIL}
-        npx lerna version --conventional-commits --conventional-graduate --yes
-        npx lerna publish from-git --yes
-        # npx lerna publish from-package --yes
-      env:
-        NODE_AUTH_TOKEN: ${NPM_TOKEN}
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Use NodeJS 16
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          registry-url: https://registry.npmjs.org/
+      - name: Version and publish
+        run: |
+          git config --global credential.helper cache
+          git config --global user.name ${USER_NAME}
+          git config --global user.email ${USER_EMAIL}
+          npx lerna version --conventional-commits --conventional-graduate --yes
+          npx lerna publish from-git --yes
+          # npx lerna publish from-package --yes
+        env:
+          NODE_AUTH_TOKEN: ${NPM_TOKEN}
