@@ -1,6 +1,6 @@
 {
   "name": "@eamit24/abc-react",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "React Spectrum Based Components for headless",
   "author": "",
   "license": "",
@@ -29,19 +29,19 @@
     "test": "jest --silent"
   },
   "dependencies": {
+    "@adobe/react-spectrum": "3.19.0",
     "@aemforms/af-core": "^0.22.30",
     "@aemforms/af-react-renderer": "^0.22.30",
+    "@react-aria/datepicker": "3.1.0",
+    "@react-spectrum/checkbox": "3.5.0",
+    "@react-spectrum/datepicker": "3.0.0",
+    "@react-spectrum/radio": "3.3.0",
+    "@react-spectrum/textfield": "3.6.0",
+    "@react-stately/datepicker": "3.0.1",
     "classnames": "^2.3.1",
     "clsx": "^1.1.1",
     "sanitize-html": "^2.4.0",
-    "styled-components": "^5.2.1",
-    "@adobe/react-spectrum": "3.19.0",
-    "@react-spectrum/checkbox": "3.5.0",
-    "@react-spectrum/datepicker": "3.0.0",
-    "@react-aria/datepicker": "3.1.0",
-    "@react-stately/datepicker": "3.0.1",
-    "@react-spectrum/textfield": "3.6.0",
-    "@react-spectrum/radio": "3.3.0"
+    "styled-components": "^5.2.1"
   },
   "peerDependencies": {
     "@spectrum-icons/workflow": "^3.2.1",
