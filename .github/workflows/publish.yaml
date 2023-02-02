@@ -1,0 +1,39 @@
+name: Publish
+env:
+  USER_EMAIL: ${{ secrets.LIBRARY_USER_EMAIL }}
+  USER_NAME: ${{ secrets.LIBRARY_USER_NAME }}
+  # GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - dev
+
+jobs:
+  publish:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: "Checkout"
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
+    - name: "Use NodeJS 16"
+      uses: actions/setup-node@v2
+      with:
+        node-version: '16'
+        registry-url: https://registry.npmjs.org/
+
+    - name: "Version and publish" # Interesting step
+      env:
+        # GH_TOKEN: ${GITHUB_TOKEN}
+        NODE_AUTH_TOKEN: ${NPM_TOKEN}
+      run: |
+        git config user.name ${USER_NAME}
+        git config user.email ${USER_EMAIL}
+        npx lerna version --conventional-commits --conventional-graduate --yes
+        npx lerna publish from-git --yes
+        # npx lerna publish from-package --yes
