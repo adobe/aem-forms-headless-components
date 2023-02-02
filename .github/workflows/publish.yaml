@@ -32,8 +32,8 @@ jobs:
         # GH_TOKEN: ${GITHUB_TOKEN}
         NODE_AUTH_TOKEN: ${NPM_TOKEN}
       run: |
-        git config user.name ${USER_NAME}
-        git config user.email ${USER_EMAIL}
+        git config --global user.name ${USER_NAME}
+        git config --global user.email ${USER_EMAIL}
         npx lerna version --conventional-commits --conventional-graduate --yes
         npx lerna publish from-git --yes
         # npx lerna publish from-package --yes
