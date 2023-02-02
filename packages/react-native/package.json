@@ -14,10 +14,6 @@
     "lib",
     "LICENSE"
   ],
-  "publishConfig": {
-    "registry": "https://artifactory.corp.adobe.com/artifactory/api/npm/npm-aem-release-local",
-    "access": "public"
-  },
   "scripts": {
     "clean": "rm -rf lib target",
     "eslint": "npx eslint src/**/*.ts*",
