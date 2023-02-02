@@ -1,7 +1,8 @@
 name: Checks
 on:
   pull_request:
-    types: [opened, synchronize]
+    types: [closed] 
+    #[opened, synchronize]
     branches:
       - dev
 
