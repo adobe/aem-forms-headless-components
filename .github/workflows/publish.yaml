@@ -34,25 +34,39 @@ jobs:
           node-version: 16
           registry-url: https://registry.npmjs.org/
 
-      - name: Git Checkout
-        run: |
-          git checkout -B $CI_COMMIT_BRANCH
-          git reset --hard
-
       - name: Install Dependencies
         run: |
           npx lerna bootstrap
-
-      - name: Run build
-        run: |
-          npx lerna run build
-
-      - name: Version Bump
-        run: |
-          npx lerna version --conventional-commits --conventional-graduate --yes
-
-      - name: Publish Packages
-        run: |
-          npx lerna publish from-package --yes
+      
+      - name: "Version and publish" # publish package
         env:
-          NODE_AUTH_TOKEN: ${NPM_TOKEN}
+          GH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          if [ ${{ github.base_ref }} = next ]; then
+            npx lerna version --conventional-commits --conventional-graduate --yes
+            npx lerna publish from-git --dist-tag next --yes
+          elif [ ${{ github.base_ref }} = beta ]; then
+            npx lerna version --conventional-commits --conventional-prerelease --preid beta --yes
+            npx lerna publish from-git --pre-dist-tag beta  --yes
+          elif [ ${{ github.base_ref }} = alpha ]; then
+            npx lerna version --conventional-commits --conventional-prerelease --preid alpha --yes
+            npx lerna publish from-git --pre-dist-tag alpha  --yes
+          else
+            npx lerna version --conventional-commits --conventional-graduate --yes
+            npx lerna publish from-git --yes
+          fi
+
+      # - name: Run build
+      #   run: |
+      #     npx lerna run build
+
+      # - name: Version Bump
+      #   run: |
+      #     npx lerna version --conventional-commits --conventional-graduate --yes
+
+      # - name: Publish Packages
+      #   run: |
+      #     npx lerna publish from-package --yes
+      #   env:
+      #     NODE_AUTH_TOKEN: ${NPM_TOKEN}
