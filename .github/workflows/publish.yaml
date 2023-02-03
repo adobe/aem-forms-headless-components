@@ -20,13 +20,13 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Set Git Config
-        run: |
-          git config --global user.email ${USER_EMAIL}
-          git config --global user.name ${USER_NAME}
-        env:
-          GITHUB_TOKEN: ${GITHUB_TOKEN}
-          GH_TOKEN: ${GITHUB_TOKEN}
+      # - name: Set Git Config
+      #   run: |
+      #     git config --global user.email ${USER_EMAIL}
+      #     git config --global user.name ${USER_NAME}
+      #   env:
+      #     GITHUB_TOKEN: ${GITHUB_TOKEN}
+      #     GH_TOKEN: ${GITHUB_TOKEN}
 
       - name: Use NodeJS 16
         uses: actions/setup-node@v3
