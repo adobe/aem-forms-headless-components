@@ -17,6 +17,8 @@ import {
 } from '../utils/SpectrumMappers';
 import {useRenderer, WithViewState} from '@aemforms/af-react-renderer';
 
+console.log('==== button');   // dummy code
+
 const mapper = combineConvertors((a: WithViewState<FieldJson>, b, f) => {
         const localizedLabel = f('label.value');
         return {
