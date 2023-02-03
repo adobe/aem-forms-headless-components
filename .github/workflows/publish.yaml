@@ -3,7 +3,7 @@ env:
   USER_EMAIL: ${{ secrets.LIBRARY_USER_EMAIL }}
   USER_NAME: ${{ secrets.LIBRARY_USER_NAME }}
   NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-  # GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+  GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
 on:
   pull_request:
     types:
@@ -20,13 +20,13 @@ jobs:
         with:
           fetch-depth: 0
 
-      # - name: Set git config
-      #   run: |
-      #     git config --global credential.helper cache
-      #     git config --global user.email ${USER_EMAIL}
-      #     git config --global user.name ${USER_NAME}
-      #   env:
-      #     GITHUB_TOKEN: ${GITHUB_TOKEN}
+      - name: Set Git Config
+        run: |
+          git config --global user.email ${USER_EMAIL}
+          git config --global user.name ${USER_NAME}
+        env:
+          GITHUB_TOKEN: ${GITHUB_TOKEN}
+          GH_TOKEN: ${GITHUB_TOKEN}
 
       - name: Use NodeJS 16
         uses: actions/setup-node@v3
@@ -34,17 +34,25 @@ jobs:
           node-version: 16
           registry-url: https://registry.npmjs.org/
 
-      - name: Install dependencies
+      - name: Git Checkout
+        run: |
+          git checkout -B $CI_COMMIT_BRANCH
+          git reset --hard
+
+      - name: Install Dependencies
         run: |
           npx lerna bootstrap
+
+      - name: Run build
+        run: |
+          npx lerna run build
 
       - name: Version Bump
         run: |
           npx lerna version --conventional-commits --conventional-graduate --yes
 
-      - name: Publish packages
+      - name: Publish Packages
         run: |
           npx lerna publish from-package --yes
-          # npx lerna publish from-git --yes
         env:
           NODE_AUTH_TOKEN: ${NPM_TOKEN}
