@@ -5,14 +5,13 @@ env:
   NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 on:
   pull_request:
-    # types:
-    #   - closed
-    types: [opened, synchronize]
+    types:
+      - closed
     branches:
       - dev
 jobs:
   publish:
-    # if: github.event.pull_request.merged == true
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -28,5 +27,6 @@ jobs:
       - name: Publish packages
         run: |
           npx lerna publish from-package --yes
+          # npx lerna publish from-git --yes
         env:
           NODE_AUTH_TOKEN: ${NPM_TOKEN}
