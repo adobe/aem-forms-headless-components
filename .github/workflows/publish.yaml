@@ -34,13 +34,13 @@ jobs:
           node-version: 16
           registry-url: https://registry.npmjs.org/
 
-      - name: Install Dependencies
-        run: |
-          npx lerna bootstrap
+      # - name: Install Dependencies
+      #   run: |
+      #     npx lerna bootstrap
 
-      - name: Run build
-        run: |
-          npx lerna run build
+      # - name: Run build
+      #   run: |
+      #     npx lerna run build
 
       - name: Version & Publish Packages
         run: |
