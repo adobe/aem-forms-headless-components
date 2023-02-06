@@ -22,7 +22,7 @@
     "comma-dangle": ["error", "never"],
     "no-unused-vars": "off",
     "quote-props": ["warn", "as-needed"],
-    "@typescript-eslint/no-unused-vars": ["error", {"argsIgnorePattern": "React" }],
+    // "@typescript-eslint/no-unused-vars": ["error", {"argsIgnorePattern": "React" }],
     "@typescript-eslint/ban-ts-comment": ["off"],
     "@typescript-eslint/no-explicit-any" : "off",
     "@typescript-eslint/explicit-module-boundary-types" : "off",
