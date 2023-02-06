@@ -22,7 +22,7 @@ jobs:
           ref: dev
           fetch-depth: 0
 
-      - name: Set Git Config
+      - name: Set Git Config11
         run: |
           git config --global user.name ${USER_NAME}
           git config --global user.email ${USER_EMAIL}
