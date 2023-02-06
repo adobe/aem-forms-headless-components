@@ -36,12 +36,12 @@ jobs:
         run: npx lerna bootstrap
       
       - name: Authenticate with Registry
-      run: |
-        echo "registry=https://registry.npmjs.org/" >> .npmrc
-        echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> .npmrc
-        npm whoami        
-      env:
-        NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          echo "registry=https://registry.npmjs.org/" >> .npmrc
+          echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> .npmrc
+          npm whoami        
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Version & Publish Packages
         run: npx lerna publish patch --no-private --yes
