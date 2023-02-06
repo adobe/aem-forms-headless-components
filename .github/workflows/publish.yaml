@@ -23,6 +23,7 @@ jobs:
 
       - name: Set Git Config
         run: |
+          git clone https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY} main
           git config --global user.name ${USER_NAME}
           git config --global user.email ${USER_EMAIL}
           git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}
