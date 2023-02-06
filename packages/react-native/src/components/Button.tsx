@@ -4,8 +4,8 @@ import { useRenderer } from '@aemforms/af-react-renderer';
 
 import { baseConvertor, combineConvertors, buttonConvertor } from '../utils/mappers';
 
-const ButtonComponent = function (propsaaa: State<FieldJson>) {
-  console.log('==== button', propsaaa);   // dummy code
-  return propsaaa.visible ? useRenderer(propsaaa, Button, combineConvertors(baseConvertor, buttonConvertor)) : null;
+const ButtonComponent = function (props: State<FieldJson>) {
+  console.log('==== button', props);   // dummy code
+  return props.visible ? useRenderer(props, Button, combineConvertors(baseConvertor, buttonConvertor)) : null;
 };
 export default ButtonComponent;
