@@ -1,10 +1,4 @@
 name: Publish
-env:
-  USER_EMAIL: ${{ secrets.LIBRARY_USER_EMAIL }}
-  USER_NAME: ${{ secrets.LIBRARY_USER_NAME }}
-  NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-  GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-  GITHUB_REPOSITORY: ${{ secrets.GH_REPOSITORY }} 
 on:
   pull_request:
     types:
@@ -30,13 +24,12 @@ jobs:
 
       - name: Set Git Config
         run: |
-          git config --global user.name "amitkumar"
-          git config --global user.email "eamit24@gmail.com"
-          # git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}
+          git config --global user.name ${{ secrets.LIBRARY_USER_EMAIL }}
+          git config --global user.email ${{ secrets.LIBRARY_USER_NAME }}
         env:
-          GITHUB_TOKEN: ${GITHUB_TOKEN}
-          GH_TOKEN: ${GITHUB_TOKEN}
-          GITHUB_PAT: ${GITHUB_TOKEN}
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          GITHUB_PAT: ${{ secrets.GH_TOKEN }}
 
       - name: Use NodeJS 16
         uses: actions/setup-node@v2
@@ -44,18 +37,10 @@ jobs:
           node-version: 16
           registry-url: https://registry.npmjs.org/
 
-      # - name: Install Dependencies
-      #   run: |
-      #     npx lerna bootstrap
-
-      # - name: Run build
-      #   run: |
-      #     npx lerna run build
-
       - name: Version & Publish Packages
         run: |
           npx lerna publish patch --no-private --yes
           # npx lerna publish patch from-package --yes
           # npx lerna version --conventional-commits --conventional-graduate --yes
         env:
-          NODE_AUTH_TOKEN: ${NPM_TOKEN}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
