@@ -2,7 +2,7 @@ import React, { JSXElementConstructor } from 'react';
 import { FormControl } from 'native-base';
 import { InputFieldTypes } from '../utils/types';
 
-const InputField = (Comp: JSXElementConstructor<any>) => React.forwardRef((props: InputFieldTypes) => {
+const InputField = (Comp: JSXElementConstructor<any>) => React.forwardRef((props: InputFieldTypes, ref: any) => {
   const { label, description, errorMessage, isHidden, isInvalid, inputProps } = props;
   if (isHidden) {
     return null;
