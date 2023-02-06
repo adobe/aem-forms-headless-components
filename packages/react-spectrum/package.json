@@ -20,6 +20,10 @@
     "lib",
     "LICENSE"
   ],
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
   "scripts": {
     "clean": "rm -rf lib target",
     "eslint": "npx eslint src/**/*.ts*",
