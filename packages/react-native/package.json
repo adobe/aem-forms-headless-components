@@ -1,6 +1,6 @@
 {
   "name": "@eamit24/abc-react-native",
-  "version": "0.0.13",
+  "version": "0.0.20",
   "description": "React Spectrum based componets for headless",
   "author": "",
   "license": "",
@@ -14,6 +14,10 @@
     "lib",
     "LICENSE"
   ],
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
   "scripts": {
     "clean": "rm -rf lib target",
     "eslint": "npx eslint src/**/*.ts*",
