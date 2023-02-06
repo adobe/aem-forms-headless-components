@@ -30,8 +30,8 @@ jobs:
 
       - name: Set Git Config
         run: |
-          git config --global user.name ${USER_NAME}
-          git config --global user.email ${USER_EMAIL}
+          git config --global user.name "amitkumar"
+          git config --global user.email "eamit24@gmail.com"
           # git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}
         env:
           GITHUB_TOKEN: ${GITHUB_TOKEN}
