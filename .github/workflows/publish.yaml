@@ -45,9 +45,8 @@ jobs:
 
       - name: Version & Publish Packages
         run: |
-          npx lerna version patch --conventional-commits --conventional-graduate --yes
-          npx lerna publish from-git --no-private --yes
-        # run: npx lerna version --conventional-commits --conventional-graduate --yes
+          npx lerna version patch --no-private --conventional-commits --conventional-graduate --yes
+          npx lerna publish --no-private --yes
         # run: npx lerna publish patch --no-private --yes
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
