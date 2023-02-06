@@ -44,7 +44,11 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Version & Publish Packages
-        run: npx lerna publish patch --no-private --yes
+        run: |
+          npx lerna version patch --conventional-commits --conventional-graduate --yes
+          npx lerna publish from-git --yes
+        # run: npx lerna version --conventional-commits --conventional-graduate --yes
+        # run: npx lerna publish patch --no-private --yes
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
