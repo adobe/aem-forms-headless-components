@@ -18,11 +18,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+        uses: fregante/setup-git-user@v1
         with:
           ref: dev
           fetch-depth: 0
 
-      - name: Set Git Config11
+      - name: Set Git Config
         run: |
           git config --global user.name ${USER_NAME}
           git config --global user.email ${USER_EMAIL}
