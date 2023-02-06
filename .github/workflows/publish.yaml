@@ -5,11 +5,6 @@ on:
       - closed
     branches:
       - dev
-      
-permissions:
-  contents: write # for checkout and tag
-  pull-requests: write  # for comments
-  packages: write # for publish
 
 jobs:
   publish:
@@ -37,10 +32,10 @@ jobs:
           node-version: 16
           registry-url: https://registry.npmjs.org/
 
+      - name: Install dependencies
+        run: npx lerna bootstrap
+
       - name: Version & Publish Packages
-        run: |
-          npx lerna publish patch --no-private --yes
-          # npx lerna publish patch from-package --yes
-          # npx lerna version --conventional-commits --conventional-graduate --yes
+        run: npx lerna publish patch --no-private --yes
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
