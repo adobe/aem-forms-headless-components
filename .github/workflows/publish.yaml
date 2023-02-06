@@ -1,0 +1,51 @@
+name: Publish On NPMJS
+on:
+  pull_request:
+    types:
+      - closed
+    branches:
+      - main
+
+jobs:
+  publish:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Set Git Config
+        run: |
+          git config --global user.name ${{ secrets.LIBRARY_USER_NAME }}
+          git config --global user.email ${{ secrets.LIBRARY_USER_EMAIL }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          GITHUB_PAT: ${{ secrets.GH_TOKEN }}
+
+      - name: Use NodeJS 16
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          registry-url: https://registry.npmjs.org/
+
+      - name: Install Dependencies
+        run: npx lerna bootstrap
+      
+      - name: Authenticate with Registry
+        run: |
+          echo "registry=https://registry.npmjs.org/" >> .npmrc
+          echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> .npmrc
+          npm whoami        
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Version & Publish Packages
+        run: |
+          npx lerna publish patch --no-private --conventional-commits --conventional-graduate --yes
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

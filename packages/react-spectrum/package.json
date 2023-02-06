@@ -1,7 +1,7 @@
 {
   "name": "@aemforms/af-react-spectrum",
-  "version": "0.0.1",
-  "description": "React Spectrum Based Components for Forms",
+  "version": "1.0.0",
+  "description": "React Spectrum Based Components for Headless Forms",
   "author": "Adobe Systems",
   "license": "Adobe Proprietary",
   "homepage": "",
@@ -21,7 +21,7 @@
     "LICENSE"
   ],
   "publishConfig": {
-    "registry": "https://artifactory.corp.adobe.com/artifactory/api/npm/npm-aem-release-local",
+    "registry": "https://registry.npmjs.org/",
     "access": "public"
   },
   "scripts": {
@@ -35,17 +35,17 @@
   "dependencies": {
     "@aemforms/af-core": "^0.22.30",
     "@aemforms/af-react-renderer": "^0.22.30",
-    "classnames": "^2.3.1",
-    "clsx": "^1.1.1",
-    "sanitize-html": "^2.4.0",
-    "styled-components": "^5.2.1",
     "@adobe/react-spectrum": "3.19.0",
     "@react-spectrum/checkbox": "3.5.0",
     "@react-spectrum/datepicker": "3.0.0",
     "@react-aria/datepicker": "3.1.0",
     "@react-stately/datepicker": "3.0.1",
     "@react-spectrum/textfield": "3.6.0",
-    "@react-spectrum/radio": "3.3.0"
+    "@react-spectrum/radio": "3.3.0",
+    "classnames": "^2.3.1",
+    "clsx": "^1.1.1",
+    "sanitize-html": "^2.4.0",
+    "styled-components": "^5.2.1"
   },
   "peerDependencies": {
     "@spectrum-icons/workflow": "^3.2.1",
