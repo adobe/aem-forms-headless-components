@@ -11,6 +11,12 @@ on:
       - closed
     branches:
       - dev
+      
+permissions:
+  contents: write # for checkout and tag
+  pull-requests: write  # for comments
+  packages: write # for publish
+
 jobs:
   publish:
     if: github.event.pull_request.merged == true
