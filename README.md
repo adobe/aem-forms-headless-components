@@ -2,13 +2,9 @@
 
 This repository provides components for [Headless Adaptive Forms](https://experienceleague.adobe.com/docs/experience-manager-headless-adaptive-forms/using/overview.html?lang=en). You can use these packages with a React or React Native application.
 
-# Usage
-
-Packages will be publish soon.
-
 ## Versions
 
-Node > 16.X
+Node > 16.X<br/>
 NPM > v8.3.1
 
 The steps in this guide are tested against the above versions only. 
@@ -23,7 +19,7 @@ installation of Node/NPM
 
 ### Clone the repository
 
-Use `git clone` command to clone the repository.
+Use `git clone https://github.com/adobe/aem-forms-headless-components` command to clone the repository.
 
 ### Bootstrap
 
@@ -34,13 +30,13 @@ npm install
 npx lerna bootstrap
 ```
 
-## Build
+### Build
 
 ```
 npx lerna run build
 ```
 
-## Tests
+### Tests
 
 ```
 npx lerna run test

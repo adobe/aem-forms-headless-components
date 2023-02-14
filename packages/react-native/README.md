@@ -1,8 +1,115 @@
-# `@aemforms/af-react-native`
+# React Native Components For Headless Adaptive Form
+The document provides detailed information on React Native Components that you can use to render [Headless Adaptive Form](https://experienceleague.adobe.com/docs/experience-manager-headless-adaptive-forms/using/overview.html?lang=en). To learn about the capabilties of Headless Adaptive Forms, see [Overview of Headless Adaptive Forms](https://experienceleague.adobe.com/docs/experience-manager-headless-adaptive-forms/using/overview.html?lang=en) 
 
-React Native components to render Adaptive Form. These components are based on Native Base and are completely optional to use.
+## Demo Link
+  [Demo](coming soon)
 
-## [WIP]
+## Table of Contents
+  - List of Components
+    - Button
+    - Checkbox
+    - Checkbox Group
+    - Drop Down
+    - File Upload
+    - Password
+    - Number Field
+    - Panel
+    - Plain Text
+    - Radio Group
+    - Repeater
+    - Text Area Field
+    - Text Field
+  - Themes
+    - Primary
+    - Tertiary
+    - Rose
+    - Warning
+    - Indigo
+  - Mappings
+
+
+
+## Before you start {#pre-requisites}
+To create and run a React Native app, you should have Node.js, npm (Node Package Manager), Xcode and Android Studio installed on your computer:
+*   Install the [latest release of Git](https://git-scm.com/downloads). If you are new to Git, see [Installing Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git).
+*   Install [Node.js 16.13.0 or later](https://nodejs.org/en/download/). If you are new to Node.js, see [How to install Node.js](https://nodejs.dev/en/learn/how-to-install-nodejs).
+
+
+## Setup Project
+
+Create a React native Application using the following commands or follow the [link](https://reactnative.dev/docs/environment-setup).
+
+```
+npx react-native init AwesomeProject
+
+```
+
+## Installation
+Run the following command to add Adaptive Forms Components to you React Native Application:
+
+```
+npm install --save @aemforms/af-react-native
+
+```
+
+These form components are depend on `@aemforms/af-core` and `@aemforms/af-react-renderer` libraries. Run the following command to add these dependecies to your React Application:
+
+```
+npm install --save @aemforms/af-core @aemforms/af-react-renderer
+
+```
+
+## Usage
+```jsx
+import React from 'react';
+import { AdaptiveForm } from '@aemforms/af-react-renderer';
+import { NativeBaseProvider} from 'native-base';
+import {mappings, Themes} from '@aemforms/af-react-native';
+const json = {
+  "adaptiveform": "0.10.0",
+  "items": [
+    {
+      "name": "name",
+      "type": "string",
+      "fieldType": "text-input",
+      "required": true,
+      "label": {
+        "value": "Name"
+      }
+    },
+    {
+      "name": "mobile",
+      "type": "number",
+      "fieldType": "number-input",
+      "required": true,
+      "label": {
+        "value": "Mobile Number"
+      }
+    },
+    {
+      "name": "submit",
+      "fieldType": "button",
+      "label": {
+        "value": "submit"
+      }
+    }
+  ],
+  "metadata": {
+    "version": "1.0.0"
+  }
+}
+const App = () => {
+  return (
+    <NativeBaseProvider theme={Themes.primary}>
+      <AdaptiveForm
+        formJson={json}
+        mappings={mappings}
+      />
+    </NativeBaseProvider>
+  );
+};
+export default App;
+```
 
 ## License
 
