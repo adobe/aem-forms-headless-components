@@ -10,7 +10,6 @@ import CheckboxGroup from '../components/CheckboxGroup';
 import RadioGroup from '../components/RadioGroup';
 import DropDown from '../components/DropDown';
 import PlainText from '../components/PlainText';
-// import DataPicker from '../components/DataPicker';
 import FileUpload from '../components/FileUpload';
 
 export default {
@@ -27,6 +26,5 @@ export default {
   'drop-down': DropDown,
   'password-input': TextField,
   'plain-text': PlainText,
-  // 'date-input': DataPicker,
   'file-input': FileUpload
 };
