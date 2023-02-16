@@ -10,6 +10,7 @@ The document provides detailed information on React Spectrum Components that you
     - Checkbox
     - Checkbox Group
     - Drop Down
+    - Date Picker
     - File Upload
     - Number Field
     - Panel
@@ -21,7 +22,8 @@ The document provides detailed information on React Spectrum Components that you
     - Text Field
     - Vertical Flex
     - Horizontal Flex
-    - Tabs
+    - Vertical Tabs
+    - Horizontal Tabs
   - Mappings
 
 ## Before you start {#pre-requisites}

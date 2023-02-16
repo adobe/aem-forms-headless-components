@@ -16,8 +16,8 @@ const Repeater = (props: REPEATER) => {
 
   return (
     <Button.Group>
-      {add ? <Button onPress={addHandler} variant='primary'><AddIcon /></Button> : <></>}
-      {remove ? <Button onPress={removeHandler} variant='primary'><MinusIcon /></Button> : <></>}
+      {add ? <Button testID='add-button' onPress={addHandler} variant='primary'><AddIcon /></Button> : <></>}
+      {remove ? <Button testID='remove-button' onPress={removeHandler} variant='primary'><MinusIcon /></Button> : <></>}
     </Button.Group>
   );
 };

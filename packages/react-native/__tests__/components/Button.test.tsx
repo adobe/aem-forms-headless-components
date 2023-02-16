@@ -22,4 +22,14 @@ describe('Button', () => {
     expect(button).toBeTruthy();
   });
 
+  test('it should handle visible property', () => {
+    const f = {
+      ...field,
+      visible: false,
+    };
+    const { renderResponse} = helper(f);
+    const button = renderResponse.queryByText(field.label.value);
+    expect(button).toBeNull();
+  });
+
 })

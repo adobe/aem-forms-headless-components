@@ -32,9 +32,9 @@ export const baseConvertor: Convertor<FieldViewState> = (a, b, f) => {
 };
 
 const formatedErrorMessage = (a: FieldViewState) => {
-  const i18n = useFormIntl();
-  const formatedMessage = i18n.formatMessage({ id: 'defaultErrorMessage', defaultMessage: DEFAULT_ERROR_MESSAGE });
-  const errorMessage = a.errorMessage === '' && a.valid === false ? formatedMessage : a.errorMessage;
+  // const i18n = useFormIntl();
+  // const formatedMessage = i18n.formatMessage({ id: 'defaultErrorMessage', defaultMessage: DEFAULT_ERROR_MESSAGE });
+  const errorMessage = a.errorMessage === '' && a.valid === false ? DEFAULT_ERROR_MESSAGE : a.errorMessage;
   return errorMessage;
 };
 
@@ -180,19 +180,6 @@ export const dropDownConvertor: Convertor<FieldViewState> = (a, b, f) => {
 export const plainTextConvertor: Convertor<FieldViewState> = (a) => {
   return {
     children: a.value == null ? '' : a.value
-  };
-};
-export const dateFieldConvertor: Convertor<FieldViewState> = (a, b, f) => {
-  const field = fieldConvertor(a, b, f);
-  return {
-    ...field,
-    inputProps: {
-      ...field.inputProps,
-      mode: a.format || 'date',
-      confirmBtnText: 'Confirm',
-      cancelBtnText: 'Cancel',
-      onChange: b.dispatchChange
-    }
   };
 };
 export const fileUploadConvertor: Convertor<FieldViewState> = (a, b, f) => {
