@@ -1,4 +1,5 @@
 import { fireEvent } from '@testing-library/react-native';
+import { ReactTestInstance } from 'react-test-renderer';
 import Checkbox from '../../src/components/Checkbox';
 import { renderComponent, DEFAULT_ERROR_MESSAGE } from '../utils';
 
@@ -19,7 +20,8 @@ describe('Checkbox', () => {
     const f = {
       ...field,
     };
-    const { input, element } = await helper(f);
+    const { renderResponse, element } = await helper(f);
+    const input: ReactTestInstance = await renderResponse.findByText(f?.label?.value);
     fireEvent.press(input);
     expect(element?.value).toEqual(true);
   });
@@ -30,7 +32,8 @@ describe('Checkbox', () => {
       enum: [false, true],
       value: [true, false]
     };
-    const { input, element } = await helper(f);
+    const { renderResponse, element } = await helper(f);
+    const input: ReactTestInstance = await renderResponse.findByText(f?.label?.value);
     fireEvent.press(input);
     fireEvent.press(input);
     expect(element?.getState().value).toEqual(element.value);
@@ -41,7 +44,8 @@ describe('Checkbox', () => {
       ...field,
       enum: [true],
     };
-    const { input, element } = await helper(f);
+    const { renderResponse, element } = await helper(f);
+    const input: ReactTestInstance = await renderResponse.findByText(f?.label?.value);
     fireEvent.press(input);
     let state = element?.getState();
     expect(state.value).toBe(true);
@@ -55,7 +59,8 @@ describe('Checkbox', () => {
       ...field,
       enum: [true],
     };
-    const { input, form, element } = await helper(f);
+    const { renderResponse, form, element } = await helper(f);
+    const input: ReactTestInstance = await renderResponse.findByText(f?.label?.value);
     fireEvent.press(input);
     let data = form?.exportData();
     expect(data.checkbox).toEqual(true);
@@ -69,7 +74,8 @@ describe('Checkbox', () => {
       enum: [true, false],
       required: true,
     };
-    const { renderResponse, input, element } = await helper(f);
+    const { renderResponse, element } = await helper(f);
+    const input: ReactTestInstance = await renderResponse.findByText(f?.label?.value);
     fireEvent.press(input);
     fireEvent.press(input);
     const error = renderResponse.queryByText(DEFAULT_ERROR_MESSAGE);
@@ -83,7 +89,8 @@ describe('Checkbox', () => {
       enum: [true],
       required: true,
     };
-    const { input, element } = await helper(f);
+    const { renderResponse, element } = await helper(f);
+    const input: ReactTestInstance = await renderResponse.findByText(f?.label?.value);
     fireEvent.press(input);
     fireEvent.press(input);
     let state = element?.getState();
@@ -91,7 +98,8 @@ describe('Checkbox', () => {
   });
 
   test('a checkbox should render if there are no options', async () => {
-    const { input, element } = await helper({ ...field });
+    const { renderResponse, element } = await helper({ ...field });
+    const input: ReactTestInstance = await renderResponse.findByText(field?.label?.value);
     fireEvent.press(input);
     fireEvent.press(input);
     expect(element?.getState().valid).toBe(true);
@@ -109,8 +117,8 @@ describe('Checkbox', () => {
       ...field,
       value: true,
     };
-    const { input, element } = await helper(f);
-
+    const { renderResponse, element } = await helper(f);
+    const input: ReactTestInstance = await renderResponse.findByText(f?.label?.value);
     expect(input).not.toBeNull();
     let state = element?.getState();
     expect(state.valid).not.toBe(true);
@@ -122,7 +130,8 @@ describe('Checkbox', () => {
       enum: [false, true],
       value: true,
     };
-    const { input, element } = await helper(f);
+    const { renderResponse, element } = await helper(f);
+    const input: ReactTestInstance = await renderResponse.findByText(f?.label?.value);
     expect(input).not.toBeNull();
     const state = element?.getState();
     expect(state.valid).not.toBe(true);

@@ -46,10 +46,8 @@ export const renderComponent = function <T>(Component: JSXElementConstructor<any
     let component = <Component {...e} />;
     const wrapper = Provider(form);
     const renderResponse = render(component, { wrapper });
-    const input = renderResponse.queryByText(field?.label?.value);
     return {
       renderResponse,
-      input,
       form,
       element: form?.items[0] as FieldModel,
       component
