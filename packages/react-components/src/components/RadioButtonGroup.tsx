@@ -1,37 +1,38 @@
 import React from 'react';
-import { useRuleEngine } from '@aemforms/af-react-renderer';
+import {State, FieldJson} from '@aemforms/af-core';
+import withRuleEngine from '../utils/HOC';
+import { IHandler } from '../utils/type';
 
-const RadioButtonGroup = (fieldjson: any) => {
-    const [props, handlers] = useRuleEngine(fieldjson);
-    const { id, label, required, enumNames, enum: enums, name, valid, errorMessage, description } = props;
+const RadioButtonGroup = (props: State<FieldJson> & IHandler) => {
+    const { id, label, required, enumNames, enum: enums, name, valid, errorMessage, description, readOnly } = props;
     const options = enumNames && enumNames.length ? enumNames : enums || [];
     const validateState = valid === false ? 'invalid' : 'valid';
     const error = validateState === 'invalid';
+    const orientation = (props.properties?.['afs:layout']?.orientation)?.toUpperCase() || 'horizontal'.toUpperCase();
    
     const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
        const val = event.target.value;
-       console.log('rad-val',val);
-       handlers.dispatchChange(val);
+       props.dispatchChange(val);
      };
     return (
-       <div>
-         <div className="cmp-adaptiveform-radiobutton">
-             <label htmlFor={id} className="cmp-adaptiveform-radiobutton__label">{label?.value}</label>
-         <div className="cmp-adaptiveform-radiobutton__widget HORIZONTAL">
+       <div className="cmp-adaptiveform-radiobutton">
+             {label?.visible && <label id={`${id}-label`} htmlFor={id} className="cmp-adaptiveform-radiobutton__label">{label?.value}</label>}
+         <div className={`cmp-adaptiveform-radiobutton__widget ${orientation}`}>
              {options?.map((item: string, index: number) => {
                  return (
-                     <div className="cmp-adaptiveform-radiobutton-item [${id}]">
-                       <input className="cmp-adaptiveform-radiobutton__widget" type='radio' required={required} name={name} value={enumNames[index]} onChange={changeHandler} />
-                       <label className="cmp-adaptiveform-radiobutton__label"><span>{item}</span></label>
+                     <div className="cmp-adaptiveform-radiobutton__option">
+                       <label className="cmp-adaptiveform-radiobutton__option__label" aria-label={enumNames![index]} htmlFor={`${id}_${enums![index]}__widget`}>
+                          <input id={`${id}_${enums![index]}__widget`} className="cmp-adaptiveform-radiobutton__widget" type='radio' required={required} name={name} value={enumNames![index]} onChange={changeHandler} readOnly={readOnly}/>
+                          <span>{item}</span>
+                      </label> 
                      </div>
                  );
-             })};
+             })}
+               {error && <div className="cmp-adaptiveform-radiobutton__errormessage">{errorMessage}</div>}
+               {description && !error && <div id={`${id}-longDescription`} className="cmp-adaptiveform-radiobutton__longdescription">{description}</div>}
          </div>
-          </div>
-          {error && <div className="cmp-adaptiveform-radiobutton__errormessage">{errorMessage}</div>}
-          {description && !error && <div className="cmp-adaptiveform-radiobutton__shortdescription">{description}</div>}
-       </div>
+      </div>
     );
  };
 
-export default RadioButtonGroup;
+export default withRuleEngine(RadioButtonGroup);
