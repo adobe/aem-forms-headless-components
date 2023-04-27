@@ -1,7 +1,7 @@
 {
   "name": "@aemforms/af-react-native",
   "version": "1.0.0",
-  "description": "React Spectrum based componets for Headless Form",
+  "description": "React native based componets for Headless Form",
   "author": "Adobe Systems",
   "license": "Adobe Proprietary",
   "homepage": "",

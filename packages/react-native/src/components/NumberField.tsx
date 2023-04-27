@@ -1,13 +1,45 @@
-import { State, FieldJson } from '@aemforms/af-core';
-import { useRenderer } from '@aemforms/af-react-renderer';
-import { Input } from 'native-base';
-import { combineConvertors, baseConvertor, numberFieldConvertor } from '../utils/mappers';
-import InputField from '../shared/InputField';
+import React, { useCallback } from 'react';
+import { Input, FormControl } from 'native-base';
+import { PROPS } from '../utils/types';
+import withRuleEngine from '../shared/withRuleEngine';
 
-const Comp = InputField(Input);
-const NumberComponent = function (props: State<FieldJson>) {
-  const renderedComponent = useRenderer(props, Comp, combineConvertors(baseConvertor, numberFieldConvertor));
-  return renderedComponent;
+const NumberComponent = function (props: PROPS) {
+  const { isError, required, label, errorMessage, description } = props;
+
+  const changeHandler = useCallback((event: any) => {
+    props.dispatchChange(event);
+  }, [props.dispatchChange]);
+
+  const blurHandler = useCallback((event: any) => {
+    props.dispatchBlur(event);
+  }, [props.dispatchBlur]);
+
+  const focusHandler = useCallback((event: any) => {
+    props.dispatchFocus(event);
+  }, [props.dispatchFocus]);
+
+  const inputProps = {
+    placeholder: props.placeholder || '',
+    value: props.value == null ? '' : props.value,
+    onChangeText: changeHandler,
+    onBlur: blurHandler,
+    onFocus: focusHandler,
+    isReadOnly: props.readOnly === true,
+    isRequired: props.required === true,
+    isDisabled: props.enabled === false,
+    KeyboardTypeOptions: 'numeric',
+    maximum: props.maximum,
+    minimum: props.minimum
+  };
+
+  return (
+    <FormControl isInvalid={isError} isRequired={required}>
+      {label?.visible && <FormControl.Label>{label?.value}</FormControl.Label>}
+      <Input {...inputProps} />
+      {errorMessage && <FormControl.ErrorMessage>{errorMessage}</FormControl.ErrorMessage>}
+      {description && !errorMessage && <FormControl.HelperText>{description}</FormControl.HelperText>}
+    </FormControl>
+  );
 };
 
-export default NumberComponent;
+export default withRuleEngine(NumberComponent);
