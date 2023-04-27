@@ -1,9 +1,10 @@
 import { Button } from 'native-base';
-import { State, FieldJson } from '@aemforms/af-core';
-import { useRenderer } from '@aemforms/af-react-renderer';
-import { baseConvertor, combineConvertors, buttonConvertor } from '../utils/mappers';
+import React from 'react';
+import { PROPS } from '../utils/types';
+import withRuleEngine from '../shared/withRuleEngine';
 
-const ButtonComponent = function (props: State<FieldJson>) {
-  return props.visible ? useRenderer(props, Button, combineConvertors(baseConvertor, buttonConvertor)) : null;
+const ButtonComponent = function (props: PROPS) {
+  const { label, enabled, dispatchClick } = props;
+  return <Button onPress={dispatchClick} isDisabled={enabled === false}>{label?.value}</Button>;
 };
-export default ButtonComponent;
+export default withRuleEngine(ButtonComponent);

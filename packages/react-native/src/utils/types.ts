@@ -1,5 +1,6 @@
-import { Handlers } from '@aemforms/af-react-renderer';
-import { FileObject } from '@aemforms/af-core';
+import { Handlers, WithViewState } from '@aemforms/af-react-renderer';
+import { FileObject, FieldJson, State } from '@aemforms/af-core';
+import { GestureResponderEvent } from 'react-native';
 
 export type InputFieldTypes = {
   label: string, 
@@ -58,3 +59,20 @@ export type Styles = {
     [key: string] : string
   },
 }
+
+export type FieldViewState = WithViewState<FieldJson>
+
+export type INPUT = {
+  [key: string]: any,
+  type: 'password' | 'text'
+}
+
+export type HandlersTypes = {
+  dispatchClick: (event: GestureResponderEvent) => void,
+  dispatchChange: (event: GestureResponderEvent) => void,
+  dispatchBlur: (event: GestureResponderEvent) => void,
+  dispatchFocus: (event: GestureResponderEvent) => void,
+  isError?: boolean
+}
+
+export type PROPS = State<FieldJson & HandlersTypes>;
