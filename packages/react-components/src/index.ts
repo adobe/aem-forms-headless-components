@@ -14,7 +14,7 @@ import NumberField from './components/NumberField';
 import DateInput from './components/DateInput';
 import CheckBox from './components/CheckBox';
 import Button from './components/Button';
-// import FileUpload from './components/FileUpload';
+import HorizontalTab from './components/tabs/HorizontalTab';
 import TextFieldArea from './components/TextFieldArea';
 import mappings from './utils/mappings';
 
@@ -28,6 +28,6 @@ export {
   DateInput,
   Button,
   CheckBox,
-  // FileUpload,
+  HorizontalTab,
   TextFieldArea
 };

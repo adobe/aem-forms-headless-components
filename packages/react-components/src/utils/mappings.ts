@@ -14,7 +14,7 @@ import DropDown from '../components/DropDown';
 import NumberField from '../components/NumberField';
 import RadioGroup from '../components/RadioButtonGroup';
 import TextField from '../components/TextField';
-import FileUpload from '../components/FileUpload';
+import HorizontalTab from '../components/tabs/HorizontalTab';
 import TextFieldArea from '../components/TextFieldArea';
 
 const mappings = {
@@ -26,7 +26,7 @@ const mappings = {
   'date-input': DateInput,
   'button': Button,
   'checkbox': CheckBox,
-  'file-input': FileUpload,
+  'custom:horizontal-tab': HorizontalTab,
   'multiline-input': TextFieldArea
 };
 
