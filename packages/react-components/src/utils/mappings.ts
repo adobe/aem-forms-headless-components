@@ -14,8 +14,8 @@ import DropDown from '../components/DropDown';
 import NumberField from '../components/NumberField';
 import RadioGroup from '../components/RadioButtonGroup';
 import TextField from '../components/TextField';
-import FileUpload from '../components/FileUpload';
 import TextFieldArea from '../components/TextFieldArea';
+import Wizard from '../components/Wizard';
 
 const mappings = {
   'text-input': TextField,
@@ -26,8 +26,8 @@ const mappings = {
   'date-input': DateInput,
   'button': Button,
   'checkbox': CheckBox,
-  'file-input': FileUpload,
-  'multiline-input': TextFieldArea
+  'multiline-input': TextFieldArea,
+  'wizard': Wizard
 };
 
 export default mappings;
