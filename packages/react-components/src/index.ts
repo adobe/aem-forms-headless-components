@@ -15,6 +15,7 @@ import DateInput from './components/DateInput';
 import CheckBox from './components/CheckBox';
 import Button from './components/Button';
 import TextFieldArea from './components/TextFieldArea';
+import Email from './components/Email';
 import Wizard from './components/Wizard';
 import mappings from './utils/mappings';
 
@@ -29,5 +30,6 @@ export {
   Button,
   CheckBox,
   Wizard,
-  TextFieldArea
+  TextFieldArea,
+  Email
 };

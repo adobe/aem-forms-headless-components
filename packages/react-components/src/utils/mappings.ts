@@ -11,6 +11,7 @@ import CheckBox from '../components/CheckBox';
 import CheckBoxGroup from '../components/CheckBoxGroup';
 import DateInput from '../components/DateInput';
 import DropDown from '../components/DropDown';
+import Email from '../components/Email';
 import NumberField from '../components/NumberField';
 import RadioGroup from '../components/RadioButtonGroup';
 import TextField from '../components/TextField';
@@ -27,7 +28,8 @@ const mappings = {
   'button': Button,
   'checkbox': CheckBox,
   'multiline-input': TextFieldArea,
-  'wizard': Wizard
+  'wizard': Wizard,
+  'email': Email
 };
 
 export default mappings;
