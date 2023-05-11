@@ -72,7 +72,8 @@ export type HandlersTypes = {
   dispatchChange: (event: GestureResponderEvent) => void,
   dispatchBlur: (event: GestureResponderEvent) => void,
   dispatchFocus: (event: GestureResponderEvent) => void,
-  isError?: boolean
+  isError?: boolean,
+  richText?: boolean
 }
 
 export type PROPS = State<FieldJson & HandlersTypes>;

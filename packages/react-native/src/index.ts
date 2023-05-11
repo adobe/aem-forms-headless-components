@@ -11,6 +11,7 @@ import PlainText from "./components/PlainText";
 import RadioGroup from "./components/RadioGroup";
 import Repeater from "./components/Repeater";
 import TextField from "./components/TextField";
+import DatePicker from "./components/DatePicker";
 import Themes from './utils/theme';
 
 export {
@@ -27,5 +28,6 @@ export {
   RadioGroup,
   Repeater,
   TextField,
+  DatePicker,
   Themes
 }

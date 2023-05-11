@@ -10,6 +10,7 @@ import RadioGroup from '../components/RadioGroup';
 import DropDown from '../components/DropDown';
 import PlainText from '../components/PlainText';
 import FileUpload from '../components/FileUpload';
+import DatePicker from '../components/DatePicker';
 
 export default {
   form: Form,
@@ -25,5 +26,6 @@ export default {
   'drop-down': DropDown,
   'password-input': TextField,
   'plain-text': PlainText,
-  'file-input': FileUpload
+  'file-input': FileUpload,
+  'date-input': DatePicker
 };
