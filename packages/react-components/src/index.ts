@@ -16,6 +16,7 @@ import CheckBox from './components/CheckBox';
 import Button from './components/Button';
 import TextFieldArea from './components/TextFieldArea';
 import Wizard from './components/Wizard';
+import Panel from './components/Panel';
 import mappings from './utils/mappings';
 
 export {
@@ -29,5 +30,6 @@ export {
   Button,
   CheckBox,
   Wizard,
-  TextFieldArea
+  TextFieldArea,
+  Panel
 };

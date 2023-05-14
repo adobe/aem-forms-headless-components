@@ -16,6 +16,7 @@ import RadioGroup from '../components/RadioButtonGroup';
 import TextField from '../components/TextField';
 import TextFieldArea from '../components/TextFieldArea';
 import Wizard from '../components/Wizard';
+import Panel from '../components/Panel';
 
 const mappings = {
   'text-input': TextField,
@@ -27,7 +28,8 @@ const mappings = {
   'button': Button,
   'checkbox': CheckBox,
   'multiline-input': TextFieldArea,
-  'wizard': Wizard
+  'wizard': Wizard,
+  panel: Panel
 };
 
 export default mappings;

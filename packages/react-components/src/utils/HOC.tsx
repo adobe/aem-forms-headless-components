@@ -7,7 +7,6 @@ const withRuleEngine = (WrappedComponent: any) => {
     let [props, handlers] = useRuleEngine(jsonfield);
     const i18n = useFormIntl();
     const descId = props?.properties?.['afs:translationIds']?.description;
-    // const description = !props.description || props.description === 'undefined' ? '' : props.description;
     const localizedDescription = descId ? i18n.formatMessage({ id: `${descId}`, defaultMessage: props.description }) : props.description;
     const labelId = props?.properties?.['afs:translationIds']?.label?.value;
     const localizedLabel = i18n.formatMessage({ id: `${labelId}`, defaultMessage: props?.label?.value });
@@ -15,7 +14,7 @@ const withRuleEngine = (WrappedComponent: any) => {
     props.description = localizedDescription;
     return (
         <div>
-          {props.visible && <WrappedComponent {...props } {...handlers} />}
+          {props.visible ? <WrappedComponent {...props } {...handlers} /> : null}
         </div>
     );
   }
