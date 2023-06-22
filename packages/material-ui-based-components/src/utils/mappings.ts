@@ -50,4 +50,8 @@ export default {
   'custom:switch': Switch
   'text-input': TextField,
   'custom:accordion': Accordion
+  'text-input': TextField,
+  'password-input': TextField,
+  'multiline-input': TextField,
+  email:TextField
 };
