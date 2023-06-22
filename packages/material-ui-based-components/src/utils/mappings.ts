@@ -18,6 +18,7 @@ import CheckboxGroup from '../components/CheckboxGroup';
 import Checkbox from '../components/Checkbox';
 import Switch from '../components/Switch';
 import Accordion from '../components/Accordion';
+import Wizard from '../components/Wizard';
 
 export default {
   form: Form,
@@ -54,4 +55,6 @@ export default {
   'password-input': TextField,
   'multiline-input': TextField,
   email:TextField
+  'text-input': TextField,
+  'custom:wizard': Wizard
 };
