@@ -5,6 +5,8 @@ import Date from '../components/Date';
 import PlainText from '../components/PlainText';
 import Title from '../components/Title';
 import Image from '../components/Image';
+import Rating from '../components/Rating';
+import Slider from '../components/Slider';
 
 export default {
   form: Form,
@@ -14,5 +16,8 @@ export default {
   'text-input': TextField,
   'plain-text': PlainText,
   'custom:title': Title,
-  image: Image
+  image: Image,
+  'text-input': TextField,
+  'custom:rating':Rating,
+  'custom:slider':Slider
 };
