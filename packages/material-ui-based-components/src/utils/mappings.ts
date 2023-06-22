@@ -1,9 +1,11 @@
 import Form from '../components/Form';
 import Panel from '../components/Panel';
 import TextField from '../components/TextField';
+import Date from '../components/Date';
 
 export default {
   form: Form,
   panel: Panel,
-  'text-input': TextField
+  'text-input': TextField,
+  'date-input': Date
 };
