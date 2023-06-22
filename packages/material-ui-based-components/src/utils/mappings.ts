@@ -7,6 +7,8 @@ import Title from '../components/Title';
 import Image from '../components/Image';
 import Rating from '../components/Rating';
 import Slider from '../components/Slider';
+import TabsVerticalComp from '../components/TabsVerticalComp';
+import TabsHorizontalComp from '../components/TabsHorizontalComp';
 
 export default {
   form: Form,
@@ -20,4 +22,7 @@ export default {
   'text-input': TextField,
   'custom:rating':Rating,
   'custom:slider':Slider
+  'text-input': TextField,
+  'custom:vertical-tab': TabsVerticalComp,
+  'custom:horizontal-tab': TabsHorizontalComp
 };
