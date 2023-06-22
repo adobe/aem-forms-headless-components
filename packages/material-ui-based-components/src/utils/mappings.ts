@@ -10,6 +10,7 @@ import Slider from '../components/Slider';
 import TabsVerticalComp from '../components/TabsVerticalComp';
 import TabsHorizontalComp from '../components/TabsHorizontalComp';
 import Button from '../components/Button';
+import Number from '../components/Number';
 
 export default {
   form: Form,
@@ -28,4 +29,6 @@ export default {
   'custom:horizontal-tab': TabsHorizontalComp
   'text-input': TextField,
   button: Button
+  'text-input': TextField,
+  'number-input': Number
 };
