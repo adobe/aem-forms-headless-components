@@ -8,7 +8,7 @@ const DEFAULT_ERROR_MESSAGE = 'There is an error in the field';
 
 export const richTextString = (stringMsg = '') => {
   const htmlProp = { __html: sanitizeHTML(stringMsg) };
-  return (<div dangerouslySetInnerHTML={htmlProp} />);
+  return (<span dangerouslySetInnerHTML={htmlProp} />);
 };
 
 const formateErrorMessage = (state: FieldViewState) => {
@@ -55,7 +55,7 @@ export function withRuleEngine(Component: JSXElementConstructor<any>) {
     };
     const visible = typeof state.visible === 'undefined' || state.visible;
     // @ts-ignore
-    return visible ? <Component {...localizeState} {...handlers} /> : null;
+    return visible ? <div className='field'><Component {...localizeState} {...handlers} /></div> : null;
   };
 }
 
