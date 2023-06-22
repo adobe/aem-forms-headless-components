@@ -14,6 +14,7 @@ import Number from '../components/Number';
 import DropDown from '../components/DropDown';
 import AutoComplete from '../components/AutoComplete';
 import Radiobutton from '../components/Radiobutton';
+import CheckboxGroup from '../components/CheckboxGroup';
 
 export default {
   form: Form,
@@ -39,4 +40,6 @@ export default {
   'custom:autocomplete':AutoComplete
   'text-input': TextField,
   'radio-group': Radiobutton
+  'text-input': TextField,
+  'checkbox-group': CheckboxGroup
 };
