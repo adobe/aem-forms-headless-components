@@ -11,6 +11,7 @@ import TabsVerticalComp from '../components/TabsVerticalComp';
 import TabsHorizontalComp from '../components/TabsHorizontalComp';
 import Button from '../components/Button';
 import Number from '../components/Number';
+import DropDown from '../components/DropDown';
 
 export default {
   form: Form,
@@ -31,4 +32,6 @@ export default {
   button: Button
   'text-input': TextField,
   'number-input': Number
+  'text-input': TextField,
+  'drop-down': DropDown
 };
