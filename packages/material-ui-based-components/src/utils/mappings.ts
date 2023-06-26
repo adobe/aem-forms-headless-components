@@ -12,6 +12,7 @@ import TabsHorizontalComp from '../components/TabsHorizontalComp';
 import Button from '../components/Button';
 import Number from '../components/Number';
 import DropDown from '../components/DropDown';
+import AutoComplete from '../components/AutoComplete';
 
 export default {
   form: Form,
@@ -33,5 +34,6 @@ export default {
   'text-input': TextField,
   'number-input': Number
   'text-input': TextField,
-  'drop-down': DropDown
+  'drop-down': DropDown,
+  'custom:autocomplete':AutoComplete
 };

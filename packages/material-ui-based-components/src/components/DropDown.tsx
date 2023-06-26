@@ -6,9 +6,8 @@ import { FormControl, FormHelperText, InputLabel, MenuItem, Select } from '@mui/
 const DropDownComponent = (props: PROPS) => {
   const {
     label, required, enumNames, enum: enums, enabled, id,
-    isError, description, errorMessage, name
+    isError, description, errorMessage, name, value, type
   } = props;
-  //console.log(value);
 
   const changeHandler = useCallback((event: any) => {
     props.dispatchChange(event.target.value);
@@ -43,7 +42,8 @@ const DropDownComponent = (props: PROPS) => {
       </InputLabel>
       <Select
         name={name}
-        defaultValue=''
+        value={type?.includes('[]') ? value ? value : [] : value ? value : ''}
+        multiple={type?.includes('[]')}
         label={label?.visible ? label.value : ''}
         onChange={changeHandler}
         onBlur={blurHandler}
