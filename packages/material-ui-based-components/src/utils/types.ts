@@ -10,6 +10,9 @@ export type PROPS = State<FieldJson & Handlers & {
   }
   text?:string,
   richText?:boolean
+  layout?: {
+    [key: string]: any;
+  }
 }>;
 
 export type PROPS_PANEL = State<FieldsetJson> & { handlers: Handlers }
