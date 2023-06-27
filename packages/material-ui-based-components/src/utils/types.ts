@@ -8,6 +8,7 @@ export type PROPS = State<FieldJson & Handlers & {
   layout?: {
     [key: string]: any;
   }
+  text?:string
 }>;
 
 export type PROPS_PANEL = State<FieldsetJson> & { handlers: Handlers }

@@ -4,12 +4,12 @@ import { PROPS } from '../utils/types';
 import { Typography } from '@mui/material';
 
 
-const PlainTextComponent = (props: PROPS) => {
-    const { value } = props;
+const TitleComponent = (props: PROPS) => {
+    const { text } = props;
 
     return (
-        <Typography gutterBottom>{richTextString(value)}</Typography>
+        <Typography gutterBottom>{richTextString(text)}</Typography>
     );
 };
 
-export default withRuleEngine(PlainTextComponent);
+export default withRuleEngine(TitleComponent);
