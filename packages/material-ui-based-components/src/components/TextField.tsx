@@ -1,8 +1,15 @@
 import React, { useCallback, useState } from 'react';
 import { withRuleEngine } from '../shared/withRuleEngine';
 import { PROPS } from '../utils/types';
-import { FormControl, FormHelperText, IconButton, InputAdornment, InputLabel, OutlinedInput } from '@mui/material';
+import { FormControl, FormHelperText, IconButton, InputAdornment, InputLabel, OutlinedInput, Input, FilledInput } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
+
+
+const input: any = {
+  outlined: OutlinedInput,
+  standard: Input,
+  filled: FilledInput
+};
 
 const TextFieldComponent = (props: PROPS) => {
   const { isError, placeholder, name, required, label, format, errorMessage,
@@ -15,7 +22,6 @@ const TextFieldComponent = (props: PROPS) => {
   const isPassword = props.fieldType === 'password-input';
   const isSsn = format === 'ssn';
   const [showPassword, setShowPassword] = useState(true);
-
 
   const masking = useCallback((val: string, show: boolean) => {
     let displayVal = val.replace(/[^0-9|\\]/g, '');
@@ -107,14 +113,16 @@ const TextFieldComponent = (props: PROPS) => {
     return 'text';
   }, [isPassword, showPassword, format]);
 
+  const InputVariant = input[props.layout?.variant];
+
   return (
     <FormControl
-      variant="outlined"
+      variant={props.layout?.variant}
       disabled={!enabled}
       required={required}
       fullWidth>
       {label?.visible ? <InputLabel error={isError} htmlFor={id}>{label.value}</InputLabel> : null}
-      <OutlinedInput
+      <InputVariant
         id={id}
         label={label?.visible ? label.value : ''}
         value={getValue()}
