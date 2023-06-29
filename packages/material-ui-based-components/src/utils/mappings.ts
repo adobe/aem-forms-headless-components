@@ -12,5 +12,5 @@ export default {
   'date-input': Date,
   'text-input': TextField,
   'plain-text': PlainText,
-  title: Title
+  'custom:title': Title
 };
