@@ -5,10 +5,10 @@ import { Typography } from '@mui/material';
 
 
 const PlainTextComponent = (props: PROPS) => {
-    const { value } = props;
+    const { value, richText } = props;
 
     return (
-        <Typography gutterBottom>{richTextString(value)}</Typography>
+        <Typography gutterBottom>{richText ? richTextString(value) : value}</Typography>
     );
 };
 
