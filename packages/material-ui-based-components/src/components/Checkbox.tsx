@@ -3,30 +3,16 @@ import { withRuleEngine } from '../shared/withRuleEngine';
 import { PROPS } from '../utils/types';
 import {
   Checkbox,
-  FormControl, FormControlLabel, FormGroup, FormHelperText, Switch
+  FormControl, FormControlLabel, FormGroup, FormHelperText
 } from '@mui/material';
 
 const CheckboxComponent = (props: PROPS) => {
   const {
     label, id, required, enabled, value, errorMessage,
-    description, isError, properties, name
+    description, isError, name
   } = props;
   const selectedValue = props.enum?.[0];
   const unselectedValue = (props.enum?.length || 0) < 2 ? null : props.enum?.[1];
-  const k = 'afs:layout';
-  let row = false;
-  if (properties && properties[k]) {
-    row = properties[k].orientation === 'horizontal';
-  }
-
-  const control = () => {
-    if (props[':type'] === 'switch') {
-      return (<Switch />);
-    }
-    else {
-      return (<Checkbox />);
-    }
-  };
 
   const changeHandler = useCallback((event: any) => {
     const val = (event.target.checked) ? selectedValue : unselectedValue;
@@ -35,22 +21,22 @@ const CheckboxComponent = (props: PROPS) => {
 
   return (
     <FormControl
-      variant="standard"
+      variant={props.layout?.variant}
       required={required}
       disabled={!enabled}
       id={id}
       fullWidth
       error={isError}
     >
-      <FormGroup row={row} onChange={changeHandler}>
+      <FormGroup row={props.layout?.orientation}>
         <FormControlLabel
           required={required}
           value={label}
           name={name}
-          control={control()}
+          control={<Checkbox color={props.layout?.color} />}
           label={label?.visible ? label.value : ''}
           onChange={changeHandler}
-          checked={value === 'on'}
+          checked={value === props.enum?.[0] || value === true}
         />
       </FormGroup>
       <FormHelperText error={isError} component="span">
