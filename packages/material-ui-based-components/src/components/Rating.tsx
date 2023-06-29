@@ -20,11 +20,11 @@ const RatingComponent = (props: PROPS) => {
 
     return (
         <Box>
-            <InputLabel error={isError} htmlFor={id} required={required}>
-                {label?.visible ? label.value : ''}
-            </InputLabel>
+            {label?.visible ? <InputLabel error={isError} id={id} required={required}>
+                {label.value}
+            </InputLabel> : null}
             <Rating
-                id={id}
+                aria-labelledby={id}
                 name={name}
                 value={value ? value : null}
                 disabled={!enabled}
