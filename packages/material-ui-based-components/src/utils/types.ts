@@ -5,11 +5,8 @@ export type FieldViewState = WithViewState<FieldJson>;
 
 export type PROPS = State<FieldJson & Handlers & {
   isError?: boolean,
-  layout?: {
-    [key: string]: any
-  }
   text?:string,
-  richText?:boolean
+  richText?:boolean,
   layout?: {
     [key: string]: any;
   }
