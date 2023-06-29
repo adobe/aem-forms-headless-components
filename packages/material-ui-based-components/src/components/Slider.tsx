@@ -8,9 +8,9 @@ const SliderComponent = (props: PROPS) => {
         maximum, minimum, errorMessage, id, value, step }
         = props;
 
-    function valuetext(value: number, label: any) {
+    const getValue = useCallback((value: number, label: any) => {
         return `${value}-${label.value}`;
-    }
+    }, []);
 
     const changeHandler = useCallback((event: any) => {
         props.dispatchChange(event.target.value);
@@ -26,20 +26,21 @@ const SliderComponent = (props: PROPS) => {
 
     return (
         <Box>
-            <InputLabel error={isError} htmlFor={id} required={required}>
-                {label?.visible ? label.value : ''}
-            </InputLabel>
+            {label?.visible ? <InputLabel error={isError} id={id} required={required}>
+                {label.value}
+            </InputLabel> : null}
             <Slider
-                id={id}
+                aria-labelledby={id}
                 name={name}
                 disabled={!enabled}
                 value={value ? value : null}
-                getAriaValueText={valuetext}
+                getAriaValueText={getValue}
                 valueLabelDisplay="auto"
                 step={step ? step : undefined}
                 marks={step ? true : false}
                 min={minimum ? minimum : 0}
                 max={maximum ? maximum : 100}
+                color={props.layout?.color}
                 onChange={changeHandler}
                 onBlur={blurHandler}
                 onFocus={focusHandler}
