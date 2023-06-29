@@ -51,7 +51,12 @@ export function withRuleEngine(Component: JSXElementConstructor<any>) {
         visible: state.label?.visible !== false
       },
       isError: getValidationState(state) === 'invalid',
-      errorMessage: formateErrorMessage(state)
+      errorMessage: formateErrorMessage(state),
+      layout: {
+        variant: 'outlined',
+        orientation: 'horizontal',
+        ...(getOrElse(state, ['properties',  'afs:layout'], {}))
+      }
     };
     const visible = typeof state.visible === 'undefined' || state.visible;
     // @ts-ignore
