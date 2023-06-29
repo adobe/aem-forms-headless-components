@@ -16,6 +16,7 @@ import AutoComplete from '../components/AutoComplete';
 import Radiobutton from '../components/Radiobutton';
 import CheckboxGroup from '../components/CheckboxGroup';
 import Checkbox from '../components/Checkbox';
+import Switch from '../components/Switch';
 
 export default {
   form: Form,
@@ -45,5 +46,5 @@ export default {
   'checkbox-group': CheckboxGroup
   'text-input': TextField,
   checkbox: Checkbox,
-  'custom:switch': Checkbox
+  'custom:switch': Switch
 };
