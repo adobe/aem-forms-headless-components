@@ -5,13 +5,16 @@ import { Autocomplete, FormControl, FormHelperText, TextField } from '@mui/mater
 
 const AutoCompleteComponent = (props: PROPS) => {
     const {
-        label, required, enumNames, enum: enums, enabled, id,
+        label, required, enumNames, enabled, id,
         isError, description, errorMessage, name, value
     } = props;
 
+    const enums = props.enum || [];
+    const options = enumNames?.length ? enumNames : enums;
+
     const changeHandler = useCallback((event: any, newValue: any) => {
-        console.log(event, newValue);
-        props.dispatchChange(newValue !== null ? newValue.value : undefined);
+        let index = options.indexOf(newValue);
+        props.dispatchChange(index === -1 ? undefined : enums[index]);
     }, [props.dispatchChange]);
 
     const blurHandler = useCallback((event: any) => {
@@ -22,18 +25,9 @@ const AutoCompleteComponent = (props: PROPS) => {
         props.dispatchFocus(event.target.value);
     }, [props.dispatchFocus]);
 
-    let options = [{ value: enums ? enums[0] : '', label: enumNames ? enumNames[0] : enums ? enums[0] : '' }];
-
-    if (enums) {
-        for (let i = 1; i < enums.length; i++) {
-            let ob = { value: enums[i], label: enumNames ? enumNames[i] : enums[i] };
-            options = [...options, ob];
-        }
-    }
-
     return (
         <FormControl
-            variant="outlined"
+            variant={props.layout?.variant}
             fullWidth
         >
             <Autocomplete
@@ -45,8 +39,8 @@ const AutoCompleteComponent = (props: PROPS) => {
                 onBlur={blurHandler}
                 onFocus={focusHandler}
                 options={options}
-                getOptionLabel={(option) => option.label}
-                isOptionEqualToValue={(option, value) => option.value === value.value}
+                getOptionLabel={(text) => text}
+                isOptionEqualToValue={(index, value) => enums[index] === value.value}
                 renderInput={(params) => <TextField {...params}
                     label={label?.visible ? label.value : ''}
                     required={required}

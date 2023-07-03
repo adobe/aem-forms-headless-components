@@ -5,9 +5,13 @@ import { FormControl, FormHelperText, InputLabel, MenuItem, Select } from '@mui/
 
 const DropDownComponent = (props: PROPS) => {
   const {
-    label, required, enumNames, enum: enums, enabled, id,
+    label, required, enumNames, enabled, id,
     isError, description, errorMessage, name, value, type
   } = props;
+
+  const enums = props.enum || [];
+  const options = enumNames?.length ? enumNames : enums;
+  const isArray = (type || '[]').indexOf('[]') > -1;
 
   const changeHandler = useCallback((event: any) => {
     props.dispatchChange(event.target.value);
@@ -21,29 +25,33 @@ const DropDownComponent = (props: PROPS) => {
     props.dispatchFocus(event.target.value);
   }, [props.dispatchFocus]);
 
-  let options = [{ value: enums ? enums[0] : '', label: enumNames ? enumNames[0] : enums ? enums[0] : '' }];
-
-  if (enums) {
-    for (let i = 1; i < enums.length; i++) {
-      let ob = { value: enums[i], label: enumNames ? enumNames[i] : enums[i] };
-      options = [...options, ob];
+  const getValue = useCallback(() => {
+    if (isArray) {
+      if (value) {
+        return value;
+      }
+      return [];
     }
-  }
+    else {
+      if (value) {
+        return value;
+      }
+      return '';
+    }
+  }, [isArray, value]);
 
   return (
     <FormControl
-      variant="outlined"
+      variant={props.layout?.variant}
       required={required}
       disabled={!enabled}
       fullWidth
     >
-      <InputLabel error={isError} htmlFor={id}>
-        {label?.visible ? label.value : ''}
-      </InputLabel>
+      {label?.visible ? <InputLabel error={isError} htmlFor={id}> {label.value} </InputLabel> : null}
       <Select
         name={name}
-        value={type?.includes('[]') ? value ? value : [] : value ? value : ''}
-        multiple={type?.includes('[]')}
+        value={getValue()}
+        multiple={isArray}
         label={label?.visible ? label.value : ''}
         onChange={changeHandler}
         onBlur={blurHandler}
@@ -53,10 +61,10 @@ const DropDownComponent = (props: PROPS) => {
           id: id
         }}
       >
-        {options?.map((option: any) => {
+        {options?.map((text: string, index) => {
           return (
-            <MenuItem key={option.value} value={option.value}>
-              {option.label}
+            <MenuItem key={enums[index]} value={enums[index]}>
+              {text}
             </MenuItem>
           );
         })}
