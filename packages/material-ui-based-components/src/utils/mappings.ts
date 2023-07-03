@@ -4,6 +4,7 @@ import TextField from '../components/TextField';
 import Date from '../components/Date';
 import PlainText from '../components/PlainText';
 import Title from '../components/Title';
+import Image from '../components/Image';
 
 export default {
   form: Form,
@@ -12,5 +13,6 @@ export default {
   'date-input': Date,
   'text-input': TextField,
   'plain-text': PlainText,
-  'custom:title': Title
+  'custom:title': Title,
+  image: Image
 };
