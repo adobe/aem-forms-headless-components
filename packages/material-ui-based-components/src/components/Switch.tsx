@@ -27,7 +27,7 @@ const SwitchComponent = (props: PROPS) => {
             fullWidth
             error={isError}
         >
-            <FormGroup row={props.layout?.orientation}>
+            <FormGroup row={props.layout?.orientation === 'horizontal'}>
                 <FormControlLabel
                     required={required}
                     value={label}
