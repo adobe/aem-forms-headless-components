@@ -5,48 +5,44 @@ import { Checkbox, FormControl, FormControlLabel, FormGroup, FormHelperText, For
 
 const CheckboxGroupComponent = (props: PROPS) => {
   const {
-    label, id, required, enum: enums, enabled, errorMessage,
-    description, enumNames, isError, properties
+    isError, required, label, errorMessage, description,
+    value, enumNames, enabled, dispatchChange
   } = props;
-  const k = 'afs:layout';
-  let row = false;
-  if (properties && properties[k]) {
-    row = properties[k].orientation === 'horizontal';
-  }
+
+  const enums = props.enum || [];
+  const options = enumNames?.length ? enumNames : enums;
 
   const changeHandler = useCallback((event: any) => {
-    props.dispatchChange(event.target.value);
-  }, [props.dispatchChange]);
-
-
-  let options = [{ value: enums ? enums[0] : '', label: enumNames ? enumNames[0] : enums ? enums[0] : '' }];
-
-  if (enums) {
-    for (let i = 1; i < enums.length; i++) {
-      let ob = { value: enums[i], label: enumNames ? enumNames[i] : enums[i] };
-      options = [...options, ob];
+    let currentVal = event.target.value;
+    let checked = event.target.checked;
+    let finalVal = Array.isArray(value) ? value : [];
+    if (currentVal === null) { finalVal = []; }
+    if (checked) {
+      finalVal.push(currentVal);
     }
-  }
+    else {
+      finalVal = finalVal.filter((val: string) => val != currentVal);
+    }
+    dispatchChange(finalVal);
+  }, [value, dispatchChange]);
 
   return (
     <FormControl
-      variant="outlined"
+      variant={props.layout?.variant}
       required={required}
       disabled={!enabled}
       fullWidth
     >
-      <FormLabel error={isError}>
-        {label?.visible ? label.value : ''}
-      </FormLabel>
-      <FormGroup row={row} onChange={changeHandler} id={id}>
-        {options.map((option, index) => {
+      {label?.visible ? <FormLabel error={isError}> {label.value} </FormLabel> : null}
+      <FormGroup row={props.layout?.orientation === 'horizontal'}>
+        {options?.map((text: string, index) => {
           return (
             <FormControlLabel
-              value={option.value}
-              name={option.label}
-              key={index}
-              control={<Checkbox name={option.label} />}
-              label={option.label}
+              value={value ? value : []}
+              name={text}
+              key={enums[index]}
+              control={<Checkbox value={enums[index]} color={props.layout?.color} />}
+              label={text}
               onChange={changeHandler}
             />
           );
