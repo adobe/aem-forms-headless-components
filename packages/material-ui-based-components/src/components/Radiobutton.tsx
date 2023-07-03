@@ -5,57 +5,31 @@ import { FormControl, FormControlLabel, FormHelperText, FormLabel, Radio, RadioG
 
 const RadioGroupComponent = (props: PROPS) => {
   const {
-    label, id, required, enumNames, enum: enums, enabled,
-    description, name, isError, errorMessage, properties
+    label, required, enumNames, enabled,
+    description, name, isError, errorMessage
   } = props;
-  const k = 'afs:layout';
-  let row = false;
-  if (properties && properties[k]) {
-    row = properties[k].orientation === 'horizontal';
-  }
+
+  const enums = props.enum || [];
+  const options = enumNames?.length ? enumNames : enums;
 
   const changeHandler = useCallback((event: any) => {
     props.dispatchChange(event.target.value);
   }, [props.dispatchChange]);
-
-  const blurHandler = useCallback((event: any) => {
-    props.dispatchBlur(event.target.value);
-  }, [props.dispatchBlur]);
-
-  const focusHandler = useCallback((event: any) => {
-    props.dispatchFocus(event.target.value);
-  }, [props.dispatchFocus]);
-
-  let options = [{ value: enums ? enums[0] : '', label: enumNames ? enumNames[0] : enums ? enums[0] : '' }];
-
-  if (enums) {
-    for (let i = 1; i < enums.length; i++) {
-      let ob = { value: enums[i], label: enumNames ? enumNames[i] : enums[i] };
-      options = [...options, ob];
-    }
-  }
-
   return (
     <div className="Margin">
       <FormControl disabled={!enabled} required={required}>
-        <FormLabel error={isError}>
-          {label?.visible ? label.value : ''}
-        </FormLabel>
+        {label?.visible ? <FormLabel error={isError}> {label.value} </FormLabel> : null}
         <RadioGroup name={name}
           onChange={changeHandler}
-          onBlur={blurHandler}
-          onFocus={focusHandler}
-          defaultValue=''
-          row={row}
-          id={id}
+          row={props.layout?.orientation === 'horizontal'}
         >
-          {options.map((option) => {
+          {options.map((text: string, index) => {
             return (
               <FormControlLabel
-                key={option.value}
-                value={option.value}
+                key={enums[index]}
+                value={enums[index]}
                 control={<Radio />}
-                label={option.label}
+                label={text}
               />
             );
           })}
