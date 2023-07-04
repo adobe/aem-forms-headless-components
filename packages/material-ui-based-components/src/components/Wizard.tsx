@@ -1,20 +1,12 @@
-import React, { useContext } from 'react';
+import React, { useCallback, useContext } from 'react';
 import Box from '@mui/material/Box';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
 import { withRuleEnginePanel } from '../shared/withRuleEngine';
-import { PROPS_PANEL } from '../utils/types';
+import { PROPS_PANEL, TabPanelProps } from '../utils/types';
 import { FormContext, getRenderer } from '@aemforms/af-react-renderer';
-
-
-interface TabPanelProps {
-    children?: any;
-    index: number;
-    value: number;
-}
 
 function TabPanel(props: TabPanelProps) {
     const { children, value, index, ...other } = props;
@@ -37,50 +29,35 @@ function TabPanel(props: TabPanelProps) {
 function Wizard(props: PROPS_PANEL) {
     //@ts-ignore
     const mappings = useContext(FormContext).mappings;
-    const items = props.items || [];
+    const items = props.visible ? props.items : [];
     const [activeStep, setActiveStep] = React.useState(0);
-    const [value, setValue] = React.useState(0);
 
     const steps = items.map((child: any) => (
         child.label.value
     ));
 
-    const getChild = (child: any, index: number) => {
+    const getChild = useCallback((child: any, index: number) => {
         const Comp = getRenderer(child, mappings);
         return Comp ? <Comp key={`${child.id}_${index}`} {...child} /> : (null);
-    };
+    }, [mappings]);
 
-    const isStepOptional = (step: number) => {
-        return step === 1;
-    };
-
-    const handleNext = (newValue: number) => {
+    const handleNext = useCallback(() => {
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
-        setValue(newValue);
-    };
+    }, []);
 
-    const handleBack = (newValue: number) => {
+    const handleBack = useCallback(() => {
         setActiveStep((prevActiveStep) => prevActiveStep - 1);
-        setValue(newValue);
-    };
+    }, []);
 
     return (
         <Box sx={{ width: '100%' }}>
             <Stepper activeStep={activeStep}>
-                {steps.map((label, index) => {
+                {steps.map((label) => {
                     const stepProps: { completed?: boolean } = {};
-                    const labelProps: {
-                        optional?: React.ReactNode;
-                    } = {};
-                    if (isStepOptional(index)) {
-                        labelProps.optional = (
-                            <Typography variant="caption">Optional</Typography>
-                        );
-                    }
                     return (
                         <Step key={label} {...stepProps}>
                             {/* @ts-ignore */}
-                            <StepLabel {...labelProps}>{label}</StepLabel>
+                            <StepLabel>{label}</StepLabel>
                         </Step>
                     );
                 })}
@@ -89,7 +66,7 @@ function Wizard(props: PROPS_PANEL) {
             <React.Fragment>
                 {
                     items.map((child: any, index: number) => (
-                        <TabPanel value={value} index={index} key={`${child.id}_${index}`}>
+                        <TabPanel value={activeStep} index={index} key={`${child.id}`}>
                             {getChild(child, index)}
                         </TabPanel>
                     ))
@@ -98,8 +75,7 @@ function Wizard(props: PROPS_PANEL) {
                     <Button
                         color="inherit"
                         disabled={activeStep === 0}
-                        onClick={() => handleBack(value - 1)}
-                        sx={{ mr: 1 }}
+                        onClick={handleBack}
                     >
                         Back
                     </Button>
@@ -107,8 +83,7 @@ function Wizard(props: PROPS_PANEL) {
                     <Button
                         color="inherit"
                         disabled={activeStep === steps.length - 1}
-                        onClick={() => handleNext(value + 1)}
-                        sx={{ mr: 1 }}
+                        onClick={handleNext}
                     >
                         Next
                     </Button>
