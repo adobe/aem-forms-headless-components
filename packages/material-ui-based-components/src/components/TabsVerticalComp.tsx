@@ -1,17 +1,10 @@
-import React, { useContext } from 'react';
+import React, { useCallback, useContext } from 'react';
 import { getRenderer, FormContext } from '@aemforms/af-react-renderer';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-// import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import { PROPS_PANEL } from '../utils/types';
+import { PROPS_PANEL, TabPanelProps } from '../utils/types';
 import { withRuleEnginePanel } from '../shared/withRuleEngine';
-
-interface TabPanelProps {
-  children?: any;
-  index: number;
-  value: number;
-}
 
 function TabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
@@ -20,7 +13,6 @@ function TabPanel(props: TabPanelProps) {
     <div
       role="tabpanel"
       hidden={value !== index}
-      id={`vertical-tabpanel-${index}`}
       aria-labelledby={`vertical-tab-${index}`}
       {...other}
       className='FlexWidth'
@@ -35,19 +27,19 @@ function TabPanel(props: TabPanelProps) {
 }
 
 function TabsVerticalComp(props: PROPS_PANEL) {
-  const [value, setValue] = React.useState(0);
+  const [selectedTab, setSelectedTab] = React.useState(0);
   //@ts-ignore
   const mappings = useContext(FormContext).mappings;
-  const items = props.items || [];
+  const items = props.visible ? props.items : [];
 
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    setValue(newValue);
-  };
+  const handleChange = useCallback((event: React.SyntheticEvent, newValue: number) => {
+    setSelectedTab(newValue);
+  }, []);
 
-  const getChild = (child: any, index: number) => {
+  const getChild = useCallback((child: any, index: number) => {
     const Comp = getRenderer(child, mappings);
-    return Comp ? <Comp key={`${child.id}_${index}`} {...child} /> : (null);
-  };
+    return Comp ? <Comp key={`${child.id}_${index}`} {...child} id={child.id} /> : (null);
+  }, [mappings]);
 
   return (
     <Box
@@ -56,9 +48,8 @@ function TabsVerticalComp(props: PROPS_PANEL) {
       <Tabs
         orientation="vertical"
         variant="scrollable"
-        value={value}
+        value={selectedTab}
         onChange={handleChange}
-        aria-label="Vertical tabs example"
         sx={{ borderRight: 1, borderColor: 'divider' }}
       >
         {
@@ -69,7 +60,7 @@ function TabsVerticalComp(props: PROPS_PANEL) {
       </Tabs>
       {
         items.map((child: any, index: number) => (
-          <TabPanel value={value} index={index} key={`${child.id}_${index}`}>
+          <TabPanel value={selectedTab} index={index} key={`${child.id}`}>
             {getChild(child, index)}
           </TabPanel>
         ))
