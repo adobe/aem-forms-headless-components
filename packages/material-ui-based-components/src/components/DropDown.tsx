@@ -46,6 +46,7 @@ const DropDownComponent = (props: PROPS) => {
       required={required}
       disabled={!enabled}
       fullWidth
+      sx={{ mt: 2 }}
     >
       {label?.visible ? <InputLabel error={isError} htmlFor={id}> {label.value} </InputLabel> : null}
       <Select

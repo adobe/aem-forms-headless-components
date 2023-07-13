@@ -29,11 +29,13 @@ const AutoCompleteComponent = (props: PROPS) => {
         <FormControl
             variant={props.layout?.variant}
             fullWidth
+            sx={{ mt: 2 }}
         >
             <Autocomplete
                 fullWidth
                 autoComplete
                 disabled={!enabled}
+                value={value ? value : null}
                 id={id}
                 onChange={changeHandler}
                 onBlur={blurHandler}
@@ -46,7 +48,6 @@ const AutoCompleteComponent = (props: PROPS) => {
                     required={required}
                     error={isError}
                     name={name}
-                    value={value ? value : ''}
                 />}
             />
             <FormHelperText error={isError} component="span">
