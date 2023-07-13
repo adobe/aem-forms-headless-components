@@ -26,6 +26,7 @@ const SwitchComponent = (props: PROPS) => {
             id={id}
             fullWidth
             error={isError}
+            sx={{ mt: 2 }}
         >
             <FormGroup row={props.layout?.orientation === 'horizontal'}>
                 <FormControlLabel
