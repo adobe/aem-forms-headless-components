@@ -12,7 +12,6 @@ function TableRowComponent(props: PROPS_PANEL) {
     const items = props.items || [];
 
     const getCell = useCallback((row: any) => {
-        // console.log(row);
         if (row[0].fieldType !== 'panel') {
             return (
                 <TableRow>
@@ -21,12 +20,12 @@ function TableRowComponent(props: PROPS_PANEL) {
                             {getChild(cell, index)}
                         </TableCell>
                     ))}
+                    <TableCell></TableCell>
                 </TableRow>);
         }
         return (
             row.map((r: any) => {
                 const newRow = r.items[0];
-                console.log(newRow.items, r.items[1]);
                 return (
                     <TableRow key={r.id}>
                         {
