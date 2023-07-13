@@ -33,7 +33,8 @@ const NumberComponent = (props: PROPS) => {
       variant={props.layout?.variant}
       required={required}
       disabled={!enabled}
-      fullWidth>
+      fullWidth
+      sx={{ mt: 2 }}>
       {label?.visible ? <InputLabel error={isError} htmlFor={id}>{label.value}</InputLabel> : null}
       <InputVariant
         label={label?.visible ? label.value : ''}
