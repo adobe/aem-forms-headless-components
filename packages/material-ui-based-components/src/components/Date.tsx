@@ -40,7 +40,8 @@ const DateComponent = (props: PROPS) => {
                             error: isError,
                             name: name,
                             required: required,
-                            fullWidth: true
+                            fullWidth: true,
+                            sx: { mt: 2 }
                         }
                     }}
                 />
