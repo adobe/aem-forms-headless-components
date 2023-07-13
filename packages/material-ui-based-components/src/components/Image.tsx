@@ -8,7 +8,7 @@ const ImageComponent = (props: PROPS) => {
     const { value, altText } = props;
 
     return (
-        <Paper variant="outlined">
+        <Paper variant="outlined" sx={{ mt: 2 }}>
             <img src={value} width="100%" alt={altText} />
         </Paper>
     );

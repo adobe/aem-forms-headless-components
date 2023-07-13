@@ -8,7 +8,7 @@ const PlainTextComponent = (props: PROPS) => {
     const { value, richText } = props;
 
     return (
-        <Typography gutterBottom>{richText ? richTextString(value) : value}</Typography>
+        <Typography sx={{ mt: 2 }}>{richText ? richTextString(value) : value}</Typography>
     );
 };
 

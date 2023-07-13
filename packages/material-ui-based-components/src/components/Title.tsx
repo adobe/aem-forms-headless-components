@@ -8,7 +8,7 @@ const TitleComponent = (props: PROPS) => {
     const { text, richText } = props;
 
     return (
-        <Typography gutterBottom>{richText ? richTextString(text) : text}</Typography>
+        <Typography sx={{ mt: 2 }}>{richText ? richTextString(text) : text}</Typography>
     );
 };
 
