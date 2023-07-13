@@ -9,7 +9,7 @@ const Form = function (props: PROPS_PANEL) {
   const context = useContext(FormContext);
   return (
     <div>
-      {restProps?.label?.value ? <div>{restProps.label.value}</div> : null}
+      {restProps?.label?.visible ? <div>{restProps.label.value}</div> : null}
       {renderChildren(restProps, context.mappings, context.modelId, handlers)}
     </div>
   );

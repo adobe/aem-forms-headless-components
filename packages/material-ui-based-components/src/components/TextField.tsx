@@ -16,31 +16,43 @@ const TextFieldComponent = (props: PROPS) => {
     description, enabled, readOnly, maxLength, minLength, pattern, id, value
   } = props;
 
-  const [unmaskedVal, setUnmaskedVal] = useState(value ? value : '');
-  const [maskedVal, setMaskedVal] = useState('');
   const [showSsn, setShowSsn] = useState(true);
   const isPassword = props.fieldType === 'password-input';
-  const isSsn = format === 'ssn';
+  const isFormatted = format !== undefined && format !== 'email' && format !== 'date';
+  const formatGiven = format ? format : '';
   const [showPassword, setShowPassword] = useState(true);
 
   const masking = useCallback((val: string, show: boolean) => {
     let displayVal = val.replace(/[^0-9|\\]/g, '');
 
-    if (displayVal.length >= 4) {
-      displayVal = displayVal.slice(0, 3) + '-' + displayVal.slice(3);
+    let lengths: [number] = [0];
+    let element: string = '';
+
+    for (let i = 0; i < formatGiven?.length; i++) {
+      if (formatGiven[i] !== 'X') {
+        lengths.push(i + 1);
+        element = formatGiven[i];
+      }
     }
-    if (displayVal.length >= 7) {
-      displayVal = displayVal.slice(0, 6) + '-' + displayVal.slice(6);
+
+    for (let i = 1; i < lengths.length; i++) {
+      if (displayVal.length >= lengths[i]) {
+        displayVal = displayVal.slice(0, lengths[i] - 1) + element + displayVal.slice(lengths[i] - 1);
+      }
     }
+
     if (!show) {
-      displayVal = displayVal.slice(0, 6).replace(/[0-9]/g, 'X') + displayVal.slice(6);
+      displayVal = displayVal.slice(0, lengths[lengths.length - 1] - 1).replace(/[0-9]/g, 'X') + displayVal.slice(lengths[lengths.length - 1] - 1);
     }
 
     return displayVal;
-  }, []);
+  }, [format]);
+
+  const [unmaskedVal, setUnmaskedVal] = useState(value ? masking(value, true) : '');
+  const [maskedVal, setMaskedVal] = useState(value ? masking(value, false) : '');
 
   const changeHandler = useCallback((event: any) => {
-    if (format === 'ssn') {
+    if (isFormatted) {
       if (event.nativeEvent.data) {
         setUnmaskedVal(masking(unmaskedVal + event?.nativeEvent.data, true));
         props.dispatchChange(masking(unmaskedVal + event?.nativeEvent.data, true));
@@ -66,7 +78,7 @@ const TextFieldComponent = (props: PROPS) => {
   }, [props.dispatchFocus]);
 
   const handleClickShowPassword = useCallback(() => {
-    if (isSsn) {
+    if (isFormatted) {
       setShowSsn((show) => !show);
     }
     else {
@@ -91,14 +103,14 @@ const TextFieldComponent = (props: PROPS) => {
   }, [showPassword, showSsn]);
 
   const getValue = useCallback(() => {
-    if (isSsn) {
+    if (isFormatted) {
       if (showSsn) {
         return maskedVal;
       }
       return unmaskedVal;
     }
     return value ? value : '';
-  }, [isSsn, showSsn, maskedVal, unmaskedVal, value]);
+  }, [isFormatted, showSsn, maskedVal, unmaskedVal, value]);
 
   const getType = useCallback(() => {
     if (isPassword) {
@@ -120,7 +132,8 @@ const TextFieldComponent = (props: PROPS) => {
       variant={props.layout?.variant}
       disabled={!enabled}
       required={required}
-      fullWidth>
+      fullWidth
+      sx={{ mt: 2 }}>
       {label?.visible ? <InputLabel error={isError} htmlFor={id}>{label.value}</InputLabel> : null}
       <InputVariant
         id={id}
@@ -132,7 +145,7 @@ const TextFieldComponent = (props: PROPS) => {
         onChange={changeHandler} onBlur={blurHandler} onFocus={focusHandler}
         error={isError}
         placeholder={placeholder}
-        endAdornment={isPassword || isSsn ? getPasswordIcon() : null}
+        endAdornment={isPassword || isFormatted ? getPasswordIcon() : null}
         inputProps={{
           readOnly: readOnly,
           maxLength: maxLength,
