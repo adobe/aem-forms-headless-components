@@ -12,7 +12,7 @@ const ButtonComponent = (props: PROPS) => {
   }, [props.dispatchClick]);
 
   return (
-    <Button variant={props.layout?.variant} disabled={!enabled} onClick={clickHandler} id={id} name={name} color={props.layout?.color}>
+    <Button variant={props.layout?.variant} disabled={!enabled} onClick={clickHandler} id={id} name={name} color={props.layout?.color} sx={{ mt: 2 }}>
       {label?.visible ? label.value : ''}
     </Button>
   );
