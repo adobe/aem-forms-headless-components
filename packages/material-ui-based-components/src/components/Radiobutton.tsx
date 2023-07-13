@@ -5,7 +5,7 @@ import { FormControl, FormControlLabel, FormHelperText, FormLabel, Radio, RadioG
 
 const RadioGroupComponent = (props: PROPS) => {
   const {
-    label, required, enumNames, enabled,
+    label, required, enumNames, enabled, value,
     description, name, isError, errorMessage
   } = props;
 
@@ -16,27 +16,26 @@ const RadioGroupComponent = (props: PROPS) => {
     props.dispatchChange(event.target.value);
   }, [props.dispatchChange]);
   return (
-    <div className="Margin">
-      <FormControl disabled={!enabled} required={required}>
-        {label?.visible ? <FormLabel error={isError}> {label.value} </FormLabel> : null}
-        <RadioGroup name={name}
-          onChange={changeHandler}
-          row={props.layout?.orientation === 'horizontal'}
-        >
-          {options.map((text: string, index) => {
-            return (
-              <FormControlLabel
-                key={enums[index]}
-                value={enums[index]}
-                control={<Radio />}
-                label={text}
-              />
-            );
-          })}
-        </RadioGroup>
-        <FormHelperText error={isError} component="span">{isError ? errorMessage : description}</FormHelperText>
-      </FormControl>
-    </div>
+
+    <FormControl disabled={!enabled} required={required} sx={{ mt: 5 }}>
+      {label?.visible ? <FormLabel error={isError}> {label.value} </FormLabel> : null}
+      <RadioGroup name={name} value={value ? value : ''}
+        onChange={changeHandler}
+        row={props.layout?.orientation === 'horizontal'}
+      >
+        {options.map((text: string, index) => {
+          return (
+            <FormControlLabel
+              key={enums[index]}
+              value={enums[index]}
+              control={<Radio />}
+              label={text}
+            />
+          );
+        })}
+      </RadioGroup>
+      <FormHelperText error={isError} component="span">{isError ? errorMessage : description}</FormHelperText>
+    </FormControl>
   );
 
 };
