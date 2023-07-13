@@ -19,7 +19,7 @@ const RatingComponent = (props: PROPS) => {
     }, [props.dispatchFocus]);
 
     return (
-        <Box>
+        <Box sx={{ mt: 2 }}>
             {label?.visible ? <InputLabel error={isError} id={id} required={required}>
                 {label.value}
             </InputLabel> : null}
