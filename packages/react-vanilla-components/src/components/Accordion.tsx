@@ -18,13 +18,12 @@
 //  ******************************************************************************
 
 import React, { useState, useCallback, useContext } from 'react';
-// import {ContainerJson, State} from '@aemforms/af-core';
 import { getRenderer, FormContext } from '@aemforms/af-react-renderer';
-// import {FormContext} from '@aemforms/af-react-renderer';
 import { withRuleEnginePanel } from '../utils/withRuleEngine';
 import { PROPS_PANEL } from '../utils/type';
 
 const Accordion = (props: PROPS_PANEL) => {
+  // @ts-ignore
   const { mappings } = useContext(FormContext);
   const { items, id, label, visible, enabled } = props;
   const [activePanel, setActivePanel] = useState(0);

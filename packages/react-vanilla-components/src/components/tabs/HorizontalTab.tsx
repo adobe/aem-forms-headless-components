@@ -24,6 +24,7 @@ import { withRuleEnginePanel } from '../../utils/withRuleEngine';
 import { PROPS_PANEL } from '../../utils/type';
 
 const HorizontalTab = (props: PROPS_PANEL) => {
+  // @ts-ignore
   const { mappings } = useContext(FormContext);
   const [activetabIndex, setActiveTabIndex] = useState(0);
   const [shortDescription, setShortDescription] = useState(true);

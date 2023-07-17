@@ -24,6 +24,7 @@ import { PROPS_PANEL } from '../utils/type';
 
 const Panel = function (props: PROPS_PANEL) {
   const { id, visible, enabled, label, handlers } = props;
+  // @ts-ignore
   const context = useContext(FormContext);
   const [shortDescription, setShortDescription] = useState(true);
   const [longDescription, setLongtDescription] = useState(false);
