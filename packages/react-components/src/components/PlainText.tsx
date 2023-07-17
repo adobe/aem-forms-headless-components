@@ -18,18 +18,18 @@
 //  ******************************************************************************
 
 import React from 'react';
-import {withRuleEngine, richTextString} from '../utils/withRuleEngine';
+import { withRuleEngine, richTextString } from '../utils/withRuleEngine';
 import { PROPS } from '../utils/type';
 
 const PlainText = (props: PROPS) => {
-   const { value, id, visible } = props; 
-   return (
-      <div className='text base'>
-        <div data-cmp-is='adaptiveFormText' id={id} className='cmp-adaptiveform-text' data-cmp-visible={visible}>
-            {props?.richText ? richTextString(value) : value}
-        </div>
+  const { value, id, visible } = props;
+  return (
+    <div className='text base'>
+      <div data-cmp-is='adaptiveFormText' id={id} className='cmp-adaptiveform-text' data-cmp-visible={visible}>
+        {props?.richText ? richTextString(value) : value}
       </div>
-   );
+    </div>
+  );
 };
 
 export default withRuleEngine(PlainText);

@@ -8,7 +8,7 @@ const field = {
     value: 'text field',
   },
   fieldType: 'text-input',
-  placeholder:'enter text field',
+  placeholder: 'enter text field',
   visible: true,
   required: true,
 };
@@ -20,7 +20,7 @@ describe('Text Field', () => {
     const f = {
       ...field,
     };
-    const {renderResponse, element} = await helper(f);
+    const { renderResponse, element } = await helper(f);
     const input = await renderResponse.findByPlaceholderText(f.placeholder);
     const inputVal = 'abc';
     userEvent.type(input, inputVal);
@@ -53,11 +53,11 @@ describe('Text Field', () => {
       tooltip: 'Short Description',
       description: 'Mandatory'
     };
-     const { renderResponse } = await helper(f);
-     expect(renderResponse.getByText('Short Description')).not.toBeNull();
-     const button = renderResponse.container.getElementsByClassName('cmp-adaptiveform-textinput__questionmark');
-     userEvent.click(button[0]);
-     expect(renderResponse.getByText('Mandatory')).not.toBeNull();
+    const { renderResponse } = await helper(f);
+    expect(renderResponse.getByText('Short Description')).not.toBeNull();
+    const button = renderResponse.container.getElementsByClassName('cmp-adaptiveform-textinput__questionmark');
+    userEvent.click(button[0]);
+    expect(renderResponse.getByText('Mandatory')).not.toBeNull();
   });
 
   test('it should handle maxlength constraint', async () => {
@@ -66,7 +66,7 @@ describe('Text Field', () => {
       maxLength: 5,
       errorMessage: DEFAULT_ERROR_MESSAGE
     };
-    let {renderResponse, element} = await helper(f);
+    let { renderResponse, element } = await helper(f);
     const input = await renderResponse.findByPlaceholderText(f.placeholder);
     userEvent.type(input, 'aaaaaaaaaaaa');
     expect(element.getState().value).toEqual('aaaaa');
@@ -79,7 +79,7 @@ describe('Text Field', () => {
       minLength: 5,
       errorMessage: DEFAULT_ERROR_MESSAGE
     };
-    let {renderResponse, element} = await helper(f);
+    let { renderResponse, element } = await helper(f);
     const input = await renderResponse.findByPlaceholderText(f.placeholder);
     userEvent.type(input, 'aa');
     expect(element.getState().value).toEqual('aa');
@@ -87,20 +87,20 @@ describe('Text Field', () => {
   });
 
   test('html in the label should be handled for non rich text', async () => {
-    const f =  {
+    const f = {
       ...field,
       label: {
-          value: '<p>title inside p tags</p>',
-          richText: true,
-          visible: true
+        value: '<p>title inside p tags</p>',
+        richText: true,
+        visible: true
       }
-  }
-   let {renderResponse} = await helper(f);
-   expect(renderResponse.container.innerHTML).toContain( '<p>title inside p tags</p>');  
+    }
+    let { renderResponse } = await helper(f);
+    expect(renderResponse.container.innerHTML).toContain('<p>title inside p tags</p>');
   });
 
   test('labels and inputs are linked with for and id attribute', async () => {
-    let {renderResponse} = await helper(field);
+    let { renderResponse } = await helper(field);
     const input = await renderResponse.findByPlaceholderText(field.placeholder);
     const label = await renderResponse.queryByText(field.label.value);
     expect(input?.getAttribute('id')).toEqual(label?.getAttribute('for'));
@@ -108,19 +108,19 @@ describe('Text Field', () => {
 
   test('it should show edit value for date fields on focus', async () => {
     let f = {
-        ...field,
-        format: 'date',
-        fieldType : 'date-input',
-        type : 'string',
+      ...field,
+      format: 'date',
+      fieldType: 'date-input',
+      type: 'string',
     };
-    let {renderResponse, element} = await helper(f);
+    let { renderResponse, element } = await helper(f);
     const input = await renderResponse.findByPlaceholderText(field.placeholder);
     const inputVal = '09/12/2022';
     userEvent.type(input, inputVal);
     const state = element.getState();
     input?.blur();
     expect(state?.value).toEqual(inputVal);
-});
+  });
 });
 
 

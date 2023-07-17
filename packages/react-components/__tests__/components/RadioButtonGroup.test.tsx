@@ -57,31 +57,31 @@ describe('radio Group', () => {
     expect(renderResponse.queryByText(f.enumNames[1])).toBeNull();
     expect(renderResponse.queryByText(f.enumNames[2])).toBeNull();
   });
-  
+
   test('In case of both tooltip and description, tooltip should be visible and onclick of toggle button, description should be visible', async () => {
     const f = {
       ...field,
       tooltip: 'Short Description',
       description: 'Mandatory'
     };
-     const helper = renderComponent(RadioButtonGroup);
-     const { renderResponse } = await helper(f);
-     expect(renderResponse.getByText('Short Description')).not.toBeNull();
-     const button = renderResponse.container.getElementsByClassName('cmp-adaptiveform-radiobutton__questionmark');
-     userEvent.click(button[0]);
-     expect(renderResponse.getByText('Mandatory')).not.toBeNull();
+    const helper = renderComponent(RadioButtonGroup);
+    const { renderResponse } = await helper(f);
+    expect(renderResponse.getByText('Short Description')).not.toBeNull();
+    const button = renderResponse.container.getElementsByClassName('cmp-adaptiveform-radiobutton__questionmark');
+    userEvent.click(button[0]);
+    expect(renderResponse.getByText('Mandatory')).not.toBeNull();
   });
 
   test('html in the label should be handled for non rich text', async () => {
-    const f =  {
+    const f = {
       ...field,
       label: {
-          value: '<p>title inside p tags</p>',
-          richText: true,
-          visible: true
+        value: '<p>title inside p tags</p>',
+        richText: true,
+        visible: true
       }
-  }
-   let {renderResponse} = await helper(f);
-   expect(renderResponse.container.innerHTML).toContain( '<p>title inside p tags</p>');  
+    }
+    let { renderResponse } = await helper(f);
+    expect(renderResponse.container.innerHTML).toContain('<p>title inside p tags</p>');
   });
 });

@@ -15,7 +15,7 @@
 //  ******************************************************************************
 
 import { FieldsetJson } from '@aemforms/af-core';
-import React, {useContext} from 'react';
+import React, { useContext } from 'react';
 import { State } from '@aemforms/af-core';
 import { useRuleEngine, renderChildren, FormContext } from '@aemforms/af-react-renderer';
 
@@ -26,7 +26,7 @@ const Form = function (fieldset: State<FieldsetJson>) {
 
   return (
     <form>
-      {props?.label?.value ?<h2>{props.label.value}</h2> : null}
+      {props?.label?.value ? <h2>{props.label.value}</h2> : null}
       {renderChildren(props, context.mappings, context.modelId, handlers)}
     </form>
   );
