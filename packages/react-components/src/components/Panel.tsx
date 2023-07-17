@@ -18,7 +18,7 @@
 //  ******************************************************************************
 
 import React, { useContext, useState } from 'react';
-import {withRuleEnginePanel} from '../utils/withRuleEngine';
+import { withRuleEnginePanel } from '../utils/withRuleEngine';
 import { renderChildren, FormContext } from '@aemforms/af-react-renderer';
 import { PROPS_PANEL } from '../utils/type';
 
@@ -32,17 +32,17 @@ const Panel = function (props: PROPS_PANEL) {
     setShortDescription(!shortDescription);
     setLongtDescription(!longDescription);
   };
-    return (
-      <div id={id} data-cmp-visible={visible} data-cmp-enabled={enabled} data-cmp-is="adaptiveFormPanel">
-        {label?.visible && <label htmlFor={id} className="cmp-container__label">{label?.value}</label>}
-        {props?.description && <button className="cmp-container__questionmark" aria-label='Toggle Button' onClick={handleClick}></button>} 
-         {shortDescription && props?.tooltip && <div title='Help Text' data-cmp-visible={shortDescription} className='cmp-container__shortdescription'>{props?.tooltip}</div>}
-         <div aria-live="polite">
-            {longDescription && props?.description  && <div title='Help Text' data-cmp-visible={longDescription} className="cmp-container__longdescription">{props?.description}</div>}
-         </div>
-        {renderChildren(props, context.mappings, context.modelId, handlers)}
+  return (
+    <div id={id} data-cmp-visible={visible} data-cmp-enabled={enabled} data-cmp-is="adaptiveFormPanel">
+      {label?.visible && <label htmlFor={id} className="cmp-container__label">{label?.value}</label>}
+      {props?.description && <button className="cmp-container__questionmark" aria-label='Toggle Button' onClick={handleClick}></button>}
+      {shortDescription && props?.tooltip && <div title='Help Text' data-cmp-visible={shortDescription} className='cmp-container__shortdescription'>{props?.tooltip}</div>}
+      <div aria-live="polite">
+        {longDescription && props?.description && <div title='Help Text' data-cmp-visible={longDescription} className="cmp-container__longdescription">{props?.description}</div>}
       </div>
-    );
+      {renderChildren(props, context.mappings, context.modelId, handlers)}
+    </div>
+  );
 };
 
 export default withRuleEnginePanel(Panel);

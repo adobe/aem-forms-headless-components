@@ -18,45 +18,45 @@
 //  ******************************************************************************
 
 import React, { useState } from 'react';
-import {withRuleEngine} from '../utils/withRuleEngine';
+import { withRuleEngine } from '../utils/withRuleEngine';
 import { PROPS } from '../utils/type';
 
 const NumberField = (props: PROPS) => {
-   const { id, label, value, required, placeholder, name, maximum, minimum, description, errorMessage, isError, readOnly, visible, enabled } = props;
+  const { id, label, value, required, placeholder, name, maximum, minimum, description, errorMessage, isError, readOnly, visible, enabled } = props;
 
-   const [shortDescription, setShortDescription] = useState(true);
-   const [longDescription, setLongtDescription] = useState(false);
+  const [shortDescription, setShortDescription] = useState(true);
+  const [longDescription, setLongtDescription] = useState(false);
 
-   const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-      event.preventDefault();
-      setShortDescription(!shortDescription);
-      setLongtDescription(!longDescription);
-   };
-  
-   const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-      props.dispatchChange(event.target.value);
-   };
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    event.preventDefault();
+    setShortDescription(!shortDescription);
+    setLongtDescription(!longDescription);
+  };
 
-   const handleBlur = (event:React.ChangeEvent<HTMLInputElement>) => {
-      props.dispatchBlur(event.target.value);
-    };
+  const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    props.dispatchChange(event.target.value);
+  };
 
-   const handleFocus = () => {
-      props.dispatchFocus();
-   };
+  const handleBlur = (event: React.ChangeEvent<HTMLInputElement>) => {
+    props.dispatchBlur(event.target.value);
+  };
 
-   return (
-      <div className="cmp-adaptiveform-numberinput" data-cmp-is="adaptiveFormNumberInput" data-cmp-visible={visible} data-cmp-enabled={enabled}>
-        <div>{label?.visible && <label htmlFor={`${id}-widget`}>{label?.value}</label>}</div>
-        <div>{description && <button className="cmp-adaptiveform-numberinput__questionmark" aria-label='Toggle Button' onClick={handleClick}></button>}</div>
-        <input id={`${id}-widget`} type='number' className={value ? 'cmp-adaptiveform-numberinput__widget cmp-adaptiveform-numberinput__widget--filled' : 'cmp-adaptiveform-numberinput__widget cmp-adaptiveform-numberinput__widget--empty'} value={value} onChange={changeHandler} required={required} placeholder={placeholder} name={name} min={minimum} max={maximum} readOnly={readOnly} onFocus={handleFocus} onBlur={handleBlur}/>
-         {shortDescription && props?.tooltip && <div title='Help Text' data-cmp-visible={shortDescription} className='cmp-adaptiveform-numberinput__shortdescription'>{props?.tooltip}</div>}
-         <div aria-live="polite">
-             {longDescription && description && !errorMessage ? <div title='Help Text' data-cmp-visible={longDescription} className="cmp-adaptiveform-numberinput__longdescription">{description}</div> : null} 
-         </div>
-        {isError ? <div className="cmp-adaptiveform-numberinput__errormessage">{errorMessage}</div> : null}
+  const handleFocus = () => {
+    props.dispatchFocus();
+  };
+
+  return (
+    <div className="cmp-adaptiveform-numberinput" data-cmp-is="adaptiveFormNumberInput" data-cmp-visible={visible} data-cmp-enabled={enabled}>
+      <div>{label?.visible && <label htmlFor={`${id}-widget`}>{label?.value}</label>}</div>
+      <div>{description && <button className="cmp-adaptiveform-numberinput__questionmark" aria-label='Toggle Button' onClick={handleClick}></button>}</div>
+      <input id={`${id}-widget`} type='number' className={value ? 'cmp-adaptiveform-numberinput__widget cmp-adaptiveform-numberinput__widget--filled' : 'cmp-adaptiveform-numberinput__widget cmp-adaptiveform-numberinput__widget--empty'} value={value} onChange={changeHandler} required={required} placeholder={placeholder} name={name} min={minimum} max={maximum} readOnly={readOnly} onFocus={handleFocus} onBlur={handleBlur} />
+      {shortDescription && props?.tooltip && <div title='Help Text' data-cmp-visible={shortDescription} className='cmp-adaptiveform-numberinput__shortdescription'>{props?.tooltip}</div>}
+      <div aria-live="polite">
+        {longDescription && description && !errorMessage ? <div title='Help Text' data-cmp-visible={longDescription} className="cmp-adaptiveform-numberinput__longdescription">{description}</div> : null}
       </div>
-   ); 
+      {isError ? <div className="cmp-adaptiveform-numberinput__errormessage">{errorMessage}</div> : null}
+    </div>
+  );
 };
 
 export default withRuleEngine(NumberField);

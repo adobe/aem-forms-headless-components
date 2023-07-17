@@ -18,53 +18,53 @@
 //  ******************************************************************************
 
 import React, { useState } from 'react';
-import {withRuleEngine} from '../utils/withRuleEngine';
+import { withRuleEngine } from '../utils/withRuleEngine';
 import { PROPS } from '../utils/type';
 
 const DateInput = (props: PROPS) => {
-    const { id, label, value, errorMessage, isError, description, required, name, readOnly, placeholder, visible, enabled } = props;
+  const { id, label, value, errorMessage, isError, description, required, name, readOnly, placeholder, visible, enabled } = props;
 
-    const [shortDescription, setShortDescription] = useState(true);
-    const [longDescription, setLongDescription] = useState(false);
+  const [shortDescription, setShortDescription] = useState(true);
+  const [longDescription, setLongDescription] = useState(false);
 
-    const finalValue = value === undefined ? '' : value;
-    
-    const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const val = e.target.value;
-        props.dispatchChange(val);
-    };
+  const finalValue = value === undefined ? '' : value;
 
-    const handleFocus = () => {
-        props.dispatchFocus();
-      };
+  const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = e.target.value;
+    props.dispatchChange(val);
+  };
 
-    const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-        event.preventDefault();
-        setShortDescription(!shortDescription);
-        setLongDescription(!longDescription);
-     };
+  const handleFocus = () => {
+    props.dispatchFocus();
+  };
 
-     const handleBlur = () => {
-        //throw 'Blur';
-        props.dispatchBlur();
-      }; 
-     
-    return (
-        <div className="cmp-adaptiveform-datepicker" data-cmp-is="adaptiveFormDatePicker" data-cmp-visible={visible} data-cmp-enabled={enabled}>
-           <div>
-            {label?.visible && <label id={`${id}-label`} htmlFor={id} className="cmp-adaptiveform-datepicker__label">{label?.value}</label>}
-            </div>
-            <div>
-            {description && <button className="cmp-adaptiveform-datepicker__questionmark" aria-label='Toggle Button'  onClick={handleClick}></button>}
-            </div>
-           <input type='date' id={`${id}-datePicker`} value={finalValue} name={name} required={required} onChange={changeHandler} className={value?'cmp-adaptiveform-datepicker__widget cmp-adaptiveform-datepicker__widget--filled' : 'cmp-adaptiveform-datepicker__widget cmp-adaptiveform-datepicker__widget--empty'} aria-label={label?.value} readOnly={readOnly} placeholder={placeholder} onFocus={handleFocus} onBlur={handleBlur}/>
-           {shortDescription && props?.tooltip && <div title='Help Text' className="cmp-adaptiveform-datepicker__shortdescription" data-cmp-visible={shortDescription}>{props?.tooltip}</div>}
-           <div aria-live="polite">
-                 {description && longDescription  && !errorMessage ? <div title='Help Text' data-cmp-visible={longDescription} className="cmp-adaptiveform-datePicker__longdescription">{description}</div> : null}
-              </div>
-               {isError ? <div className="cmp-adaptiveform-datePicker__errormessage">{errorMessage}</div> : null}
-        </div>
-    );
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    event.preventDefault();
+    setShortDescription(!shortDescription);
+    setLongDescription(!longDescription);
+  };
+
+  const handleBlur = () => {
+    //throw 'Blur';
+    props.dispatchBlur();
+  };
+
+  return (
+    <div className="cmp-adaptiveform-datepicker" data-cmp-is="adaptiveFormDatePicker" data-cmp-visible={visible} data-cmp-enabled={enabled}>
+      <div>
+        {label?.visible && <label id={`${id}-label`} htmlFor={id} className="cmp-adaptiveform-datepicker__label">{label?.value}</label>}
+      </div>
+      <div>
+        {description && <button className="cmp-adaptiveform-datepicker__questionmark" aria-label='Toggle Button' onClick={handleClick}></button>}
+      </div>
+      <input type='date' id={`${id}-datePicker`} value={finalValue} name={name} required={required} onChange={changeHandler} className={value ? 'cmp-adaptiveform-datepicker__widget cmp-adaptiveform-datepicker__widget--filled' : 'cmp-adaptiveform-datepicker__widget cmp-adaptiveform-datepicker__widget--empty'} aria-label={label?.value} readOnly={readOnly} placeholder={placeholder} onFocus={handleFocus} onBlur={handleBlur} />
+      {shortDescription && props?.tooltip && <div title='Help Text' className="cmp-adaptiveform-datepicker__shortdescription" data-cmp-visible={shortDescription}>{props?.tooltip}</div>}
+      <div aria-live="polite">
+        {description && longDescription && !errorMessage ? <div title='Help Text' data-cmp-visible={longDescription} className="cmp-adaptiveform-datePicker__longdescription">{description}</div> : null}
+      </div>
+      {isError ? <div className="cmp-adaptiveform-datePicker__errormessage">{errorMessage}</div> : null}
+    </div>
+  );
 };
 
 export default withRuleEngine(DateInput);

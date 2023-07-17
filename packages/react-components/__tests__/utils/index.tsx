@@ -9,7 +9,7 @@ export type FieldExpectType = (l: HTMLLabelElement | null, i: HTMLInputElement |
 
 export const createForm = (field: any) => {
   const formJson = {
-      items: [field]
+    items: [field]
   };
   return createFormInstance(formJson);
 };
@@ -21,21 +21,21 @@ export const Provider =
     locale: string = "en-US",
     dictionaries: any = ""
   ) =>
-  (props: any) => {
-    const c = {
-      form,
-      mappings,
-      modelId: "$form",
-      refMap: {},
+    (props: any) => {
+      const c = {
+        form,
+        mappings,
+        modelId: "$form",
+        refMap: {},
+      };
+      const { children } = props;
+      return (
+        /* @ts-ignore */
+        <IntlProvider locale={locale} messages={dictionaries}>
+          <FormContext.Provider value={c}>{children}</FormContext.Provider>
+        </IntlProvider>
+      );
     };
-    const { children } = props;
-    return (
-      /* @ts-ignore */
-      <IntlProvider locale={locale} messages={dictionaries}>
-        <FormContext.Provider value={c}>{children}</FormContext.Provider>
-      </IntlProvider>
-    );
-  };
 
 export const renderComponent = function <T>(Component: JSXElementConstructor<any>) {
   const test = (field: any, operation?: any) => {

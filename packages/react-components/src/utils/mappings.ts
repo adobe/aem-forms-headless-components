@@ -50,8 +50,8 @@ const mappings = {
   'custom:horizontal-tab': HorizontalTab,
   'custom:vertical-tab': VerticalTab,
   'plain-text': PlainText,
-   panel: Panel,
-   form: Form
+  panel: Panel,
+  form: Form
 };
 
 export default mappings;

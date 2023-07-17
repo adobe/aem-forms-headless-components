@@ -15,7 +15,7 @@ describe('Plain Text', () => {
     const f = {
       ...field,
     };
-    const { renderResponse} = helper(f);
+    const { renderResponse } = helper(f);
     const form = renderResponse.getByText(field.value);
     expect(form).toBeTruthy();
   });
@@ -25,7 +25,7 @@ describe('Plain Text', () => {
       ...field,
       value: null
     };
-    const { renderResponse} = helper(f);
+    const { renderResponse } = helper(f);
     const form = renderResponse.queryByText(field.value);
     expect(form).toBeNull();
   });

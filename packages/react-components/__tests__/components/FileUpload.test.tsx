@@ -220,28 +220,28 @@ describe("File Upload", () => {
 
   test("required attribute properly set for required field", async () => {
     const f = {
-        ...fieldWithValueAndMaxFileSize,
-        required : true
+      ...fieldWithValueAndMaxFileSize,
+      required: true
     };
     const { renderResponse } = helper(f);
     expect(renderResponse.container.getAttribute('required')).toEqual(null);
   });
 
   test('html in the label should be handled for non rich text', async () => {
-    const f =  {
+    const f = {
       ...field,
       label: {
-          value: '<p>title inside p tags</p>',
-          richText: true,
-          visible: true
+        value: '<p>title inside p tags</p>',
+        richText: true,
+        visible: true
       }
-  }
-   let {renderResponse} = await helper(f);
-   expect(renderResponse.container.innerHTML).toContain( '<p>title inside p tags</p>');  
+    }
+    let { renderResponse } = await helper(f);
+    expect(renderResponse.container.innerHTML).toContain('<p>title inside p tags</p>');
   });
-  
+
   test('labels and inputs are linked with for and id attribute', async () => {
-    let {renderResponse} = await helper(field);
+    let { renderResponse } = await helper(field);
     const input = await renderResponse.container.getElementsByClassName('cmp-adaptiveform-fileinput__widget');
     const label = await renderResponse.queryByText(field.label.value);
     expect(input[0]?.getAttribute('id')).toEqual(label?.getAttribute('for'));

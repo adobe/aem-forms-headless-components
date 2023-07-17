@@ -19,48 +19,48 @@
 //  ******************************************************************************
 
 import React, { useState } from 'react';
-import {withRuleEngine} from '../utils/withRuleEngine';
+import { withRuleEngine } from '../utils/withRuleEngine';
 import { PROPS } from '../utils/type';
 
 
 const TextFieldArea = (props: PROPS) => {
-   const { id, label, name, value, required, readOnly,  isError, errorMessage, description, minLength, maxLength, visible, enabled, placeholder } = props;
+  const { id, label, name, value, required, readOnly, isError, errorMessage, description, minLength, maxLength, visible, enabled, placeholder } = props;
 
-   const [shortDescription, setShortDescription] = useState(true);
-   const [longDescription, setLongtDescription] = useState(false);
+  const [shortDescription, setShortDescription] = useState(true);
+  const [longDescription, setLongtDescription] = useState(false);
 
-   const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-      event.preventDefault();  
-      setShortDescription(!shortDescription);
-      setLongtDescription(!longDescription);
-   };
-  
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    event.preventDefault();
+    setShortDescription(!shortDescription);
+    setLongtDescription(!longDescription);
+  };
 
-   const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-      const enteredValue = event?.target?.value;
-      props.dispatchChange(enteredValue);
-   };
 
-   const handleFocus = () => {
-      props.dispatchFocus();
-   };
+  const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const enteredValue = event?.target?.value;
+    props.dispatchChange(enteredValue);
+  };
 
-   const handleBlur = (event:React.ChangeEvent<HTMLTextAreaElement>) => {
-      props.dispatchBlur(event.target.value);
-    };
+  const handleFocus = () => {
+    props.dispatchFocus();
+  };
 
-   return (
-      <div className="cmp-adaptiveform-textinput" data-cmp-is="adaptiveFormTextInput"  data-cmp-visible={visible} data-cmp-enabled={enabled}>
-        {label?.visible && <label className="cmp-adaptiveform-textinput__label" htmlFor={`${id}-widget`}>{label?.value}</label>}
-        <textarea id={`${id}-widget`} className={value ? 'cmp-adaptiveform-textinput__widget cmp-adaptiveform-textinput__widget--filled' : 'cmp-adaptiveform-textinput__widget cmp-adaptiveform-textinput__widget--empty'} name={name} onChange={handleChange} value={value} required={required} readOnly={readOnly} minLength={minLength} maxLength={maxLength} onFocus={handleFocus} placeholder={placeholder} onBlur={handleBlur} />
-        {description && <button aria-label='Toggle Button' className="cmp-adaptiveform-textinput__questionmark" onClick={handleClick}></button>}  
-        {shortDescription && props?.tooltip && <div title='Help Text' data-cmp-visible={shortDescription} className='cmp-adaptiveform-textinput__shortdescription'>{props?.tooltip}</div>}
-         <div aria-live="polite">
-           {longDescription && description && !errorMessage ? <div title='Help Text' data-cmp-visible={longDescription} className="cmp-adaptiveform-textinput__longdescription">{description}</div> : null}
-          </div>
-        {isError ? <div className="cmp-adaptiveform-textinput__errormessage">{errorMessage}</div> : null}
+  const handleBlur = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    props.dispatchBlur(event.target.value);
+  };
+
+  return (
+    <div className="cmp-adaptiveform-textinput" data-cmp-is="adaptiveFormTextInput" data-cmp-visible={visible} data-cmp-enabled={enabled}>
+      {label?.visible && <label className="cmp-adaptiveform-textinput__label" htmlFor={`${id}-widget`}>{label?.value}</label>}
+      <textarea id={`${id}-widget`} className={value ? 'cmp-adaptiveform-textinput__widget cmp-adaptiveform-textinput__widget--filled' : 'cmp-adaptiveform-textinput__widget cmp-adaptiveform-textinput__widget--empty'} name={name} onChange={handleChange} value={value} required={required} readOnly={readOnly} minLength={minLength} maxLength={maxLength} onFocus={handleFocus} placeholder={placeholder} onBlur={handleBlur} />
+      {description && <button aria-label='Toggle Button' className="cmp-adaptiveform-textinput__questionmark" onClick={handleClick}></button>}
+      {shortDescription && props?.tooltip && <div title='Help Text' data-cmp-visible={shortDescription} className='cmp-adaptiveform-textinput__shortdescription'>{props?.tooltip}</div>}
+      <div aria-live="polite">
+        {longDescription && description && !errorMessage ? <div title='Help Text' data-cmp-visible={longDescription} className="cmp-adaptiveform-textinput__longdescription">{description}</div> : null}
       </div>
-   );
+      {isError ? <div className="cmp-adaptiveform-textinput__errormessage">{errorMessage}</div> : null}
+    </div>
+  );
 };
 
 export default withRuleEngine(TextFieldArea);
