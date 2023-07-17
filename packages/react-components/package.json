@@ -1,5 +1,5 @@
 {
-  "name": "@aemforms/af-react-html-components",
+  "name": "@aemforms/af-react-vanilla-components",
   "version": "1.0.0",
   "description": "HTML5 based React Components for Headless Forms",
   "author": "Adobe Systems",
@@ -26,20 +26,26 @@
   },
   "scripts": {
     "clean": "rm -rf lib target",
-    "eslint": "npx eslint src/**/*.ts*",
+    "eslint": "npx eslint src/**/*.ts* --fix",
     "build": "npm run clean && npm run eslint && npx tsc",
     "test:ci": "jest --silent --coverage",
     "prepublishOnly": "npm run build && npm run test",
     "test": "jest --silent"
   },
   "dependencies": {
-    "@aemforms/af-core": "^0.22.32",
-    "@aemforms/af-react-renderer": "^0.22.32",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-intl": "^6.2.10"
+    "@adobe/json-formula": "0.1.44",
+    "@aemforms/af-canvas-theme": "^1.0.0",
+    "@aemforms/af-core": "^0.22.52",
+    "@aemforms/af-formatters": "^0.22.45",
+    "@aemforms/af-react-renderer": "^0.22.52",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-intl": "^5.8.4",
+    "sanitize-html": "^2.10.0"
   },
   "devDependencies": {
+    "@babel/preset-env": "^7.21.5",
+    "@babel/preset-typescript": "^7.21.5",
     "@testing-library/dom": "^8.1.0",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^12.0.0",
@@ -62,7 +68,7 @@
     "jest-junit": "^12.2.0",
     "react-syntax-highlighter": "^15.4.5",
     "react-test-renderer": "^17.0.2",
-    "ts-jest": "^27.1.4",
+    "ts-jest": "^27.1.5",
     "typescript": "^4.3.5"
   }
 }
