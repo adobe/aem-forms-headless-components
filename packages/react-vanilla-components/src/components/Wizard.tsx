@@ -24,6 +24,7 @@ import { withRuleEnginePanel } from '../utils/withRuleEngine';
 import { PROPS_PANEL } from '../utils/type';
 
 const Wizard = (props: PROPS_PANEL) => {
+  // @ts-ignore
   const { mappings } = useContext(FormContext);
   const { items, label, id, visible, enabled } = props;
   const [activeButtonIndex, setActiveButtonIndex] = useState(0);
