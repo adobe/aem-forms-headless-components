@@ -18,18 +18,18 @@
 //  ******************************************************************************
 
 import React from 'react';
-import {withRuleEngine} from '../utils/withRuleEngine';
+import { withRuleEngine } from '../utils/withRuleEngine';
 import { PROPS } from '../utils/type';
 
 const Button = (props: PROPS) => {
-   const { label, enabled } = props;
-   return (
+  const { label, enabled } = props;
+  return (
     <div className="cmp-adaptiveform-button" >
-       <button className="cmp-adaptiveform-button__widget" aria-label={label?.visible === false ? label?.value : ''} disabled={!enabled} onClick={props.dispatchClick()}>
-          {label?.visible && <span className="cmp-adaptiveform-button__text">{label.value}</span>}
-       </button>
+      <button className="cmp-adaptiveform-button__widget" aria-label={label?.visible === false ? label?.value : ''} disabled={!enabled} onClick={props.dispatchClick()}>
+        {label?.visible && <span className="cmp-adaptiveform-button__text">{label.value}</span>}
+      </button>
     </div>
-   );
+  );
 };
 
 export default withRuleEngine(Button);

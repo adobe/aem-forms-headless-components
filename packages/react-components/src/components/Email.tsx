@@ -18,21 +18,21 @@
 //  ******************************************************************************
 
 import React, { useState } from 'react';
-import {withRuleEngine} from '../utils/withRuleEngine';
+import { withRuleEngine } from '../utils/withRuleEngine';
 import { PROPS } from '../utils/type';
 
 const Email = (props: PROPS) => {
-  const {id, value, label, description, valid, errorMessage, enabled, visible, name, placeholder, isError} = props;
+  const { id, value, label, description, valid, errorMessage, enabled, visible, name, placeholder, isError } = props;
 
   const [shortDescription, setShortDescription] = useState(true);
   const [longDescription, setLongtDescription] = useState(false);
 
-  const handleChange = (event:React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const thisVal = event.target.value;
     props.dispatchChange(thisVal);
   };
 
-  const handleBlur = (event:React.ChangeEvent<HTMLInputElement>) => {
+  const handleBlur = (event: React.ChangeEvent<HTMLInputElement>) => {
     props.dispatchBlur(event.target.value);
   };
 
@@ -41,34 +41,34 @@ const Email = (props: PROPS) => {
   };
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-     event.preventDefault();
-     setShortDescription(!shortDescription);
-     setLongtDescription(!longDescription);
+    event.preventDefault();
+    setShortDescription(!shortDescription);
+    setLongtDescription(!longDescription);
   };
 
-    return (
-          <div className="cmp-adaptiveform-emailinput" data-cmp-enabled={enabled} data-cmp-visible={visible} id={id} data-cmp-is="adaptiveFormEmailInput" data-cmp-valid={valid}>
-            {label?.visible && <label className="cmp-adaptiveform-emailinput__label" htmlFor={`${id}-widget`}>{label?.value}</label>}
-            <input 
-                type="email" 
-                id={`${id}-widget`}
-                className= {value ? 'cmp-adaptiveform-emailinput__widget cmp-adaptiveform-emailinput__widget--filled' : 'cmp-adaptiveform-emailinput__widget cmp-adaptiveform-emailinput__widget--empty'}
-                value={value} 
-                onChange={handleChange} 
-                onBlur={handleBlur} 
-                onFocus={handleFocus}
-                autoComplete='on'
-                name={name}
-                placeholder={placeholder}
-               />
-               {description && <button aria-label='Toggle Button' className="cmp-adaptiveform-emailinput__questionmark" onClick={handleClick}></button>}   
-               {shortDescription && props?.tooltip && <div title='Help Text' className="cmp-adaptiveform-emailinput__shortdescription" data-cmp-visible={shortDescription}>{props?.tooltip}</div>}
-               <div aria-live="polite">
-                  {longDescription && description && !errorMessage ? <div title='Help Text' className="cmp-adaptiveform-emailinput__longdescription" data-cmp-visible={longDescription}>{description}</div> : null}
-               </div>
-               {isError ? <div className="cmp-adaptiveform-emailinput__errormessage">{errorMessage}</div> : null}
-            </div>
-    ); 
+  return (
+    <div className="cmp-adaptiveform-emailinput" data-cmp-enabled={enabled} data-cmp-visible={visible} id={id} data-cmp-is="adaptiveFormEmailInput" data-cmp-valid={valid}>
+      {label?.visible && <label className="cmp-adaptiveform-emailinput__label" htmlFor={`${id}-widget`}>{label?.value}</label>}
+      <input
+        type="email"
+        id={`${id}-widget`}
+        className={value ? 'cmp-adaptiveform-emailinput__widget cmp-adaptiveform-emailinput__widget--filled' : 'cmp-adaptiveform-emailinput__widget cmp-adaptiveform-emailinput__widget--empty'}
+        value={value}
+        onChange={handleChange}
+        onBlur={handleBlur}
+        onFocus={handleFocus}
+        autoComplete='on'
+        name={name}
+        placeholder={placeholder}
+      />
+      {description && <button aria-label='Toggle Button' className="cmp-adaptiveform-emailinput__questionmark" onClick={handleClick}></button>}
+      {shortDescription && props?.tooltip && <div title='Help Text' className="cmp-adaptiveform-emailinput__shortdescription" data-cmp-visible={shortDescription}>{props?.tooltip}</div>}
+      <div aria-live="polite">
+        {longDescription && description && !errorMessage ? <div title='Help Text' className="cmp-adaptiveform-emailinput__longdescription" data-cmp-visible={longDescription}>{description}</div> : null}
+      </div>
+      {isError ? <div className="cmp-adaptiveform-emailinput__errormessage">{errorMessage}</div> : null}
+    </div>
+  );
 };
 
 export default withRuleEngine(Email);

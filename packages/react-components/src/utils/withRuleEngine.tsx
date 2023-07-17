@@ -51,7 +51,7 @@ const getLocalizePlaceholder = (i18n: any, state: FieldViewState) => {
 };
 
 const getToolTip = (state: FieldViewState) => {
-   return state.tooltip ? richTextString(state.tooltip) : null;  
+  return state.tooltip ? richTextString(state.tooltip) : null;
 };
 export function withRuleEngine(Component: JSXElementConstructor<any>) {
   return function WrappedComponent(fieldset: State<FieldJson>) {
@@ -71,7 +71,7 @@ export function withRuleEngine(Component: JSXElementConstructor<any>) {
       errorMessage: formateErrorMessage(state),
       layout: {
         orientation: 'horizontal',
-        ...(getOrElse(state, ['properties',  'afs:layout'], {}))
+        ...(getOrElse(state, ['properties', 'afs:layout'], {}))
       }
     };
     const visible = typeof state.visible === 'undefined' || state.visible;
@@ -81,21 +81,21 @@ export function withRuleEngine(Component: JSXElementConstructor<any>) {
 }
 
 export function withRuleEnginePanel(Component: JSXElementConstructor<any>) {
-    return function WrappedComponent(fieldset: State<FieldsetJson>) {
-      const [state, handlers] = useRuleEngine(fieldset);
-      const i18n = useFormIntl();
-      const localizeState = {
-        ...state,
-        label: {
-          ...state?.label,
-          value: getLocalizeLabel(i18n, state, state?.label?.richText),
-          visible: state.label?.visible !== false
-        },
-        description: getLocalizeDescription(i18n, state),
-        tooltip: getToolTip(state)
-      };
-      const visible = typeof state.visible === 'undefined' || state.visible;
-      // @ts-ignore
-      return visible ? <Component {...localizeState} handlers={handlers} /> : null;
+  return function WrappedComponent(fieldset: State<FieldsetJson>) {
+    const [state, handlers] = useRuleEngine(fieldset);
+    const i18n = useFormIntl();
+    const localizeState = {
+      ...state,
+      label: {
+        ...state?.label,
+        value: getLocalizeLabel(i18n, state, state?.label?.richText),
+        visible: state.label?.visible !== false
+      },
+      description: getLocalizeDescription(i18n, state),
+      tooltip: getToolTip(state)
     };
-  }
+    const visible = typeof state.visible === 'undefined' || state.visible;
+    // @ts-ignore
+    return visible ? <Component {...localizeState} handlers={handlers} /> : null;
+  };
+}

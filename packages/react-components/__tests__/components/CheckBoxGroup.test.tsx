@@ -44,11 +44,11 @@ describe('Checkbox Group', () => {
     expect(element.value).toEqual([1, 2]);
 
     userEvent.click(renderResponse.getByText(f.enumNames[2]));
-    expect(element.value).toEqual([1,2,3]);
+    expect(element.value).toEqual([1, 2, 3]);
 
 
     userEvent.click(renderResponse.getByText(f.enumNames[1]));
-    expect(element.value).toEqual([1,3]);
+    expect(element.value).toEqual([1, 3]);
   });
 
   test('it should handle visible property', async () => {
@@ -68,23 +68,23 @@ describe('Checkbox Group', () => {
       tooltip: 'Short Description',
       description: 'Mandatory'
     };
-     const { renderResponse } = await helper(f);
-     expect(renderResponse.getByText('Short Description')).not.toBeNull();
-     const button = renderResponse.container.getElementsByClassName('cmp-adaptiveform-checkboxgroup__questionmark');
-     userEvent.click(button[0]);
-     expect(renderResponse.getByText('Mandatory')).not.toBeNull();
+    const { renderResponse } = await helper(f);
+    expect(renderResponse.getByText('Short Description')).not.toBeNull();
+    const button = renderResponse.container.getElementsByClassName('cmp-adaptiveform-checkboxgroup__questionmark');
+    userEvent.click(button[0]);
+    expect(renderResponse.getByText('Mandatory')).not.toBeNull();
   });
 
   test('html in the label should be handled for non rich text', async () => {
-    const f =  {
+    const f = {
       ...field,
       label: {
-          value: '<p>title inside p tags</p>',
-          richText: true,
-          visible: true
+        value: '<p>title inside p tags</p>',
+        richText: true,
+        visible: true
       }
-  }
-   let {renderResponse} = await helper(f);
-   expect(renderResponse.container.innerHTML).toContain( '<p>title inside p tags</p>');  
+    }
+    let { renderResponse } = await helper(f);
+    expect(renderResponse.container.innerHTML).toContain('<p>title inside p tags</p>');
   });
 });

@@ -18,45 +18,45 @@
 //  ******************************************************************************
 
 import React, { useState } from 'react';
-import {withRuleEngine} from '../utils/withRuleEngine';
+import { withRuleEngine } from '../utils/withRuleEngine';
 import { PROPS } from '../utils/type';
 
 const DropDown = (props: PROPS) => {
-   const { id, enum: enums, enumNames, label, value, placeholder, errorMessage, description, isError, name, enabled, visible } = props;
-   const dropValue = enumNames && enumNames.length ? enumNames : enums || [];
+  const { id, enum: enums, enumNames, label, value, placeholder, errorMessage, description, isError, name, enabled, visible } = props;
+  const dropValue = enumNames && enumNames.length ? enumNames : enums || [];
 
-   const [shortDescription, setShortDescription] = useState(true);
-   const [longDescription, setLongtDescription] = useState(false);
+  const [shortDescription, setShortDescription] = useState(true);
+  const [longDescription, setLongtDescription] = useState(false);
 
-   const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     event.preventDefault();
     setShortDescription(!shortDescription);
     setLongtDescription(!longDescription);
- };
- 
-   const changeHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
-       const val = event.target.value;
-       props.dispatchChange(val);
-   };
-   return (
-        <div className="cmp-adaptiveform-dropdown" data-cmp-is="adaptiveFormDropDown" data-cmp-visible={visible} data-cmp-enabled={enabled}>
-          {label?.visible && <label className="cmp-adaptiveform-dropdown__label" htmlFor={id}>{label?.value}</label>}
-          {description && <button aria-label='Toggle Button' className="cmp-adaptiveform-dropdown__questionmark" onClick={handleClick}></button>}    
-          <select id={`${id}-widget`} data-testid='select' name={name} title={label?.value} className={value ? 'cmp-adaptiveform-dropdown__widget cmp-adaptiveform-dropdown__widget--filled' : 'cmp-adaptiveform-dropdown__widget cmp-adaptiveform-dropdown__widget--empty'} onChange={changeHandler} value={value} disabled={!enabled}>
-            <option value="" disabled selected>{placeholder}</option>
-            {
-                dropValue?.map((item: string, index: number) => {
-                    return <option className="cmp-adaptiveform-dropdown__option" key={item} value={enums![index]}>{item}</option>;
-                })
-            };
-          </select>
-          {shortDescription && props?.tooltip && <div title='Help Text' data-cmp-visible={shortDescription} className='cmp-adaptiveform-dropdown__shortdescription'>{props?.tooltip}</div>}
-          <div aria-live="polite">
-            {longDescription && description && !errorMessage ? <div title='Help Text' data-cmp-visible={longDescription} className="cmp-adaptiveform-dropdown__longdescription">{description}</div> : null}
-          </div>
-           {isError ? <div className="cmp-adaptiveform-dropdown__errormessage">{errorMessage}</div> : null}
-        </div>
-   ); 
+  };
+
+  const changeHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const val = event.target.value;
+    props.dispatchChange(val);
+  };
+  return (
+    <div className="cmp-adaptiveform-dropdown" data-cmp-is="adaptiveFormDropDown" data-cmp-visible={visible} data-cmp-enabled={enabled}>
+      {label?.visible && <label className="cmp-adaptiveform-dropdown__label" htmlFor={id}>{label?.value}</label>}
+      {description && <button aria-label='Toggle Button' className="cmp-adaptiveform-dropdown__questionmark" onClick={handleClick}></button>}
+      <select id={`${id}-widget`} data-testid='select' name={name} title={label?.value} className={value ? 'cmp-adaptiveform-dropdown__widget cmp-adaptiveform-dropdown__widget--filled' : 'cmp-adaptiveform-dropdown__widget cmp-adaptiveform-dropdown__widget--empty'} onChange={changeHandler} value={value} disabled={!enabled}>
+        <option value="" disabled selected>{placeholder}</option>
+        {
+          dropValue?.map((item: string, index: number) => {
+            return <option className="cmp-adaptiveform-dropdown__option" key={item} value={enums![index]}>{item}</option>;
+          })
+        };
+      </select>
+      {shortDescription && props?.tooltip && <div title='Help Text' data-cmp-visible={shortDescription} className='cmp-adaptiveform-dropdown__shortdescription'>{props?.tooltip}</div>}
+      <div aria-live="polite">
+        {longDescription && description && !errorMessage ? <div title='Help Text' data-cmp-visible={longDescription} className="cmp-adaptiveform-dropdown__longdescription">{description}</div> : null}
+      </div>
+      {isError ? <div className="cmp-adaptiveform-dropdown__errormessage">{errorMessage}</div> : null}
+    </div>
+  );
 };
 
 export default withRuleEngine(DropDown);

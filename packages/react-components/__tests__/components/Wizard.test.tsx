@@ -119,34 +119,34 @@ test("Hidden component should not be rendered", async () => {
 });
 
 test("Tabs should not rendered if item length is zero", () => {
-    const helper = renderComponent(Wizard);
-    const { renderResponse } = helper(emptyWizard);
-    expect(renderResponse.queryByText(emptyWizard.label.value)).not.toBeNull();
-    const tabs = renderResponse.queryAllByRole("navigation");
-    expect(tabs.length).toEqual(0);
-    const tabPanels = renderResponse.queryAllByRole("tabpanel");
-    expect(tabPanels.length).toEqual(0);
-  });
+  const helper = renderComponent(Wizard);
+  const { renderResponse } = helper(emptyWizard);
+  expect(renderResponse.queryByText(emptyWizard.label.value)).not.toBeNull();
+  const tabs = renderResponse.queryAllByRole("navigation");
+  expect(tabs.length).toEqual(0);
+  const tabPanels = renderResponse.queryAllByRole("tabpanel");
+  expect(tabPanels.length).toEqual(0);
+});
 
-  test("Tabs should not rendered if visible is false", () => {
-    const sample = {
-      ...emptyWizard,
-      visible: false,
-    };
-    const { container } = render(<Wizard {...sample} />);
-    expect(container.innerHTML.length).toEqual(0);
-  });
-  
-  test('In case of both tooltip and description, tooltip should be visible and onclick of toggle button, description should be visible', async () => {
-    const f = {
-      ...WizardWithData,
-      tooltip: 'Short Description',
-      description: 'Mandatory'
-    };
-     const helper = renderComponent(Wizard);
-     const { renderResponse } = await helper(f);
-     expect(renderResponse.getByText('Short Description')).not.toBeNull();
-     const button = renderResponse.container.getElementsByClassName('cmp-adaptiveform-wizard__questionmark');
-     userEvent.click(button[0]);
-     expect(renderResponse.getByText('Mandatory')).not.toBeNull();
-  });
+test("Tabs should not rendered if visible is false", () => {
+  const sample = {
+    ...emptyWizard,
+    visible: false,
+  };
+  const { container } = render(<Wizard {...sample} />);
+  expect(container.innerHTML.length).toEqual(0);
+});
+
+test('In case of both tooltip and description, tooltip should be visible and onclick of toggle button, description should be visible', async () => {
+  const f = {
+    ...WizardWithData,
+    tooltip: 'Short Description',
+    description: 'Mandatory'
+  };
+  const helper = renderComponent(Wizard);
+  const { renderResponse } = await helper(f);
+  expect(renderResponse.getByText('Short Description')).not.toBeNull();
+  const button = renderResponse.container.getElementsByClassName('cmp-adaptiveform-wizard__questionmark');
+  userEvent.click(button[0]);
+  expect(renderResponse.getByText('Mandatory')).not.toBeNull();
+});

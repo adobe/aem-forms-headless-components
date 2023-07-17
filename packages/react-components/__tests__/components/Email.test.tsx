@@ -53,30 +53,30 @@ describe("Text Field", () => {
       tooltip: 'Short Description',
       description: 'Mandatory'
     };
-     const { renderResponse } = await helper(f);
-     expect(renderResponse.getByText('Short Description')).not.toBeNull();
-     const button = renderResponse.container.getElementsByClassName('cmp-adaptiveform-emailinput__questionmark');
-     userEvent.click(button[0]);
-     expect(renderResponse.getByText('Mandatory')).not.toBeNull();
+    const { renderResponse } = await helper(f);
+    expect(renderResponse.getByText('Short Description')).not.toBeNull();
+    const button = renderResponse.container.getElementsByClassName('cmp-adaptiveform-emailinput__questionmark');
+    userEvent.click(button[0]);
+    expect(renderResponse.getByText('Mandatory')).not.toBeNull();
   });
 
   test('labels and inputs are linked with for and id attribute', async () => {
-    let {renderResponse} = await helper(field);
+    let { renderResponse } = await helper(field);
     const input = await renderResponse.findByPlaceholderText(field.placeholder);
     const label = await renderResponse.queryByText(field.label.value)
     expect(input?.getAttribute('id')).toEqual(label?.getAttribute('for'));
   });
 
   test('html in the label should be handled for non rich text', async () => {
-    const f =  {
+    const f = {
       ...field,
       label: {
-          value: '<p>title inside p tags</p>',
-          richText: true,
-          visible: true
+        value: '<p>title inside p tags</p>',
+        richText: true,
+        visible: true
       }
-  }
-   let {renderResponse} = await helper(f);
-   expect(renderResponse.container.innerHTML).toContain( '<p>title inside p tags</p>');  
+    }
+    let { renderResponse } = await helper(f);
+    expect(renderResponse.container.innerHTML).toContain('<p>title inside p tags</p>');
   });
 });
