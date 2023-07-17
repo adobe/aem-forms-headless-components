@@ -1,13 +1,32 @@
-import { State, FieldJson } from '@aemforms/af-core';
-import { useRenderer } from '@aemforms/af-react-renderer';
-import { combineConvertors, baseConvertor, fileUploadConvertor } from '../utils/mappers';
-import InputField from '../shared/InputField';
+import React from 'react';
+import { FormControl } from 'native-base';
+import { getFileSizeInBytes } from '@aemforms/af-core';
+import { PROPS } from '../utils/types';
+import withRuleEngine from '../shared/withRuleEngine';
 import FileUpload from '../shared/FileUpload';
 
-const Comp = InputField(FileUpload);
-const FileUploadComponent = function (props: State<FieldJson>) {
-  const renderedComponent = useRenderer(props, Comp, combineConvertors(baseConvertor, fileUploadConvertor));
-  return renderedComponent;
+const FileUploadComponent = function (props: PROPS) {
+  const {
+    isError, required, label, errorMessage, description, type, accept,
+    value, maxFileSize, dispatchChange
+  } = props;
+
+  const fileUploadProps = {
+    value: value && ((value instanceof Array) ? value : [value]),
+    onChange: dispatchChange,
+    accept: accept || [],
+    multiple: type === 'file[]' || type === 'string[]',
+    maxFileSizeInBytes: getFileSizeInBytes(maxFileSize) || 500000000
+  };
+
+  return (
+    <FormControl isInvalid={isError} isRequired={required}>
+      {label?.visible && <FormControl.Label>{label?.value}</FormControl.Label>}
+      <FileUpload {...fileUploadProps} />
+      {errorMessage && <FormControl.ErrorMessage>{errorMessage}</FormControl.ErrorMessage>}
+      {description && !errorMessage && <FormControl.HelperText>{description}</FormControl.HelperText>}
+    </FormControl>
+  );
 };
 
-export default FileUploadComponent;
+export default withRuleEngine(FileUploadComponent);

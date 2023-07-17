@@ -10,7 +10,7 @@ The document provides detailed information on React Native Components that you c
     - Checkbox
     - Checkbox Group
     - Drop Down
-    - Date Picker - coming soon
+    - Date Picker
     - File Upload
     - Password
     - Number Field

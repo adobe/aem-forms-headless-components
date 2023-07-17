@@ -1,5 +1,5 @@
 import { fireEvent } from '@testing-library/react-native';
-import TextAreaField from '../../src/components/TextAreaField';
+import TextAreaField from '../../src/components/TextField';
 import { ReactTestInstance } from 'react-test-renderer';
 import { renderComponent, DEFAULT_ERROR_MESSAGE } from '../utils';
 

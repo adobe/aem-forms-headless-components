@@ -1,11 +1,25 @@
-import { State, FieldJson } from '@aemforms/af-core';
-import { useRenderer } from '@aemforms/af-react-renderer';
+import React from 'react';
+import { useWindowDimensions } from 'react-native';
 import { Text } from 'native-base';
-import { combineConvertors, baseConvertor, plainTextConvertor } from '../utils/mappers';
+import RenderHtml from 'react-native-render-html';
+import withRuleEngine from '../shared/withRuleEngine';
+import { PROPS } from '../utils/types';
 
-const PlainTextComponent = function (props: State<FieldJson>) {
-  const renderedComponent = useRenderer(props, Text, combineConvertors(baseConvertor, plainTextConvertor));
-  return renderedComponent;
+const PlainTextComponent = function (props: PROPS) {
+  const { width } = useWindowDimensions();
+  
+  if (props.richText) {
+    return (
+      <RenderHtml
+        contentWidth={width}
+        source={{ html: props?.value }}
+      />
+    );
+  } else {
+    return (
+      <Text>{props.value || ''}</Text>
+    );
+  }
 };
 
-export default PlainTextComponent;
+export default withRuleEngine(PlainTextComponent);

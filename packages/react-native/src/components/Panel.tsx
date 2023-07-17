@@ -16,7 +16,7 @@ const Panel = function (fieldset: State<FieldsetJson>) {
   if (props.visible) {
     return (
       <Box>
-        <Text>{localizedLabel}</Text>
+        {props.label?.visible !== false ? <Text>{localizedLabel}</Text> : null}
         {renderChildren(props, context.mappings, context.modelId, handlers)}
       </Box>);
   } else {
