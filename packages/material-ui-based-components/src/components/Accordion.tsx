@@ -1,6 +1,6 @@
 import React, { useCallback, useContext } from 'react';
 import { getRenderer, FormContext } from '@aemforms/af-react-renderer';
-import { withRuleEnginePanel } from '../shared/withRuleEngine';
+import { withRuleEnginePanel, richTextString } from '../shared/withRuleEngine';
 import { PROPS_PANEL } from '../utils/types';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
@@ -34,7 +34,7 @@ const AccordionComponent = function (props: PROPS_PANEL) {
                             id={child.id}
                         >
                             <Typography>
-                                {child.label.value}
+                                {child.label.richText ? richTextString(child.label.value) : child.label.value}
                             </Typography>
                         </AccordionSummary>
                         <AccordionDetails>
