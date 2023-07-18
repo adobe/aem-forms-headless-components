@@ -14,7 +14,7 @@ function TableHeaderComponent(props: PROPS_PANEL) {
 
     const StyledTableCell = styled(TableCell)(({ theme }) => ({
         [`&.${tableCellClasses.head}`]: {
-            backgroundColor: theme.palette.common.black,
+            backgroundColor: '#1975d2',
             color: theme.palette.common.white
         }
     }));
