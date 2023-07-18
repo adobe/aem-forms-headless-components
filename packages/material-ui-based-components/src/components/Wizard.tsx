@@ -43,10 +43,12 @@ function Wizard(props: PROPS_PANEL) {
 
     const handleNext = useCallback(() => {
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
+        window.scrollTo(0, 0);
     }, []);
 
     const handleBack = useCallback(() => {
         setActiveStep((prevActiveStep) => prevActiveStep - 1);
+        window.scrollTo(0, 0);
     }, []);
 
     return (
