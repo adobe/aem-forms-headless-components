@@ -27,7 +27,6 @@ const AutoCompleteComponent = (props: PROPS) => {
 
     return (
         <FormControl
-            variant={props.layout?.variant}
             fullWidth
             sx={{ mt: 2 }}
         >
@@ -48,6 +47,7 @@ const AutoCompleteComponent = (props: PROPS) => {
                     required={required}
                     error={isError}
                     name={name}
+                    variant={props.layout?.variant}
                 />}
             />
             <FormHelperText error={isError} component="span">
