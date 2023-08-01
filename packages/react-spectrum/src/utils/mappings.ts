@@ -1,10 +1,22 @@
-/*
- * Copyright 2022 Adobe, Inc.
- *
- * Your access and use of this software is governed by the Adobe Customer Feedback Program Terms and Conditions or other Beta License Agreement signed by your employer and Adobe, Inc.. This software is NOT open source and may not be used without one of the foregoing licenses. Even with a foregoing license, your access and use of this file is limited to the earlier of (a) 180 days, (b) general availability of the product(s) which utilize this software (i.e. AEM Forms), (c) January 1, 2023, (d) Adobe providing notice to you that you may no longer use the software or that your beta trial has otherwise ended.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL ADOBE NOR ITS THIRD PARTY PROVIDERS AND PARTNERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- */
+/*************************************************************************
+* ADOBE CONFIDENTIAL
+* ___________________
+*
+* Copyright 2023 Adobe
+* All Rights Reserved.
+*
+* NOTICE: All information contained herein is, and remains
+* the property of Adobe and its suppliers, if any. The intellectual
+* and technical concepts contained herein are proprietary to Adobe
+* and its suppliers and are protected by all applicable intellectual
+* property laws, including trade secret and copyright laws.
+* Dissemination of this information or reproduction of this material
+* is strictly forbidden unless prior written permission is obtained
+* from Adobe.
+
+* Adobe permits you to use and modify this file solely in accordance with
+* the terms of the Adobe license agreement accompanying it.
+*************************************************************************/
 
 import TextField from '../components/TextField';
 import Button from '../components/Button';
@@ -24,27 +36,29 @@ import HorizontalTab from '../components/tabs/HorizontalTabs';
 import VerticalTab from '../components/tabs/VerticalTabs';
 import PasswordField from '../components/Password';
 import Form from '../components/Form';
+import EmailField from '../components/EmailField';
 
 const mappings = {
-  'text-input': TextField,
-  'multiline-input': TextField,
-  checkbox: Checkbox,
-  button: Button,
-  panel: Panel,
-  'radio-group': RadioGroup,
-  'number-input': NumberField,
-  'date-input': DateField,
-  'drop-down': ComboBox,
-  'plain-text': PlainText,
-  'file-input': FileUploadComponent,
-  repeater: Repeater,
-  'checkbox-group': CheckboxGroup,
-  'custom:vertical-flex': VerticalFlex,
-  'custom:horizontal-flex': HorizontalFlex,
-  'custom:vertical-tab': VerticalTab,
-  'custom:horizontal-tab': HorizontalTab,
-  'password-input': PasswordField,
-  form: Form
+    'text-input' : TextField,
+    'multiline-input' : TextField,
+    checkbox : Checkbox,
+    button : Button,
+    panel : Panel,
+    'radio-group' : RadioGroup,
+    'number-input' : NumberField,
+    email : EmailField,
+    'date-input' : DateField,
+    'drop-down' : ComboBox,
+    'plain-text' : PlainText,
+    'file-input' : FileUploadComponent,
+    repeater : Repeater,
+    'checkbox-group': CheckboxGroup,
+    'custom:vertical-flex': VerticalFlex,
+    'custom:horizontal-flex': HorizontalFlex,
+    'custom:vertical-tab': VerticalTab,
+    'custom:horizontal-tab': HorizontalTab,
+    'password-input' : PasswordField,
+    form: Form
 };
 
 export default mappings;
