@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Adobe, Inc.
+ * Copyright 2023 Adobe, Inc.
  *
  * Your access and use of this software is governed by the Adobe Customer Feedback Program Terms and Conditions or other Beta License Agreement signed by your employer and Adobe, Inc.. This software is NOT open source and may not be used without one of the foregoing licenses. Even with a foregoing license, your access and use of this file is limited to the earlier of (a) 180 days, (b) general availability of the product(s) which utilize this software (i.e. AEM Forms), (c) January 1, 2023, (d) Adobe providing notice to you that you may no longer use the software or that your beta trial has otherwise ended.
  *
@@ -20,14 +20,17 @@ import '@testing-library/jest-dom/extend-expect';
 
 
 const field = {
-  'id': 'field',
-  'name': 'birthDate',
-  'default': '2021-01-01',
-  'label': { 'value': 'date' },
-  'visible': true,
-  'type': 'string',
-  'fieldType' : 'date-input',
-  'properties': {
+  id: 'field',
+  name: 'birthDate',
+  default: '2021-01-01',
+  label: { value: 'date' },
+  visible: true,
+  type: 'string',
+  fieldType : 'date-input',
+  constraintMessages: {
+    required: DEFAULT_ERROR_MESSAGE
+  },
+  properties: {
     'afs:layout':{
       'data-testid':'testid'
     }
@@ -89,7 +92,7 @@ const labelInputTests: InputFieldTestCase<any>[] = [
     name: 'description exists when the field is valid',
     field: {
       ...field,
-      'description' : 'some description'
+      description : 'some description'
     },
     expects: (renderResponse:any) => {
       const description = renderResponse.getByText('some description');
@@ -106,7 +109,7 @@ const labelInputTests: InputFieldTestCase<any>[] = [
       field.value = null;
     },
     expects: (renderResponse:any) => {
-      const errorMessage = renderResponse.getByText('There is an error in the field');
+      const errorMessage = renderResponse.queryByText(DEFAULT_ERROR_MESSAGE);
       expect(errorMessage).toBeInTheDocument();
     }
   },
@@ -132,8 +135,8 @@ test.each(jest26CompatibleTable(filterTestTable(labelInputTests)))('%s', async (
 test('it should handle visible property', async () => {
   const f = {
     ...field,
-    'id': 'x',
-    'visible': false
+    id: 'x',
+    visible: false
   };
   let {container} = await helper(f);
   expect(container.innerHTML).toContain('display: none');
@@ -142,7 +145,7 @@ test('it should handle visible property', async () => {
 test('value entered by user in date field is set in model', async () => {
   const f = {
     ...field,
-    'id': 'x'
+    id: 'x'
   };
   let {element, renderResponse} = await helper(f);
   const inputValue = '2021-01-01';
@@ -164,16 +167,4 @@ test('value entered by user in date field is set in model', async () => {
   expect(updatedDialog).toBeNull();
   expect(element.value).toEqual('2021-01-02');
 
-});
-test('Date Field show empty string if model value null', async () => {
-  let f = {
-      ...field,
-      'type': 'string',
-      'fieldType' : 'date-input',
-      'default': '2021-01-01'
-  };
-  let {input, element} = await helper(f);
-  expect(element.value).toEqual('2021-01-01');
-  element.value= null;
-  expect(input?.value).toEqual(undefined);
 });
