@@ -1,5 +1,5 @@
 // *******************************************************************************
-//  * Copyright 2022 Adobe
+//  * Copyright 2023 Adobe
 //  *
 //  * Licensed under the Apache License, Version 2.0 (the “License”);
 //  * you may not use this file except in compliance with the License.
@@ -31,6 +31,8 @@ const Wizard = (props: PROPS_PANEL) => {
   const [shortDescription, setShortDescription] = useState(true);
   const [longDescription, setLongtDescription] = useState(false);
 
+  console.log(props, 'wiz-item');
+
   const { v: visibleItems } =
     items.reduce(({ v }: any, item) => {
       const isVisible = item.visible === true;
@@ -38,16 +40,25 @@ const Wizard = (props: PROPS_PANEL) => {
         v: isVisible ? v.concat([item]) : v
       };
     }, { v: [] });
+    console.log(visibleItems, 'wiz-prop');
+   
 
   const handlePrevious = () => {
+    console.log(activeButtonIndex - 1, 'prev-active');
+    console.log(visibleItems.length, 'prev-length');
     const newIndex = activeButtonIndex - 1;
     newIndex >= 0 && setActiveButtonIndex(newIndex < 0 ? visibleItems.length - 1 : newIndex);
   };
 
   const handleNext = () => {
+    console.log(activeButtonIndex, 'next-active');
+    console.log(visibleItems.length - 1, 'next-length');
     const newIndex = activeButtonIndex + 1;
     newIndex <= visibleItems.length - 1 && setActiveButtonIndex(newIndex >= visibleItems.length ? 0 : newIndex);
   };
+
+  const showNextButton = activeButtonIndex >= 0 && visibleItems.length - 1 > activeButtonIndex ;
+  const showHideButton = visibleItems.length > activeButtonIndex - 1 && activeButtonIndex > 0 ;
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     event.preventDefault();
@@ -76,11 +87,11 @@ const Wizard = (props: PROPS_PANEL) => {
             ))}
           </ol>
         </div>
-        {visibleItems.length > 0 ? <div className="cmp-adaptiveform-wizard__previousNav" role="navigation" aria-label="Previous Button" onClick={handlePrevious} tabIndex={0}></div> : null}
+        {(visibleItems.length > 0 && showHideButton)? <div className="cmp-adaptiveform-wizard__previousNav" role="navigation" aria-label="Previous Button" onClick={handlePrevious} tabIndex={0}></div> : null}
         {visibleItems.length > 0 ? <div data-cmp-hook-adaptiveformtabs="tabpanel" className={activeButtonIndex === visibleItems[activeButtonIndex].index ? 'cmp-adaptiveform-wizard__wizardpanel cmp-adaptiveform-wizard__wizardpanel--active' : 'cmp-adaptiveform-wizard__wizardpanel'} role="tabpanel" tabIndex={0} aria-hidden={activeButtonIndex === visibleItems[activeButtonIndex].index ? 'false' : 'true'} aria-labelledby={`${visibleItems[activeButtonIndex].id}_wizard-item-nav`} data-cmp-hook-adaptiveformwizard="wizardpanel">
           {getChild(visibleItems[activeButtonIndex], activeButtonIndex)}
         </div> : null}
-        {visibleItems.length > 0 ? <div className="cmp-adaptiveform-wizard__nextNav" role="navigation" aria-label="Next Button" onClick={handleNext} tabIndex={0}> </div> : null}
+        {(visibleItems.length > 0 && showNextButton) ? <div className="cmp-adaptiveform-wizard__nextNav" role="navigation" aria-label="Next Button" onClick={handleNext} tabIndex={0}> </div> : null}
       </div>
     </div>
   ) : null;
