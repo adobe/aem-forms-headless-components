@@ -6,7 +6,8 @@
     "jest/globals": true
   },
   "globals": {
-    "fetch": false
+    "fetch": false,
+    "JSX": true
   },
   "extends": ["eslint:recommended"],
   "parser": "@typescript-eslint/parser",

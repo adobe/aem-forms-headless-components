@@ -1,5 +1,12 @@
+const esModules = ['@adobe/json-formula', '@aemforms/af-formatters'].join('|');
+
 module.exports = {
+  transformIgnorePatterns: [`node_modules/(?!${esModules})`],
   preset: 'ts-jest',
+  transform: {
+    '^.+\\.(ts|tsx)?$': 'ts-jest',
+    '^.+\\.(js|jsx)$': 'babel-jest'
+  },
   coverageDirectory: 'target/coverage',
   coverageReporters: ['json', 'lcov', 'text', 'clover', 'cobertura'],
   testEnvironment: 'jsdom',
