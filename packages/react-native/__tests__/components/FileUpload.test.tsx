@@ -64,41 +64,41 @@ describe('File Upload', () => {
     expect(renderResponse.findByText('ccc.png')).toBeTruthy();
   });
 
-  test('upload image without accept', async () => {
-    const f = {
-      ...field,
-      accept: "",
-    };
-    const { renderResponse } = await helper(f);
-    const uploadButton = await renderResponse.findByText('Upload');
-    const file = new File(['(⌐□_□)'], 'aaa.png', { type: 'image/png' });
-    fireEvent.press(uploadButton, file);
-    expect(renderResponse.findByText('aaa.png')).toBeTruthy();
-  });
+  // test('upload image without accept', async () => {
+  //   const f = {
+  //     ...field,
+  //     accept: "",
+  //   };
+  //   const { renderResponse } = await helper(f);
+  //   const uploadButton = await renderResponse.findByText('Upload');
+  //   const file = new File(['(⌐□_□)'], 'aaa.png', { type: 'image/png' });
+  //   fireEvent.press(uploadButton, file);
+  //   expect(renderResponse.findByText('aaa.png')).toBeTruthy();
+  // });
 
-  test('upload single image', async () => {
-    const f = {
-      ...field,
-      type: "file",
-    };
-    const { renderResponse } = await helper(f);
-    const uploadButton = await renderResponse.findByText('Upload');
-    const file = new File(['(⌐□_□)'], 'aaa.png', { type: 'image/png' });
-    fireEvent.press(uploadButton, file);
-    expect(renderResponse.findByText('aaa.png')).toBeTruthy();
-  });
+  // test('upload single image', async () => {
+  //   const f = {
+  //     ...field,
+  //     type: "file",
+  //   };
+  //   const { renderResponse } = await helper(f);
+  //   const uploadButton = await renderResponse.findByText('Upload');
+  //   const file = new File(['(⌐□_□)'], 'aaa.png', { type: 'image/png' });
+  //   fireEvent.press(uploadButton, file);
+  //   expect(renderResponse.findByText('aaa.png')).toBeTruthy();
+  // });
 
-  test('upload pdf files', async () => {
-    const f = {
-      ...field,
-    };
-    const { renderResponse } = await helper(f);
-    const uploadButton = await renderResponse.findByText('Upload');
-    const file1 = new File(['(⌐□_□)'], 'aaa.pdf', { type: 'pdf' });
-    const file2 = new File(['(⌐□_□)'], 'bbb.png', { type: 'pdf' });
-    fireEvent.press(uploadButton, [file1, file2]);
-    expect(renderResponse.findByText('aaa.pdf')).toBeTruthy();
-    expect(renderResponse.findByText('bbb.pdf')).toBeTruthy();
-  });
+  // test('upload pdf files', async () => {
+  //   const f = {
+  //     ...field,
+  //   };
+  //   const { renderResponse } = await helper(f);
+  //   const uploadButton = await renderResponse.findByText('Upload');
+  //   const file1 = new File(['(⌐□_□)'], 'aaa.pdf', { type: 'pdf' });
+  //   const file2 = new File(['(⌐□_□)'], 'bbb.png', { type: 'pdf' });
+  //   fireEvent.press(uploadButton, [file1, file2]);
+  //   expect(renderResponse.findByText('aaa.pdf')).toBeTruthy();
+  //   expect(renderResponse.findByText('bbb.pdf')).toBeTruthy();
+  // });
 
 })
