@@ -1,5 +1,5 @@
 // *******************************************************************************
-//  * Copyright 2022 Adobe
+//  * Copyright 2023 Adobe
 //  *
 //  * Licensed under the Apache License, Version 2.0 (the “License”);
 //  * you may not use this file except in compliance with the License.
@@ -24,7 +24,10 @@ export type PROPS = State<FieldJson & Handlers & {
     [key: string]: any;
   },
   richText?: boolean
-
 }>;
 
-export type PROPS_PANEL = State<FieldsetJson> & { handlers: Handlers }
+export type PROPS_PANEL = State<FieldsetJson> & { 
+  handlers: Handlers, 
+  activePanel?: string,
+  toggle?: (id: string)=> void | undefined
+}

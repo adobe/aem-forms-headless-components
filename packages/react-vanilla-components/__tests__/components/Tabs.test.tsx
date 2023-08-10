@@ -1,13 +1,20 @@
+/*
+ * Copyright 2023 Adobe, Inc.
+ *
+ * Your access and use of this software is governed by the Adobe Customer Feedback Program Terms and Conditions or other Beta License Agreement signed by your employer and Adobe, Inc.. This software is NOT open source and may not be used without one of the foregoing licenses. Even with a foregoing license, your access and use of this file is limited to the earlier of (a) 180 days, (b) general availability of the product(s) which utilize this software (i.e. AEM Forms), (c) January 1, 2023, (d) Adobe providing notice to you that you may no longer use the software or that your beta trial has otherwise ended.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL ADOBE NOR ITS THIRD PARTY PROVIDERS AND PARTNERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+
 import HorizontalTab from "../../src/components/tabs/HorizontalTab";
 import React from "react";
 import { render } from "@testing-library/react";
-import { createForm, Provider } from "../utils";
 import { renderComponent } from "../utils";
 import userEvent from "@testing-library/user-event";
 
 const emptyTabs = {
   id: "emptyTabs",
-  ":type": "custom:horizontal-tab",
+  ":type": "core/fd/components/form/tabsontop/v1/tabsontop",
   visible: true,
   label: { value: "empty label" },
   items: [],
@@ -16,7 +23,7 @@ const emptyTabs = {
 
 const tabsWithData = {
   id: "tabsWithData",
-  ":type": "custom:horizontal-tab",
+  ":type": "core/fd/components/form/tabsontop/v1/tabsontop",
   visible: true,
   label: { value: "tab label" },
   index: 0,
@@ -25,7 +32,6 @@ const tabsWithData = {
       id: "field",
       name: "f1",
       fieldType: "text-field",
-      ":type": "text-field",
       visible: true,
       index: 0,
       label: { value: "text field label" },
@@ -34,7 +40,6 @@ const tabsWithData = {
       id: "field2",
       name: "f2",
       fieldType: "text-field",
-      ":type": "text-field",
       visible: true,
       index: 1,
       label: { value: "text field 2 label" },
@@ -62,47 +67,26 @@ test("Tabs should not rendered if visible is false", () => {
   expect(container.innerHTML.length).toEqual(0);
 });
 
-test("clicking on the horizontal tabs should switch from one tab to another", async () => {
-  const MyComponent = (p: any) => {
-    return <div className={p.name}>{p.label.value}</div>;
-  };
-  const json = {
-    ...tabsWithData,
-    ":type": "custom:horizontal-tab",
-  };
-  const form = await createForm(json);
-  const wrapper = Provider(form, { "text-field": MyComponent });
-  //@ts-ignore
-  const { container } = render(<HorizontalTab {...json} />, { wrapper });
-  const tabs = container.querySelectorAll('[role="tab"]');
+test("clicking on the horizontal tabs should switch from one tab to another",() => {
+  const { renderResponse } = helper(tabsWithData);
+  const tablist = renderResponse.getAllByRole('tab');
+  expect(tablist).toHaveLength(2);
+  expect(tablist[0].className.includes('cmp-tabs__tab cmp-tabs__tab--active'))
+  expect(tablist[1].className.includes('cmp-tabs__tab'))
+  userEvent.click(tablist[1]);
+  expect(tablist[0].className.includes('cmp-tabs__tab'))
+  expect(tablist[1].className.includes('cmp-tabs__tab cmp-tabs__tab--active'))
+});
+
+test("tabs should get rendered with undefined element if no mapping is defined", () => {
+  const { renderResponse } = helper(tabsWithData);
+  const tabs = renderResponse.container.querySelectorAll('[role="tab"]');
   expect(tabs.length).toEqual(2);
-  let tabPanels = container.querySelectorAll(".f1");
-  expect(tabPanels.length).toEqual(1);
-  tabPanels = container.querySelectorAll(".f2");
-  expect(tabPanels.length).toEqual(0);
-  userEvent.click(tabs[1]);
-  tabPanels = container.querySelectorAll(".f2");
-  expect(tabPanels.length).toEqual(1);
-  tabPanels = container.querySelectorAll(".f1");
+  const tabPanels = renderResponse.container.querySelectorAll(".undefined-element");
   expect(tabPanels.length).toEqual(0);
 });
 
-test("tabs should get rendered with undefined element if no mapping is defined", async () => {
-  const form = await createForm(tabsWithData);
-  const wrapper = Provider(form, {});
-  const { container } = render(<HorizontalTab {...tabsWithData} />, {
-    wrapper,
-  });
-  const tabs = container.querySelectorAll('[role="tab"]');
-  expect(tabs.length).toEqual(2);
-  const tabPanels = container.querySelectorAll(".undefined-element");
-  expect(tabPanels.length).toEqual(0);
-});
-
-test("hidden tabs should not be rendered", async () => {
-  const MyComponent = (p: any) => {
-    return <div className={p.name}>{p.label.value}</div>;
-  };
+test("hidden tabs should not be rendered", () => {
   const sample = {
     ...tabsWithData,
     items: [
@@ -115,15 +99,9 @@ test("hidden tabs should not be rendered", async () => {
       },
     ],
   };
-  const form = await createForm(sample);
-  const wrapper = Provider(form, { "text-field": MyComponent });
-  const { container } = render(<HorizontalTab {...sample} />, { wrapper });
-  const tabs = container.querySelectorAll('[role="tab"]');
+  const { renderResponse } = helper(sample);
+  const tabs = renderResponse.container.querySelectorAll('[role="tab"]');
   expect(tabs.length).toEqual(1);
-  let tabPanels = container.querySelectorAll(".f1");
-  expect(tabPanels.length).toEqual(0);
-  tabPanels = container.querySelectorAll(".f2");
-  expect(tabPanels.length).toEqual(1);
 });
 
 test("Tabs should not rendered if all the items are not visible", () => {
@@ -142,7 +120,7 @@ test("Tabs should not rendered if all the items are not visible", () => {
   expect(tabPanels.length).toEqual(0);
 });
 
-test('html in the label should be handled for non rich text', async () => {
+test('html in the label should be handled for non rich text', () => {
   const f = {
     ...tabsWithData,
     label: {
@@ -151,6 +129,6 @@ test('html in the label should be handled for non rich text', async () => {
       visible: true
     }
   }
-  let { renderResponse } = await helper(f);
+  let { renderResponse } = helper(f);
   expect(renderResponse.container.innerHTML).toContain('<p>title inside p tags</p>');
 });

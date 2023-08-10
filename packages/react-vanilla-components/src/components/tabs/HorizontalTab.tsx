@@ -1,5 +1,5 @@
 // *******************************************************************************
-//  * Copyright 2022 Adobe
+//  * Copyright 2023 Adobe
 //  *
 //  * Licensed under the Apache License, Version 2.0 (the “License”);
 //  * you may not use this file except in compliance with the License.
@@ -24,6 +24,7 @@ import { withRuleEnginePanel } from '../../utils/withRuleEngine';
 import { PROPS_PANEL } from '../../utils/type';
 
 const HorizontalTab = (props: PROPS_PANEL) => {
+  console.log('tab-props', props);
   // @ts-ignore
   const { mappings } = useContext(FormContext);
   const [activetabIndex, setActiveTabIndex] = useState(0);

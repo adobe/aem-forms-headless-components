@@ -1,5 +1,5 @@
 // *******************************************************************************
-//  * Copyright 2022 Adobe
+//  * Copyright 2023 Adobe
 //  *
 //  * Licensed under the Apache License, Version 2.0 (the “License”);
 //  * you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ import TextFieldArea from '../components/TextFieldArea';
 import FileUpload from '../components/FileUpload';
 import Panel from '../components/Panel';
 import Wizard from '../components/Wizard';
-import Accordion from '../components/Accordion';
+import Accordion from '../components/Accordion/Accordion';
 import HorizontalTab from '../components/tabs/HorizontalTab';
 import Email from '../components/Email';
 import VerticalTab from '../components/tabs/VerticalTab';
@@ -45,12 +45,12 @@ const mappings = {
   'file-input': FileUpload,
   email: Email,
   'multiline-input': TextFieldArea,
-  wizard: Wizard,
-  accordion: Accordion,
-  'custom:horizontal-tab': HorizontalTab,
-  'custom:vertical-tab': VerticalTab,
+  'core/fd/components/form/wizard/v1/wizard': Wizard,
+  'core/fd/components/form/accordion/v1/accordion': Accordion,
+  'core/fd/components/form/tabsontop/v1/tabsontop': HorizontalTab,
+  'core/fd/components/form/verticaltabs/v1/verticaltabs': VerticalTab,
   'plain-text': PlainText,
-  panel: Panel,
+  'core/fd/components/form/panelcontainer/v1/panelcontainer': Panel,
   form: Form
 };
 

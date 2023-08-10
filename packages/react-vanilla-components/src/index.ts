@@ -18,7 +18,7 @@ import TextFieldArea from './components/TextFieldArea';
 import FileUpload from './components/FileUpload';
 import Panel from './components/Panel';
 import Wizard from './components/Wizard';
-import Accordion from './components/Accordion';
+import Accordion from './components/Accordion/Accordion';
 import HorizontalTab from './components/tabs/HorizontalTab';
 import VerticalTab from './components/tabs/VerticalTab';
 import Email from './components/Email';
