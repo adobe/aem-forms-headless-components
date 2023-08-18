@@ -22,7 +22,7 @@ import { withRuleEngine } from '../utils/withRuleEngine';
 import { PROPS } from '../utils/type';
 
 const NumberField = (props: PROPS) => {
-  const { id, label, value, required, placeholder, name, maximum, minimum, description, errorMessage, isError, readOnly, visible, enabled } = props;
+  const { id, label, value, required, placeholder, name, maximum, minimum, description, errorMessage, isError, readOnly, visible, enabled, appliedCssClassNames } = props;
 
   const [shortDescription, setShortDescription] = useState(true);
   const [longDescription, setLongtDescription] = useState(false);
@@ -46,7 +46,7 @@ const NumberField = (props: PROPS) => {
   };
 
   return (
-    <div className="cmp-adaptiveform-numberinput" data-cmp-is="adaptiveFormNumberInput" data-cmp-visible={visible} data-cmp-enabled={enabled}>
+    <div className={`cmp-adaptiveform-numberinput ${appliedCssClassNames||''}`}  data-cmp-is="adaptiveFormNumberInput" data-cmp-visible={visible} data-cmp-enabled={enabled}>
       <div>{label?.visible && <label htmlFor={`${id}-widget`}>{label?.value}</label>}</div>
       <div>{description && <button className="cmp-adaptiveform-numberinput__questionmark" aria-label='Toggle Button' onClick={handleClick}></button>}</div>
       <input id={`${id}-widget`} type='number' className={value ? 'cmp-adaptiveform-numberinput__widget cmp-adaptiveform-numberinput__widget--filled' : 'cmp-adaptiveform-numberinput__widget cmp-adaptiveform-numberinput__widget--empty'} value={value} onChange={changeHandler} required={required} placeholder={placeholder} name={name} min={minimum} max={maximum} readOnly={readOnly} onFocus={handleFocus} onBlur={handleBlur} />

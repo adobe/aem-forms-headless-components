@@ -28,7 +28,7 @@ const VerticalTab = (props: PROPS_PANEL) => {
   const [activetabIndex, setActiveTabIndex] = useState(0);
   const [shortDescription, setShortDescription] = useState(true);
   const [longDescription, setLongtDescription] = useState(false);
-  const { items, label, id, visible, enabled } = props;
+  const { items, label, id, visible, enabled, appliedCssClassNames } = props;
   const { v: visibleItems } =
     items.reduce(({ v }: any, item) => {
       const isVisible = item.visible === true;
@@ -53,7 +53,7 @@ const VerticalTab = (props: PROPS_PANEL) => {
   }, []);
 
   return (
-    <div id={id} className="cmp-verticaltabs" data-panelcontainer="verticaltabs" data-placeholder-text="false" data-cmp-visible={visible ? 'true' : 'false'} data-cmp-enabled={enabled ? 'true' : 'false'}>
+    <div id={id} className={`cmp-verticaltabs ${appliedCssClassNames||''}`}  data-panelcontainer="verticaltabs" data-placeholder-text="false" data-cmp-visible={visible ? 'true' : 'false'} data-cmp-enabled={enabled ? 'true' : 'false'}>
       {label?.visible && <label className="cmp-verticaltabs__label" htmlFor={`${id}-widget`}>{label?.value}</label>}
       {props?.description && <button aria-label='Toggle Button' className="cmp-verticaltabs__questionmark" onClick={handleButtonClick}></button>}
       {shortDescription && props?.tooltip && <div title='Help Text' data-cmp-visible={shortDescription} className='cmp-verticaltabs__shortdescription'>{props?.tooltip}</div>}

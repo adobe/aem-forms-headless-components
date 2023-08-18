@@ -23,7 +23,7 @@ import { withRuleEngine } from '../utils/withRuleEngine';
 import { PROPS } from '../utils/type';
 
 const TextField = (props: PROPS) => {
-  const { id, value, label, required, readOnly = false, placeholder, description, errorMessage, minLength, maxLength, enabled, visible, name, isError } = props;
+  const { id, value, label, required, readOnly = false, placeholder, description, errorMessage, minLength, maxLength, enabled, visible, name, isError, appliedCssClassNames } = props;
 
   const [shortDescription, setShortDescription] = useState(true);
   const [longDescription, setLongtDescription] = useState(false);
@@ -49,7 +49,7 @@ const TextField = (props: PROPS) => {
   };
 
   return (
-    <div className="cmp-adaptiveform-textinput" data-cmp-is="adaptiveFormTextInput" data-cmp-visible={visible} data-cmp-enabled={enabled}>
+    <div className={`cmp-adaptiveform-textinput ${appliedCssClassNames||''}`}  data-cmp-is="adaptiveFormTextInput" data-cmp-visible={visible} data-cmp-enabled={enabled}>
       {label?.visible && <label className="cmp-adaptiveform-textinput__label" htmlFor={`${id}-widget`}>{label?.value}</label>}
       <input
         type="text"

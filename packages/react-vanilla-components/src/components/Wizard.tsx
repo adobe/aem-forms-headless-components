@@ -26,12 +26,10 @@ import { PROPS_PANEL } from '../utils/type';
 const Wizard = (props: PROPS_PANEL) => {
   // @ts-ignore
   const { mappings } = useContext(FormContext);
-  const { items, label, id, visible, enabled } = props;
+  const { items, label, id, visible, enabled, appliedCssClassNames } = props;
   const [activeButtonIndex, setActiveButtonIndex] = useState(0);
   const [shortDescription, setShortDescription] = useState(true);
   const [longDescription, setLongtDescription] = useState(false);
-
-  console.log(props, 'wiz-item');
 
   const { v: visibleItems } =
     items.reduce(({ v }: any, item) => {
@@ -40,19 +38,13 @@ const Wizard = (props: PROPS_PANEL) => {
         v: isVisible ? v.concat([item]) : v
       };
     }, { v: [] });
-    console.log(visibleItems, 'wiz-prop');
-   
 
   const handlePrevious = () => {
-    console.log(activeButtonIndex - 1, 'prev-active');
-    console.log(visibleItems.length, 'prev-length');
     const newIndex = activeButtonIndex - 1;
     newIndex >= 0 && setActiveButtonIndex(newIndex < 0 ? visibleItems.length - 1 : newIndex);
   };
 
   const handleNext = () => {
-    console.log(activeButtonIndex, 'next-active');
-    console.log(visibleItems.length - 1, 'next-length');
     const newIndex = activeButtonIndex + 1;
     newIndex <= visibleItems.length - 1 && setActiveButtonIndex(newIndex >= visibleItems.length ? 0 : newIndex);
   };
@@ -72,7 +64,7 @@ const Wizard = (props: PROPS_PANEL) => {
   }, []);
 
   return visible ? (
-    <div id={id} className="cmp-adaptiveform-wizard" data-panelcontainer="wizard" data-placeholder-text="Please drag Wizard components here" data-cmp-visible={visible} data-cmp-enabled={enabled}>
+    <div id={id} className={`cmp-adaptiveform-wizard ${appliedCssClassNames||''}`} data-panelcontainer="wizard" data-placeholder-text="Please drag Wizard components here" data-cmp-visible={visible} data-cmp-enabled={enabled}>
       {label?.visible && <label className="cmp-adaptiveform-wizard__label" htmlFor={`${id}-widget`}>{label?.value}</label>}
       {props?.description && <button className="cmp-adaptiveform-wizard__questionmark" onClick={handleClick} aria-label='Toggle Button'></button>}
       {shortDescription && props?.tooltip && <div title='Help Text' data-cmp-visible={shortDescription} className='cmp-adaptiveform-wizard__shortdescription'>{props?.tooltip}</div>}

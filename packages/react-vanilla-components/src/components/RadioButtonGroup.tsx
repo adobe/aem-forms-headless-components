@@ -22,7 +22,7 @@ import { withRuleEngine } from '../utils/withRuleEngine';
 import { PROPS } from '../utils/type';
 
 const RadioButtonGroup = (props: PROPS) => {
-  const { id, label, required, enumNames, enum: enums, name, isError, errorMessage, description, visible, enabled, value, readOnly } = props;
+  const { id, label, required, enumNames, enum: enums, name, isError, errorMessage, description, visible, enabled, value, readOnly, appliedCssClassNames } = props;
   const options = enumNames && enumNames.length ? enumNames : enums || [];
   const orientation = props.layout?.orientation.toUpperCase();
   const [shortDescription, setShortDescription] = useState(true);
@@ -39,7 +39,7 @@ const RadioButtonGroup = (props: PROPS) => {
     props.dispatchChange(val);
   };
   return (
-    <div className="cmp-adaptiveform-radiobutton" data-cmp-is="adaptiveFormRadioButton" data-cmp-visible={visible} data-cmp-enabled={enabled}>
+    <div className={`cmp-adaptiveform-radiobutton ${appliedCssClassNames||''}`} data-cmp-is="adaptiveFormRadioButton" data-cmp-visible={visible} data-cmp-enabled={enabled}>
       {label?.visible && <label htmlFor={`${id}-widget`} className="cmp-adaptiveform-radiobutton__label">{label?.value}</label>}
       {description && <button aria-label='Toggle Button' className="cmp-adaptiveform-radiobutton__questionmark" onClick={handleClick}></button>}
       <div className={`cmp-adaptiveform-radiobutton__widget ${orientation}`} id={`${id}-widget`}>

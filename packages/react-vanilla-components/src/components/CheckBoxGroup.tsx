@@ -22,7 +22,7 @@ import { withRuleEngine } from '../utils/withRuleEngine';
 import { PROPS } from '../utils/type';
 
 const CheckBoxGroup = (props: PROPS) => {
-  const { id, label, required, enumNames, enum: enums, value, name, isError, errorMessage, description, readOnly, visible, enabled } = props;
+  const { id, label, required, enumNames, enum: enums, value, name, isError, errorMessage, description, readOnly, visible, enabled, appliedCssClassNames } = props;
   const options = enumNames && enumNames.length ? enumNames : enums || [];
   const orientation = props.layout?.orientation.toUpperCase();
   const [shortDescription, setShortDescription] = useState(true);
@@ -60,7 +60,7 @@ const CheckBoxGroup = (props: PROPS) => {
   };
 
   return (
-    <div className="cmp-adaptiveform-checkboxgroup" data-cmp-is="adaptiveFormCheckBoxGroup" data-cmp-visible={visible} data-cmp-enabled={enabled}>
+    <div className={`cmp-adaptiveform-checkboxgroup ${appliedCssClassNames||''}`}  data-cmp-is="adaptiveFormCheckBoxGroup" data-cmp-visible={visible} data-cmp-enabled={enabled}>
       {label?.visible && <label htmlFor={`${id}-widget`} className="cmp-adaptiveform-checkboxgroup__label">{label?.value}</label>}
       {description && <button aria-label='Toggle Button' className="cmp-adaptiveform-checkboxgroup__questionmark" onClick={handleClick}></button>}
       <div className={`cmp-adaptiveform-checkboxgroup__widget ${orientation}`} id={`${id}-widget`}>

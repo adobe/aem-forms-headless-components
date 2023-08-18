@@ -22,9 +22,9 @@ import { withRuleEngine } from '../utils/withRuleEngine';
 import { PROPS } from '../utils/type';
 
 const Button = (props: PROPS) => {
-  const { label, enabled } = props;
+  const { label, enabled, appliedCssClassNames } = props;
   return (
-    <div className="cmp-adaptiveform-button" >
+    <div className={`cmp-adaptiveform-button ${appliedCssClassNames||''}`}>
       <button className="cmp-adaptiveform-button__widget" aria-label={label?.visible === false ? label?.value : ''} disabled={!enabled} onClick={props.dispatchClick()}>
         {label?.visible && <span className="cmp-adaptiveform-button__text">{label.value}</span>}
       </button>

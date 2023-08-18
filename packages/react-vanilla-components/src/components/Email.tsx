@@ -22,7 +22,7 @@ import { withRuleEngine } from '../utils/withRuleEngine';
 import { PROPS } from '../utils/type';
 
 const Email = (props: PROPS) => {
-  const { id, value, label, description, valid, errorMessage, enabled, visible, name, placeholder, isError } = props;
+  const { id, value, label, description, valid, errorMessage, enabled, visible, name, placeholder, isError, appliedCssClassNames } = props;
 
   const [shortDescription, setShortDescription] = useState(true);
   const [longDescription, setLongtDescription] = useState(false);
@@ -47,7 +47,7 @@ const Email = (props: PROPS) => {
   };
 
   return (
-    <div className="cmp-adaptiveform-emailinput" data-cmp-enabled={enabled} data-cmp-visible={visible} id={id} data-cmp-is="adaptiveFormEmailInput" data-cmp-valid={valid}>
+    <div className={`cmp-adaptiveform-emailinput ${appliedCssClassNames||''}`} data-cmp-enabled={enabled} data-cmp-visible={visible} id={id} data-cmp-is="adaptiveFormEmailInput" data-cmp-valid={valid}>
       {label?.visible && <label className="cmp-adaptiveform-emailinput__label" htmlFor={`${id}-widget`}>{label?.value}</label>}
       <input
         type="email"

@@ -24,7 +24,7 @@ import { PROPS } from '../utils/type';
 
 
 const TextFieldArea = (props: PROPS) => {
-  const { id, label, name, value, required, readOnly, isError, errorMessage, description, minLength, maxLength, visible, enabled, placeholder } = props;
+  const { id, label, name, value, required, readOnly, isError, errorMessage, description, minLength, maxLength, visible, enabled, placeholder,appliedCssClassNames } = props;
 
   const [shortDescription, setShortDescription] = useState(true);
   const [longDescription, setLongtDescription] = useState(false);
@@ -50,7 +50,7 @@ const TextFieldArea = (props: PROPS) => {
   };
 
   return (
-    <div className="cmp-adaptiveform-textinput" data-cmp-is="adaptiveFormTextInput" data-cmp-visible={visible} data-cmp-enabled={enabled}>
+    <div className={`cmp-adaptiveform-textinput ${appliedCssClassNames||''}`} data-cmp-is="adaptiveFormTextInput" data-cmp-visible={visible} data-cmp-enabled={enabled}>
       {label?.visible && <label className="cmp-adaptiveform-textinput__label" htmlFor={`${id}-widget`}>{label?.value}</label>}
       <textarea id={`${id}-widget`} className={value ? 'cmp-adaptiveform-textinput__widget cmp-adaptiveform-textinput__widget--filled' : 'cmp-adaptiveform-textinput__widget cmp-adaptiveform-textinput__widget--empty'} name={name} onChange={handleChange} value={value} required={required} readOnly={readOnly} minLength={minLength} maxLength={maxLength} onFocus={handleFocus} placeholder={placeholder} onBlur={handleBlur} />
       {description && <button aria-label='Toggle Button' className="cmp-adaptiveform-textinput__questionmark" onClick={handleClick}></button>}
