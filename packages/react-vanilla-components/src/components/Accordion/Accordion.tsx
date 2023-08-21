@@ -26,7 +26,7 @@ import RepeatableItem from './RepeatableItem';
 export const AppContext = createContext('' as any);
 
 const Accordion = (props: PROPS_PANEL) => {
-   const {items,id, label, visible, enabled} = props;
+   const {items,id, label, visible, enabled, appliedCssClassNames} = props;
    const [shortDescription, setShortDescription] = useState(true);
    const [longDescription, setLongtDescription] = useState(false);
 
@@ -55,7 +55,7 @@ const Accordion = (props: PROPS_PANEL) => {
    };
 
    return (
-      <div className="cmp-accordion" data-cmp-is="adaptiveFormAccordion" data-cmp-single-expansion="true" data-placeholder-text="false" data-cmp-visible={visible} data-cmp-enabled={enabled}>
+      <div className={`cmp-accordion ${appliedCssClassNames||''}`}   data-cmp-is="adaptiveFormAccordion" data-cmp-single-expansion="true" data-placeholder-text="false" data-cmp-visible={visible} data-cmp-enabled={enabled}>
          {label?.visible && <label htmlFor={id} className="cmp-accordion__label">{label?.value}</label>}
          {props?.description && <button aria-label='Toggle Button' className="cmp-accordion__questionmark" onClick={handleClick}></button>} 
          {shortDescription && props?.tooltip && <div title='Help Text' data-cmp-visible={shortDescription} className='cmp-accordion__shortdescription'>{props?.tooltip}</div>}

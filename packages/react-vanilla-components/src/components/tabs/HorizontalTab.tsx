@@ -24,13 +24,12 @@ import { withRuleEnginePanel } from '../../utils/withRuleEngine';
 import { PROPS_PANEL } from '../../utils/type';
 
 const HorizontalTab = (props: PROPS_PANEL) => {
-  console.log('tab-props', props);
   // @ts-ignore
   const { mappings } = useContext(FormContext);
   const [activetabIndex, setActiveTabIndex] = useState(0);
   const [shortDescription, setShortDescription] = useState(true);
   const [longDescription, setLongtDescription] = useState(false);
-  const { items, label, id, visible, enabled } = props;
+  const { items, label, id, visible, enabled, appliedCssClassNames } = props;
   const { v: visibleItems } =
     items.reduce(({ v }: any, item) => {
       const isVisible = item.visible === true;
@@ -55,7 +54,7 @@ const HorizontalTab = (props: PROPS_PANEL) => {
   }, []);
 
   return (
-    <div data-cmp-is="adaptiveFormTabs" id={id} className="cmp-tabs" data-placeholder-text="false" data-cmp-visible={visible} data-cmp-enabled={enabled}>
+    <div data-cmp-is="adaptiveFormTabs" id={id} className={`cmp-tabs ${appliedCssClassNames||''}`} data-placeholder-text="false" data-cmp-visible={visible} data-cmp-enabled={enabled}>
       {label?.visible && <label className="cmp-tabs__label" htmlFor={`${id}-widget`}>{label?.value}</label>}
       {props?.description && <button aria-label='Toggle Button' className="cmp-tabs__questionmark" onClick={handleButtonClick}></button>}
       {shortDescription && props?.tooltip && <div title='Help Text' data-cmp-visible={shortDescription} className='cmp-tabs__shortdescription'>{props?.tooltip}</div>}

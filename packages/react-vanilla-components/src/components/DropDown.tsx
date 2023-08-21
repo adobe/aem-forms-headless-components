@@ -22,7 +22,7 @@ import { withRuleEngine } from '../utils/withRuleEngine';
 import { PROPS } from '../utils/type';
 
 const DropDown = (props: PROPS) => {
-  const { id, enum: enums, enumNames, label, value, placeholder, errorMessage, description, isError, name, enabled, visible } = props;
+  const { id, enum: enums, enumNames, label, value, placeholder, errorMessage, description, isError, name, enabled, visible, appliedCssClassNames } = props;
   const dropValue = enumNames && enumNames.length ? enumNames : enums || [];
 
   const [shortDescription, setShortDescription] = useState(true);
@@ -39,7 +39,7 @@ const DropDown = (props: PROPS) => {
     props.dispatchChange(val);
   };
   return (
-    <div className="cmp-adaptiveform-dropdown" data-cmp-is="adaptiveFormDropDown" data-cmp-visible={visible} data-cmp-enabled={enabled}>
+    <div className={`cmp-adaptiveform-dropdown ${appliedCssClassNames||''}`}  data-cmp-is="adaptiveFormDropDown" data-cmp-visible={visible} data-cmp-enabled={enabled}>
       {label?.visible && <label className="cmp-adaptiveform-dropdown__label" htmlFor={id}>{label?.value}</label>}
       {description && <button aria-label='Toggle Button' className="cmp-adaptiveform-dropdown__questionmark" onClick={handleClick}></button>}
       <select id={`${id}-widget`} data-testid='select' name={name} title={label?.value} className={value ? 'cmp-adaptiveform-dropdown__widget cmp-adaptiveform-dropdown__widget--filled' : 'cmp-adaptiveform-dropdown__widget cmp-adaptiveform-dropdown__widget--empty'} onChange={changeHandler} value={value} disabled={!enabled}>

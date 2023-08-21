@@ -25,7 +25,7 @@ import { PROPS } from '../utils/type';
 
 const FileUpload = (props: PROPS) => {
   const fileInputField = useRef(null);
-  const { id, name, value, label, isError, errorMessage, required, description, accept, maxFileSize } = props;
+  const { id, name, value, label, isError, errorMessage, required, description, accept, maxFileSize, visible, enabled, appliedCssClassNames } = props;
   let val = value && ((value instanceof Array) ? value : [value]);
   const [files, setFiles] = useState<FileObject[]>(val || []);
   const [shortDescription, setShortDescription] = useState(true);
@@ -76,7 +76,7 @@ const FileUpload = (props: PROPS) => {
   };
 
   return (
-    <div className="cmp-adaptiveform-fileinput">
+    <div className={`cmp-adaptiveform-fileinput ${appliedCssClassNames||''}`} data-cmp-is="adaptiveFormFileInput" data-cmp-visible={visible} data-cmp-enabled={enabled}>
       {label?.visible && <label id={`${id}-label`} htmlFor={id} className="cmp-adaptiveform-fileinput__label">{label?.value}</label>}
       {description ? <button className="cmp-adaptiveform-fileinput__questionmark" aria-label='Toggle Button' onClick={handleClick}></button> : null}
       <br />

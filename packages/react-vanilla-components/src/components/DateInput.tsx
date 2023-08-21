@@ -22,7 +22,7 @@ import { withRuleEngine } from '../utils/withRuleEngine';
 import { PROPS } from '../utils/type';
 
 const DateInput = (props: PROPS) => {
-  const { id, label, value, errorMessage, isError, description, required, name, readOnly, placeholder, visible, enabled } = props;
+  const { id, label, value, errorMessage, isError, description, required, name, readOnly, placeholder, visible, enabled, appliedCssClassNames } = props;
 
   const [shortDescription, setShortDescription] = useState(true);
   const [longDescription, setLongDescription] = useState(false);
@@ -50,7 +50,7 @@ const DateInput = (props: PROPS) => {
   };
 
   return (
-    <div className="cmp-adaptiveform-datepicker" data-cmp-is="adaptiveFormDatePicker" data-cmp-visible={visible} data-cmp-enabled={enabled}>
+    <div className={`cmp-adaptiveform-datepicker ${appliedCssClassNames||''}`}  data-cmp-is="adaptiveFormDatePicker" data-cmp-visible={visible} data-cmp-enabled={enabled}>
       <div>
         {label?.visible && <label id={`${id}-label`} htmlFor={id} className="cmp-adaptiveform-datepicker__label">{label?.value}</label>}
       </div>

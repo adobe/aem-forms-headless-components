@@ -19,7 +19,7 @@ import { withRuleEngine } from '../utils/withRuleEngine';
 import { PROPS } from '../utils/type';
 
 const CheckBox = (props: PROPS) => {
-  const { id, label, enum: enums, value, isError, errorMessage, description, name, readOnly, enabled, visible } = props;
+  const { id, label, enum: enums, value, isError, errorMessage, description, name, readOnly, enabled, visible, appliedCssClassNames } = props;
   const selectedValue = enums?.[0];
   const [shortDescription, setShortDescription] = useState(true);
   const [longDescription, setLongtDescription] = useState(false);
@@ -37,7 +37,7 @@ const CheckBox = (props: PROPS) => {
   };
 
   return (
-    <div className="cmp-adaptiveform-checkbox" data-cmp-is="adaptiveFormCheckBox" data-cmp-visible={visible} data-cmp-enabled={enabled}>
+    <div className={`cmp-adaptiveform-checkbox ${appliedCssClassNames||''}`} data-cmp-is="adaptiveFormCheckBox" data-cmp-visible={visible} data-cmp-enabled={enabled}>
       {label?.visible && <label className="cmp-adaptiveform-checkbox__label" htmlFor={`${id}-widget`}>{label?.value}</label>}
       {description && <button aria-label='Toggle Button' className="cmp-adaptiveform-checkbox__questionmark" onClick={handleClick}></button>}
       <input id={`${id}-widget`} type='checkbox' className={selectedValue === value ? 'cmp-adaptiveform-checkbox__widget cmp-adaptiveform-checkbox__widget--filled' : 'cmp-adaptiveform-checkbox__widget cmp-adaptiveform-checkbox__widget--empty'} onChange={handleChange} value={value} name={name} readOnly={readOnly} disabled={!enabled} aria-checked={selectedValue === value ? 'true' : 'false'} />
