@@ -2,7 +2,12 @@
   "name": "@adobe/af-chakra-ui",
   "version": "1.0.0",
   "private": true,
-  "homepage": "https://git.corp.adobe.com/mzubair",
+  "homepage": "",
+  "main": "lib/index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
   "dependencies": {
     "@adobe/exc-app": "^1.0.5",
     "@aemforms/af-core": "^0.22.43",
@@ -10,7 +15,6 @@
     "@chakra-ui/react": "^2.6.0",
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
-    "@reach/router": "1.0.2",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
@@ -23,7 +27,6 @@
     "eslint-plugin-promise": "^5.1.0",
     "eslint-plugin-react-hooks": "^4.2.0",
     "framer-motion": "^4",
-    "gh-pages": "^3.2.3",
     "jest": "^26.6.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -35,18 +38,11 @@
     "web-vitals": "^1.0.1"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "eject": "react-scripts eject",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
+    "clean": "rm -rf lib target",
+    "build": "npm run clean",
+    "test:ci": "jest --silent --coverage",
+    "prepublishOnly": "npm run build && npm run test",
     "test": "jest --silent"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
   },
   "browserslist": {
     "production": [
