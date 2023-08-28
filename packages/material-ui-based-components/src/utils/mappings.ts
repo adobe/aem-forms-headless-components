@@ -3,6 +3,7 @@ import Panel from '../components/Panel';
 import TextField from '../components/TextField';
 import TabsVerticalComp from '../components/TabsVerticalComp';
 import TabsHorizontalComp from '../components/TabsHorizontalComp';
+import Wizard from '../components/Wizard';
 import Button from '../components/Button';
 import Number from '../components/Number';
 import DropDown from '../components/DropDown';
@@ -19,6 +20,7 @@ export default {
   'text-input': TextField,
   'custom:vertical-tab': TabsVerticalComp,
   'custom:horizontal-tab': TabsHorizontalComp,
+  'custom:wizard': Wizard,
   button: Button,
   'number-input': Number,
   'drop-down': DropDown,
