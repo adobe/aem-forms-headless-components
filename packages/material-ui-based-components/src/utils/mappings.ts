@@ -7,5 +7,8 @@ export default {
   form: Form,
   panel: Panel,
   'text-input': TextField,
+  'password-input': TextField,
+  'multiline-input': TextField,
+  email:TextField,
   'custom:accordion': Accordion
 };
