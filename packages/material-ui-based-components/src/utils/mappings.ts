@@ -1,6 +1,7 @@
 import Form from '../components/Form';
 import Panel from '../components/Panel';
 import TextField from '../components/TextField';
+import Wizard from '../components/Wizard';
 import Button from '../components/Button';
 import Number from '../components/Number';
 import DropDown from '../components/DropDown';
@@ -15,6 +16,7 @@ export default {
   form: Form,
   panel: Panel,
   'text-input': TextField,
+  'custom:wizard': Wizard,
   button: Button,
   'number-input': Number,
   'drop-down': DropDown,
