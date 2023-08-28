@@ -13,3 +13,9 @@ export type PROPS = State<FieldJson & Handlers & {
 }>;
 
 export type PROPS_PANEL = State<FieldsetJson> & { handlers: Handlers }
+
+export interface TabPanelProps {
+  children?: any;
+  index: number;
+  value: number;
+}
