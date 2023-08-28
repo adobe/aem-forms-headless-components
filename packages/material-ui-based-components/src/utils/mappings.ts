@@ -1,6 +1,7 @@
 import Form from '../components/Form';
 import Panel from '../components/Panel';
 import TextField from '../components/TextField';
+import Number from '../components/Number';
 import DropDown from '../components/DropDown';
 import AutoComplete from '../components/AutoComplete';
 import Radiobutton from '../components/Radiobutton';
@@ -13,6 +14,7 @@ export default {
   form: Form,
   panel: Panel,
   'text-input': TextField,
+  'number-input': Number,
   'drop-down': DropDown,
   'custom:autocomplete':AutoComplete,
   'radio-group': Radiobutton,
