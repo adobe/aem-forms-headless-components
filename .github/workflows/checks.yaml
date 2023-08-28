@@ -4,6 +4,7 @@ on:
     types: [opened, synchronize]
     branches:
       - main
+      - dev
 
 jobs:
   checks:
@@ -22,6 +23,7 @@ jobs:
 
     - name: Install Dependencies
       run: |
+        npm install
         npx lerna bootstrap
     - name: Run Build
       run: npx lerna run build

@@ -3,6 +3,8 @@ packages/react-native/node_modules/
 packages/react-native/lib/
 packages/react-spectrum/node_modules/
 packages/react-spectrum/lib/
+packages/react-vanilla-components/node_modules/
+packages/react-vanilla-components/lib/
 packages/material-ui-based-components/node_modules/
 packages/material-ui-based-components/lib
 

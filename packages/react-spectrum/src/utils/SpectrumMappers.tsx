@@ -1,10 +1,23 @@
-/*
- * Copyright 2022 Adobe, Inc.
- *
- * Your access and use of this software is governed by the Adobe Customer Feedback Program Terms and Conditions or other Beta License Agreement signed by your employer and Adobe, Inc.. This software is NOT open source and may not be used without one of the foregoing licenses. Even with a foregoing license, your access and use of this file is limited to the earlier of (a) 180 days, (b) general availability of the product(s) which utilize this software (i.e. AEM Forms), (c) January 1, 2023, (d) Adobe providing notice to you that you may no longer use the software or that your beta trial has otherwise ended.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL ADOBE NOR ITS THIRD PARTY PROVIDERS AND PARTNERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- */
+/*************************************************************************
+* ADOBE CONFIDENTIAL
+* ___________________
+*
+* Copyright 2023 Adobe
+* All Rights Reserved.
+*
+* NOTICE: All information contained herein is, and remains
+* the property of Adobe and its suppliers, if any. The intellectual
+* and technical concepts contained herein are proprietary to Adobe
+* and its suppliers and are protected by all applicable intellectual
+* property laws, including trade secret and copyright laws.
+* Dissemination of this information or reproduction of this material
+* is strictly forbidden unless prior written permission is obtained
+* from Adobe.
+
+* Adobe permits you to use and modify this file solely in accordance with
+* the terms of the Adobe license agreement accompanying it.
+*************************************************************************/
+
 
 import {checkIfConstraintsArePresent, FieldJson} from '@aemforms/af-core';
 import React, {JSXElementConstructor} from 'react';
@@ -101,20 +114,23 @@ export const stringConstraintConvertor: Convertor<FieldViewState> = (a) => {
 
 export const enumToChildConvertor = (Component: JSXElementConstructor<any>) =>  {
     return enumConvertor('children', (text, value) => {
-        // @ts-ignore
-        return <Component key={value} value={value}>{text + ''}</Component>;
+        // @ts-ignore 
+        return <Component key={value} value={value}>{text}</Component>;
     });
 };
 
-type EnumConvertor = (x: string, y: (a: string, b: string) => any) => Convertor<FieldJson>
-export const enumConvertor : EnumConvertor = (propertyName: string, callback: (text: string, value: string) => any) => (a, b, f) => {
+type EnumConvertor = (x: string, y: (a: JSX.Element | string, b: string) => any) => Convertor<FieldJson>
+export const enumConvertor : EnumConvertor = (propertyName: string, callback: (text: JSX.Element | string, value: string) => any) => (a, b, f) => {
     const options = a.enum || [];
     const localizedOptions = f('enum');
     const localizedOptionsName = f('enumNames');
+    const nonLocalizedOptionsName = a?.enumNames;
     const radio = (option : any, i : number) => {
         const value = option;
         const text = (localizedOptionsName && i < localizedOptionsName.length) ? localizedOptionsName[i] : localizedOptions[i];
-        return callback( text, value);
+        const nonLocalizedEnumName = (nonLocalizedOptionsName && i < nonLocalizedOptionsName.length) ? nonLocalizedOptionsName[i] : localizedOptions[i];
+        const finalText = (typeof nonLocalizedEnumName !== 'string' && nonLocalizedEnumName?.richText) ? richTextString(text) : text;
+        return callback( finalText, value);
     };
 
     return {
@@ -135,7 +151,7 @@ export const withErrorMessage = (Component: JSXElementConstructor<any>) => (prop
     const helpText = invalid ? props.errorMessage || '' : props.description;
     const hasHelpText = (typeof helpText === 'string' && helpText.length > 0) || helpText != null;
     return (<div className={clsx('formField', invalid && 'formField--invalid')}>
-        {/* @ts-ignore */}
+        {/* @ts-ignore  */}
         <Component {...props} />
         { hasHelpText ? <div className={'formField__helpText'}>{helpText}</div> : null}
     </div>);
