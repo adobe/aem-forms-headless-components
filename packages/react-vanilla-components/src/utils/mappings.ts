@@ -32,6 +32,7 @@ import Email from '../components/Email';
 import VerticalTab from '../components/tabs/VerticalTab';
 import Form from '../components/Form';
 import PlainText from '../components/PlainText';
+import ReCaptcha from '../components/ReCaptcha';
 
 const mappings = {
   'text-input': TextField,
@@ -51,7 +52,8 @@ const mappings = {
   'core/fd/components/form/verticaltabs/v1/verticaltabs': VerticalTab,
   'plain-text': PlainText,
   'core/fd/components/form/panelcontainer/v1/panelcontainer': Panel,
-  form: Form
+  form: Form,
+  captcha: ReCaptcha
 };
 
 export default mappings;

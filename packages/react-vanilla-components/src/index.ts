@@ -24,6 +24,7 @@ import VerticalTab from './components/tabs/VerticalTab';
 import Email from './components/Email';
 import PlainText from './components/PlainText';
 import mappings from './utils/mappings';
+import ReCaptcha from './components/ReCaptcha';
 
 export {
   mappings,
@@ -43,5 +44,6 @@ export {
   Wizard,
   Accordion,
   HorizontalTab,
-  VerticalTab
+  VerticalTab,
+  ReCaptcha
 };
