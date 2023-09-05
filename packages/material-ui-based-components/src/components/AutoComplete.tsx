@@ -32,10 +32,15 @@ const AutoCompleteComponent = (props: PROPS) => {
     const enums = props.enum || [];
     const options = enumNames?.length ? enumNames : enums;
 
-    const changeHandler = useCallback((event: any, newValue: any) => {
+    const list = () => {
+        let index = enums.indexOf(value);
+        return index !== -1 ? options[index] : null;
+    };
+
+    const changeHandler = useCallback((event: any, newValue: number) => {
         let index = options.indexOf(newValue);
         props.dispatchChange(index === -1 ? undefined : enums[index]);
-    }, [props.dispatchChange]);
+    }, [props.dispatchChange, enums]);
 
     const blurHandler = useCallback((event: any) => {
         props.dispatchBlur(event.target.value);
@@ -54,7 +59,7 @@ const AutoCompleteComponent = (props: PROPS) => {
                 fullWidth
                 autoComplete
                 disabled={!enabled}
-                value={value ? value : null}
+                value={list()}
                 id={id}
                 onChange={changeHandler}
                 onBlur={blurHandler}

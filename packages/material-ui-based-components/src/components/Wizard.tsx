@@ -52,8 +52,16 @@ function Wizard(props: PROPS_PANEL) {
     const items = props.visible ? props.items : [];
     const [activeStep, setActiveStep] = React.useState(0);
 
+    const { v: visibleItems } =
+    items.reduce(({ v }: any, item) => {
+      const isVisible = item.visible === true;
+      return {
+        v: isVisible ? v.concat([item]) : v
+      };
+    }, { v: [] });
+
     const steps = items.map((child: any) => (
-        child.label.value
+        child.label.value 
     ));
 
     const getChild = useCallback((child: any, index: number) => {
@@ -63,21 +71,19 @@ function Wizard(props: PROPS_PANEL) {
 
     const handleNext = useCallback(() => {
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
-        window.scrollTo(0, 0);
     }, []);
 
     const handleBack = useCallback(() => {
         setActiveStep((prevActiveStep) => prevActiveStep - 1);
-        window.scrollTo(0, 0);
     }, []);
 
     return (
-        <Box sx={{ width: '100%' }}>
+        <Box sx={{ width: '100%' }} data-testid={`wizard-container-${props?.id}`}>
             <Stepper activeStep={activeStep}>
                 {steps.map((label) => {
                     const stepProps: { completed?: boolean } = {};
                     return (
-                        <Step key={label} {...stepProps}>
+                        <Step key={label} {...stepProps} data-testid={`tab-list-${props?.id}`}>
                             {/* @ts-ignore */}
                             <StepLabel>{label}</StepLabel>
                         </Step>
@@ -87,8 +93,8 @@ function Wizard(props: PROPS_PANEL) {
 
             <React.Fragment>
                 {
-                    items.map((child: any, index: number) => (
-                        <TabPanel value={activeStep} index={index} key={`${child.id}`}>
+                    visibleItems.map((child: any, index: number) => (
+                        <TabPanel data-testid={`tab-Panel-${index}`} value={activeStep} index={index} key={`${child.id}`}>
                             {getChild(child, index)}
                         </TabPanel>
                     ))
@@ -98,6 +104,7 @@ function Wizard(props: PROPS_PANEL) {
                         color="inherit"
                         disabled={activeStep === 0}
                         onClick={handleBack}
+                        data-testid={`Back-btn-${props?.id}`}
                     >
                         Back
                     </Button>
@@ -106,6 +113,7 @@ function Wizard(props: PROPS_PANEL) {
                         color="inherit"
                         disabled={activeStep === steps.length - 1}
                         onClick={handleNext}
+                        data-testid={`Next-btn-${props?.id}`}
                     >
                         Next
                     </Button>

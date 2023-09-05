@@ -52,6 +52,14 @@ function TabsVerticalComp(props: PROPS_PANEL) {
   const mappings = useContext(FormContext).mappings;
   const items = props.visible ? props.items : [];
 
+  const { v: visibleItems } =
+  items.reduce(({ v }: any, item) => {
+    const isVisible = item.visible === true;
+    return {
+      v: isVisible ? v.concat([item]) : v
+    };
+  }, { v: [] });
+
   const handleChange = useCallback((event: React.SyntheticEvent, newValue: number) => {
     setSelectedTab(newValue);
   }, []);
@@ -73,13 +81,13 @@ function TabsVerticalComp(props: PROPS_PANEL) {
         sx={{ borderRight: 1, borderColor: 'divider' }}
       >
         {
-          items.map((child: any, index: number) => (
+          visibleItems.map((child: any, index: number) => (
             <Tab label={child.label.value} id={child.id} key={`${child.id}_${index}`} wrapped />
           ))
         }
       </Tabs>
       {
-        items.map((child: any, index: number) => (
+        visibleItems.map((child: any, index: number) => (
           <TabPanel value={selectedTab} index={index} key={`${child.id}`}>
             {getChild(child, index)}
           </TabPanel>
