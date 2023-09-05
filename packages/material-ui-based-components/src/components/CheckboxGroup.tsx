@@ -47,13 +47,6 @@ const CheckboxGroupComponent = (props: PROPS) => {
     }
   }, [value, dispatchChange, finalVal]);
 
-  const isChecked = useCallback((val: string) => {
-    if (value) {
-      return finalVal.includes(val);
-    }
-    return false;
-  }, [value]);
-
   return (
     <FormControl
       variant={props.layout?.variant}
@@ -70,7 +63,7 @@ const CheckboxGroupComponent = (props: PROPS) => {
               value={value ? value : []}
               name={text}
               key={enums[index]}
-              control={<Checkbox value={enums[index]} color={props.layout?.color} checked={isChecked(enums[index])} />}
+              control={<Checkbox value={enums[index]} color={props.layout?.color}  />}
               label={text}
               onChange={changeHandler}
             />

@@ -71,6 +71,7 @@ const DropDownComponent = (props: PROPS) => {
       {label?.visible ? <InputLabel error={isError} htmlFor={id}> {label.value} </InputLabel> : null}
       <Select
         name={name}
+        data-testid={`dropdown-select-${id}`}
         value={getValue()}
         multiple={isArray}
         label={label?.visible ? label.value : ''}

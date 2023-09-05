@@ -47,35 +47,30 @@ export default {
   'date-input': Date,
   'text-input': TextField,
   'plain-text': PlainText,
-  'custom:title': Title,
+  'core/fd/components/form/title/v1/title': Title,
   image: Image,
-  'text-input': TextField,
-  'custom:rating':Rating,
-  'custom:slider':Slider
-  'text-input': TextField,
-  'custom:vertical-tab': TabsVerticalComp,
-  'custom:horizontal-tab': TabsHorizontalComp
-  'text-input': TextField,
-  button: Button
-  'text-input': TextField,
-  'number-input': Number
-  'text-input': TextField,
+  'core/fd/components/form/rating/v1/rating':Rating,
+  'core/fd/components/form/slider/v1/slider':Slider,
+  'core/fd/components/form/verticaltabs/v1/verticaltabs': TabsVerticalComp,
+  'core/fd/components/form/tabsontop/v1/tabsontop': TabsHorizontalComp,
+  'core/fd/components/form/wizard/v1/wizard': Wizard,
+  button: Button,
+  'number-input': Number,
   'drop-down': DropDown,
-  'custom:autocomplete':AutoComplete
+  'core/fd/components/form/autocomplete/v1/autocomplete':AutoComplete
   'text-input': TextField,
   'radio-group': Radiobutton
   'text-input': TextField,
   'checkbox-group': CheckboxGroup
   'text-input': TextField,
-  checkbox: Checkbox,
-  'custom:switch': Switch
+   checkbox: Checkbox,
+  'core/fd/components/form/switch/v1/switch': Switch
   'text-input': TextField,
   'custom:accordion': Accordion
   'text-input': TextField,
   'custom:switch': Switch,
   'password-input': TextField,
   'multiline-input': TextField,
-  email:TextField
-  'text-input': TextField,
-  'custom:wizard': Wizard
+  email:TextField,
+  'core/fd/components/form/accordion/v1/accordion': Accordion
 };

@@ -52,7 +52,7 @@ const CheckboxComponent = (props: PROPS) => {
             <FormGroup row={props.layout?.orientation === 'horizontal'}>
                 <FormControlLabel
                     required={required}
-                    value={label}
+                    value={label?.value}
                     name={name}
                     control={<Checkbox color={props.layout?.color} />}
                     label={label?.visible ? label.value : ''}
