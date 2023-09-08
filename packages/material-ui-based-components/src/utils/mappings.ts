@@ -45,7 +45,6 @@ export default {
   panel: Panel,
   'text-input': TextField,
   'date-input': Date,
-  'text-input': TextField,
   'plain-text': PlainText,
   'core/fd/components/form/title/v1/title': Title,
   image: Image,
@@ -58,19 +57,14 @@ export default {
   'number-input': Number,
   'drop-down': DropDown,
   'core/fd/components/form/autocomplete/v1/autocomplete':AutoComplete
-  'text-input': TextField,
   'radio-group': Radiobutton
-  'text-input': TextField,
   'checkbox-group': CheckboxGroup
-  'text-input': TextField,
    checkbox: Checkbox,
   'core/fd/components/form/switch/v1/switch': Switch
-  'text-input': TextField,
   'custom:accordion': Accordion
-  'text-input': TextField,
   'custom:switch': Switch,
   'password-input': TextField,
   'multiline-input': TextField,
   email:TextField,
-  'core/fd/components/form/accordion/v1/accordion': Accordion
+  'core/fd/components/form/accordion/v1/accordion': Accordion,
 };
