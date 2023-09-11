@@ -56,15 +56,15 @@ export default {
   button: Button,
   'number-input': Number,
   'drop-down': DropDown,
-  'core/fd/components/form/autocomplete/v1/autocomplete':AutoComplete
-  'radio-group': Radiobutton
-  'checkbox-group': CheckboxGroup
+  'core/fd/components/form/autocomplete/v1/autocomplete':AutoComplete,
+  'radio-group': Radiobutton,
+  'checkbox-group': CheckboxGroup,
    checkbox: Checkbox,
-  'core/fd/components/form/switch/v1/switch': Switch
-  'custom:accordion': Accordion
+  'core/fd/components/form/switch/v1/switch': Switch,
+  'custom:accordion': Accordion,
   'custom:switch': Switch,
   'password-input': TextField,
   'multiline-input': TextField,
   email:TextField,
-  'core/fd/components/form/accordion/v1/accordion': Accordion,
+  'core/fd/components/form/accordion/v1/accordion': Accordion
 };

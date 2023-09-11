@@ -6,7 +6,7 @@
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL ADOBE NOR ITS THIRD PARTY PROVIDERS AND PARTNERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import TabsHorizontalComp from '../../src/components/TabsHorizontalComp'
+import TabsVerticalComp from '../../src/components/TabsVerticalComp'
 import React from "react";
 import { render } from "@testing-library/react";
 import { renderComponent } from "../utils";
@@ -48,7 +48,7 @@ const tabsWithData = {
   ],
 };
 
-const helper = renderComponent(TabsHorizontalComp);
+const helper = renderComponent(TabsVerticalComp);
 
 test("Tabs should not rendered if item length is zero", () => {
   const { renderResponse } = helper(emptyTabs);
@@ -63,7 +63,7 @@ test("Tabs should not rendered if visible is false", () => {
     ...emptyTabs,
     visible: false,
   };
-  const { container } = render(<TabsHorizontalComp {...sample} />);
+  const { container } = render(<TabsVerticalComp {...sample} />);
   expect(container.innerHTML.length).toEqual(0);
 });
 

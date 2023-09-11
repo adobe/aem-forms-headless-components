@@ -35,6 +35,15 @@ describe('Checkbox', () => {
     expect(element?.value).toEqual(true);
   });
 
+  test('it should handle visible property', async () => {
+    const f = {
+      ...field,
+      visible: false,
+    };
+    const { renderResponse } = await helper(f);
+    expect(renderResponse.queryByText(f.label.value)).toBeNull();
+  });
+
   test('clicking on checkbox twice resets the value', async () => {
     const f = {
       ...field,

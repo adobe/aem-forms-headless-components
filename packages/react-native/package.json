@@ -32,7 +32,7 @@
     "@aemforms/af-react-renderer": "^0.22.30",
     "@native-base/icons": "^0.0.11",
     "native-base": "^3.4.6",
-    "react": "18.1.0",
+    "react": " ^17.0.2 || 18.1.0",
     "react-intl": "^6.2.1",
     "react-native": "0.70.6",
     "react-native-date-picker": "^4.2.13",

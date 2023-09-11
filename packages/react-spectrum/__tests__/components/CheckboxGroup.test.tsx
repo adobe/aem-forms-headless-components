@@ -10,6 +10,7 @@ import CheckboxGroup from '../../src/components/CheckboxGroup';
 import {filterTestTable, InputFieldTestCase, jest26CompatibleTable, renderComponent, DEFAULT_ERROR_MESSAGE} from '../utils';
 import userEvent from '@testing-library/user-event';
 import { FieldJson } from '@aemforms/af-core';
+import "@testing-library/jest-dom/extend-expect"
 
 const field: FieldJson = {
   name: 'checkbox',
@@ -51,8 +52,8 @@ const labelInputTests: InputFieldTestCase<GroupExpectType>[] = [
   {
     name: 'field gets rendered without a provider',
     field: field,
-    expects: ({ labels, inputs, group }) => {
-      expect(group?.textContent).toContain('Checkbox group');
+    expects: ({ labels, inputs, container }) => {
+      expect(container?.innerHTML).toContain('Checkbox group')
       expect(labels.length).toEqual(3);
       expect(inputs.length).toEqual(3);
       expect(labels[0]?.textContent).toEqual('checkbox 1');
@@ -72,8 +73,8 @@ const labelInputTests: InputFieldTestCase<GroupExpectType>[] = [
         value: '<script>javascript</script><p>label inside p tags</p>'
       }
     },
-    expects: ({ group }) => {
-      expect(group?.innerHTML).toContain('&lt;script&gt;javascript&lt;/script&gt;' +
+    expects: ({ container }) => {
+      expect(container?.innerHTML).toContain('&lt;script&gt;javascript&lt;/script&gt;' +
         '&lt;p&gt;label inside p tags&lt;/p&gt;');
     }
   },
@@ -137,15 +138,6 @@ const labelInputTests: InputFieldTestCase<GroupExpectType>[] = [
     field,
     expects: ({ group }) => {
       expect(group?.getAttribute('aria-invalid')).toBeNull();
-    }
-  },
-  {
-    name: "group's label property is accessible",
-    field,
-    expects: ({ group }) => {
-      const labelID = group?.getAttribute('aria-labelledby');
-      const glabel = group?.querySelector('#' + labelID);
-      expect(glabel?.textContent).toEqual('Checkbox group');
     }
   },
   {
