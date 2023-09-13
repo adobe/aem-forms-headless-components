@@ -16,6 +16,8 @@
 
 import { FieldJson, State, FieldsetJson } from '@aemforms/af-core';
 import { Handlers, WithViewState } from '@aemforms/af-react-renderer';
+import React from 'react';
+
 export type FieldViewState = WithViewState<FieldJson>;
 export type PROPS = State<FieldJson & Handlers & {
   isError?: boolean,
@@ -26,8 +28,27 @@ export type PROPS = State<FieldJson & Handlers & {
   richText?: boolean
 }>;
 
-export type PROPS_PANEL = State<FieldsetJson> & { 
-  handlers: Handlers, 
+export type PROPS_PANEL = State<FieldsetJson> & {
+  handlers: Handlers,
   activePanel?: string,
-  toggle?: (id: string)=> void | undefined
-}
+  toggle?: (id: string) => void | undefined
+};
+
+export type LABEL_CONTAINER = {
+  bemBlock: string,
+  id: string,
+  description?: string,
+  label?: {
+    value: string;
+    richText?: boolean;
+    visible?: boolean;
+  },
+  showShortDescription?: boolean,
+  tooltip?: string,
+  showLongDescription?: boolean
+  onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void,
+  isError?: boolean,
+  errorMessage?: string,
+  children?: React.ReactNode
+  isHelpContainer?: boolean
+};

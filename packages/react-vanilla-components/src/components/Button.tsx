@@ -17,17 +17,39 @@
 //  * LINK- https://github.com/adobe/aem-core-forms-components/blob/master/ui.af.apps/src/main/content/jcr_root/apps/core/fd/components/form/button/v1/button/button.html
 //  ******************************************************************************
 
-import React from 'react';
+import React, { useCallback } from 'react';
 import { withRuleEngine } from '../utils/withRuleEngine';
 import { PROPS } from '../utils/type';
+import FieldWrapper from './common/FieldWrapper';
 
 const Button = (props: PROPS) => {
-  const { label, enabled, appliedCssClassNames } = props;
+  const { label, enabled, appliedCssClassNames, id } = props;
+
+  const clickHandler = useCallback(() => {
+    props.dispatchClick();
+  }, [props.dispatchClick]);
+
   return (
-    <div className={`cmp-adaptiveform-button ${appliedCssClassNames||''}`}>
-      <button className="cmp-adaptiveform-button__widget" aria-label={label?.visible === false ? label?.value : ''} disabled={!enabled} onClick={props.dispatchClick()}>
-        {label?.visible && <span className="cmp-adaptiveform-button__text">{label.value}</span>}
-      </button>
+    <div className={`cmp-adaptiveform-button ${appliedCssClassNames || ''}`}>
+      <FieldWrapper
+        bemBlock='cmp-adaptiveform-checkbox'
+        label={label}
+        id={id}
+        tooltip={props.tooltip}
+        description={props.description}
+        isError={props.isError}
+        errorMessage={props.errorMessage}
+        isHelpContainer
+      >
+        <button
+          className="cmp-adaptiveform-button__widget"
+          aria-label={label?.visible === false ? label?.value : ''}
+          disabled={!enabled}
+          onClick={clickHandler}
+        >
+          {label?.visible && <span className="cmp-adaptiveform-button__text">{label.value}</span>}
+        </button>
+      </FieldWrapper>
     </div>
   );
 };

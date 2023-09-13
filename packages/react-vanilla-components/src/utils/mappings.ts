@@ -45,7 +45,7 @@ const mappings = {
   'file-input': FileUpload,
   email: Email,
   'multiline-input': TextFieldArea,
-  'core/fd/components/form/wizard/v1/wizard': Wizard,
+  'core/fd/components/form/wizard/v2/wizard': Wizard,
   'core/fd/components/form/accordion/v1/accordion': Accordion,
   'core/fd/components/form/tabsontop/v1/tabsontop': HorizontalTab,
   'core/fd/components/form/verticaltabs/v1/verticaltabs': VerticalTab,

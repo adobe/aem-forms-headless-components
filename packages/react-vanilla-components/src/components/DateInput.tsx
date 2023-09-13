@@ -17,52 +17,59 @@
 //  * LINK- https://github.com/adobe/aem-core-forms-components/blob/master/ui.af.apps/src/main/content/jcr_root/apps/core/fd/components/form/datepicker/v1/datepicker/datepicker.html
 //  ******************************************************************************
 
-import React, { useState } from 'react';
+import React, { useCallback } from 'react';
 import { withRuleEngine } from '../utils/withRuleEngine';
 import { PROPS } from '../utils/type';
+import FieldWrapper from './common/FieldWrapper';
 
 const DateInput = (props: PROPS) => {
-  const { id, label, value, errorMessage, isError, description, required, name, readOnly, placeholder, visible, enabled, appliedCssClassNames } = props;
-
-  const [shortDescription, setShortDescription] = useState(true);
-  const [longDescription, setLongDescription] = useState(false);
-
+  const { id, label, value, required, name, readOnly, placeholder, visible, enabled, appliedCssClassNames } = props;
   const finalValue = value === undefined ? '' : value;
 
-  const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const changeHandler = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;
     props.dispatchChange(val);
-  };
+  }, [props.dispatchChange]);
 
-  const handleFocus = () => {
+  const handleFocus = useCallback(() => {
     props.dispatchFocus();
-  };
+  }, [props.dispatchFocus]);
 
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    event.preventDefault();
-    setShortDescription(!shortDescription);
-    setLongDescription(!longDescription);
-  };
-
-  const handleBlur = () => {
-    //throw 'Blur';
+  const handleBlur = useCallback(() => {
     props.dispatchBlur();
-  };
+  }, [props.dispatchBlur]);
 
   return (
-    <div className={`cmp-adaptiveform-datepicker ${appliedCssClassNames||''}`}  data-cmp-is="adaptiveFormDatePicker" data-cmp-visible={visible} data-cmp-enabled={enabled}>
-      <div>
-        {label?.visible && <label id={`${id}-label`} htmlFor={id} className="cmp-adaptiveform-datepicker__label">{label?.value}</label>}
-      </div>
-      <div>
-        {description && <button className="cmp-adaptiveform-datepicker__questionmark" aria-label='Toggle Button' onClick={handleClick}></button>}
-      </div>
-      <input type='date' id={`${id}-datePicker`} value={finalValue} name={name} required={required} onChange={changeHandler} className={value ? 'cmp-adaptiveform-datepicker__widget cmp-adaptiveform-datepicker__widget--filled' : 'cmp-adaptiveform-datepicker__widget cmp-adaptiveform-datepicker__widget--empty'} aria-label={label?.value} readOnly={readOnly} placeholder={placeholder} onFocus={handleFocus} onBlur={handleBlur} />
-      {shortDescription && props?.tooltip && <div title='Help Text' className="cmp-adaptiveform-datepicker__shortdescription" data-cmp-visible={shortDescription}>{props?.tooltip}</div>}
-      <div aria-live="polite">
-        {description && longDescription && !errorMessage ? <div title='Help Text' data-cmp-visible={longDescription} className="cmp-adaptiveform-datePicker__longdescription">{description}</div> : null}
-      </div>
-      {isError ? <div className="cmp-adaptiveform-datePicker__errormessage">{errorMessage}</div> : null}
+    <div
+      className={`cmp-adaptiveform-datepicker ${appliedCssClassNames || ''}`}
+      data-cmp-is="adaptiveFormDatePicker"
+      data-cmp-visible={visible}
+      data-cmp-enabled={enabled}
+    >
+      <FieldWrapper
+        bemBlock='cmp-adaptiveform-datepicker'
+        label={label}
+        id={id}
+        tooltip={props.tooltip}
+        description={props.description}
+        isError={props.isError}
+        errorMessage={props.errorMessage}
+      >
+        <input
+          type='date'
+          id={`${id}-datePicker`}
+          value={finalValue}
+          name={name}
+          required={required}
+          onChange={changeHandler}
+          className={`cmp-adaptiveform-datepicker__widget cmp-adaptiveform-datepicker__widget--${value ? 'filled' : 'empty'}`}
+          aria-label={label?.value}
+          readOnly={readOnly}
+          placeholder={placeholder}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
+        />
+      </FieldWrapper>
     </div>
   );
 };

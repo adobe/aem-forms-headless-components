@@ -21,13 +21,12 @@ import React, { useContext, useState, useCallback } from 'react';
 import { FormContext, getRenderer } from '@aemforms/af-react-renderer';
 import { withRuleEnginePanel } from '../../utils/withRuleEngine';
 import { PROPS_PANEL } from '../../utils/type';
+import FieldWrapper from '../common/FieldWrapper';
 
 const VerticalTab = (props: PROPS_PANEL) => {
   // @ts-ignore
   const { mappings } = useContext(FormContext);
-  const [activetabIndex, setActiveTabIndex] = useState(0);
-  const [shortDescription, setShortDescription] = useState(true);
-  const [longDescription, setLongtDescription] = useState(false);
+  const [activeTab, setActiveTab] = useState(0);
   const { items, label, id, visible, enabled, appliedCssClassNames } = props;
   const { v: visibleItems } =
     items.reduce(({ v }: any, item) => {
@@ -38,14 +37,8 @@ const VerticalTab = (props: PROPS_PANEL) => {
     }, { v: [] });
 
   const handleClick = (index: number) => {
-    setActiveTabIndex(index);
+    setActiveTab(index);
   }
-
-  const handleButtonClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    event.preventDefault();
-    setShortDescription(!shortDescription);
-    setLongtDescription(!longDescription);
-  };
 
   const getChild = useCallback((child: any, index: number) => {
     const Comp = getRenderer(child, mappings);
@@ -53,22 +46,49 @@ const VerticalTab = (props: PROPS_PANEL) => {
   }, []);
 
   return (
-    <div id={id} className={`cmp-verticaltabs ${appliedCssClassNames||''}`}  data-panelcontainer="verticaltabs" data-placeholder-text="false" data-cmp-visible={visible ? 'true' : 'false'} data-cmp-enabled={enabled ? 'true' : 'false'}>
-      {label?.visible && <label className="cmp-verticaltabs__label" htmlFor={`${id}-widget`}>{label?.value}</label>}
-      {props?.description && <button aria-label='Toggle Button' className="cmp-verticaltabs__questionmark" onClick={handleButtonClick}></button>}
-      {shortDescription && props?.tooltip && <div title='Help Text' data-cmp-visible={shortDescription} className='cmp-verticaltabs__shortdescription'>{props?.tooltip}</div>}
-      <div aria-live="polite">
-        {longDescription && props?.description && <div title='Help Text' data-cmp-visible={longDescription} className="cmp-verticaltabs__longdescription">{props?.description}</div>}
-      </div>
+    <div
+      id={id}
+      className={`cmp-verticaltabs ${appliedCssClassNames || ''}`}
+      data-panelcontainer="verticaltabs"
+      data-placeholder-text="false"
+      data-cmp-visible={visible ? 'true' : 'false'}
+      data-cmp-enabled={enabled ? 'true' : 'false'}
+    >
+      <FieldWrapper
+        bemBlock='cmp-verticaltabs'
+        label={label}
+        id={id}
+        tooltip={props.tooltip}
+        description={props.description}
+      />
       <div className="cmp-verticaltabs__tabs-container">
         <ol role="tablist" className="cmp-verticaltabs__tablist" aria-multiselectable="false" id={`${id}-widget`} >
           {visibleItems.map((item: PROPS_PANEL, index: number) => (
-            <li id={`${item?.id}__tab`} aria-controls={`${item?.id}__tabpanel`} role="tab" key={item?.id} onClick={() => handleClick(index)} className={index === activetabIndex ? 'cmp-verticaltabs__tab cmp-verticaltabs__tab--active' : 'cmp-verticaltabs__tab'} data-cmp-hook-adaptiveformtabs="tab" aria-selected={index === activetabIndex ? 'true' : 'false'} tabIndex={index === activetabIndex ? 0 : -1}>{item.label?.value}</li>
+            <li
+              id={`${item?.id}__tab`}
+              aria-controls={`${item?.id}__tabpanel`}
+              role="tab" key={item?.id}
+              onClick={() => handleClick(index)}
+              className={index === activeTab ? 'cmp-verticaltabs__tab cmp-verticaltabs__tab--active' : 'cmp-verticaltabs__tab'}
+              data-cmp-hook-adaptiveformtabs="tab"
+              aria-selected={index === activeTab ? 'true' : 'false'}
+              tabIndex={index === activeTab ? 0 : -1}
+            >
+              {item.label?.value}
+            </li>
           ))}
         </ol>
-        {visibleItems.length > 0 ? <div id={`${visibleItems[activetabIndex].id}__tabpanel`} data-cmp-hook-adaptiveformtabs="tabpanel" className={activetabIndex === visibleItems[activetabIndex].index ? 'cmp-verticaltabs__tabpanel cmp-verticaltabs__tabpanel--active' : 'cmp-verticaltabs__tabpanel'} role="tabpanel" tabIndex={0} aria-labelledby={`${visibleItems[activetabIndex].id}__tab`}>
-          {getChild(visibleItems[activetabIndex], activetabIndex)}
-        </div> : null}
+        {visibleItems.length > 0 ?
+          <div
+            id={`${visibleItems[activeTab].id}__tabpanel`}
+            data-cmp-hook-adaptiveformtabs="tabpanel"
+            className={activeTab === visibleItems[activeTab].index ? 'cmp-verticaltabs__tabpanel cmp-verticaltabs__tabpanel--active' : 'cmp-verticaltabs__tabpanel'}
+            role="tabpanel"
+            tabIndex={0}
+            aria-labelledby={`${visibleItems[activeTab].id}__tab`}
+          >
+            {getChild(visibleItems[activeTab], activeTab)}
+          </div> : null}
       </div>
     </div>);
 };

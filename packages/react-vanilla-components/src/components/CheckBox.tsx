@@ -14,38 +14,53 @@
 //  * limitations under the License.
 //  ******************************************************************************
 
-import React, { useState } from 'react';
+import React, { useCallback } from 'react';
 import { withRuleEngine } from '../utils/withRuleEngine';
 import { PROPS } from '../utils/type';
+import FieldWrapper from './common/FieldWrapper';
 
 const CheckBox = (props: PROPS) => {
-  const { id, label, enum: enums, value, isError, errorMessage, description, name, readOnly, enabled, visible, appliedCssClassNames } = props;
+  const { id, label, enum: enums, value, name, readOnly, enabled, visible, appliedCssClassNames } = props;
   const selectedValue = enums?.[0];
-  const [shortDescription, setShortDescription] = useState(true);
-  const [longDescription, setLongtDescription] = useState(false);
   const unSelectedValue = (enums?.length || 0) < 2 ? null : enums?.[1];
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.checked ? selectedValue : unSelectedValue;
     props.dispatchChange(val);
-  };
-
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    event.preventDefault();
-    setShortDescription(!shortDescription);
-    setLongtDescription(!longDescription);
-  };
+  }, [props.dispatchChange]);
 
   return (
-    <div className={`cmp-adaptiveform-checkbox ${appliedCssClassNames||''}`} data-cmp-is="adaptiveFormCheckBox" data-cmp-visible={visible} data-cmp-enabled={enabled}>
-      {label?.visible && <label className="cmp-adaptiveform-checkbox__label" htmlFor={`${id}-widget`}>{label?.value}</label>}
-      {description && <button aria-label='Toggle Button' className="cmp-adaptiveform-checkbox__questionmark" onClick={handleClick}></button>}
-      <input id={`${id}-widget`} type='checkbox' className={selectedValue === value ? 'cmp-adaptiveform-checkbox__widget cmp-adaptiveform-checkbox__widget--filled' : 'cmp-adaptiveform-checkbox__widget cmp-adaptiveform-checkbox__widget--empty'} onChange={handleChange} value={value} name={name} readOnly={readOnly} disabled={!enabled} aria-checked={selectedValue === value ? 'true' : 'false'} />
-      {shortDescription && props?.tooltip && <div title='Help Text' className='cmp-adaptiveform-checkbox__shortdescription' data-cmp-visible={shortDescription}>{props?.tooltip}</div>}
-      <div aria-live="polite">
-        {longDescription && description && !errorMessage ? <div title='Help Text' data-cmp-visible={longDescription} className="cmp-adaptiveform-checkbox__longdescription">{description}</div> : null}
-      </div>
-      {isError ? <div id={`${id}-errorMessage`} className="cmp-adaptiveform-checkbox__errormessage">{errorMessage}</div> : null}
+    <div
+      className={`cmp-adaptiveform-checkbox ${appliedCssClassNames || ''}`}
+      data-cmp-is="adaptiveFormCheckBox"
+      data-cmp-visible={visible}
+      data-cmp-enabled={enabled}
+    >
+      <FieldWrapper
+        bemBlock='cmp-adaptiveform-checkbox'
+        label={label}
+        id={id}
+        tooltip={props.tooltip}
+        description={props.description}
+        isError={props.isError}
+        errorMessage={props.errorMessage}
+        isHelpContainer
+      >
+        <div className="cmp-adaptiveform-checkbox__widget-container">
+          <input
+            id={`${id}-widget`}
+            type='checkbox'
+            className={`cmp-adaptiveform-checkbox__widget cmp-adaptiveform-checkbox__widget--${selectedValue === value ? 'filled' : 'empty'}`}
+            onChange={handleChange}
+            value={value}
+            name={name}
+            readOnly={readOnly}
+            disabled={!enabled}
+            aria-checked={selectedValue === value ? 'true' : 'false'}
+          />
+          {label?.visible && <label className="cmp-adaptiveform-checkbox__label" htmlFor={`${id}-widget`}>{label?.value}</label>}
+        </div>
+      </FieldWrapper>
     </div>
   );
 };

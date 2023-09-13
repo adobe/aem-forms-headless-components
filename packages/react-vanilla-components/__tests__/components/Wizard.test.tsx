@@ -67,10 +67,10 @@ test("clicking on the next tab should switch from one component to another and o
   const helper = renderComponent(Wizard);
   const { renderResponse } = helper(WizardWithData);
   const NextTab = renderResponse.container.getElementsByClassName(
-    "cmp-adaptiveform-wizard__nextNav"
+    "cmp-adaptiveform-wizard__nav--next"
   );
   const PrevTab = renderResponse.container.getElementsByClassName(
-    "cmp-adaptiveform-wizard__previousNav"
+    "cmp-adaptiveform-wizard__nav--previous"
   );
   expect(NextTab.length).toEqual(1);
   expect(PrevTab.length).toEqual(0);

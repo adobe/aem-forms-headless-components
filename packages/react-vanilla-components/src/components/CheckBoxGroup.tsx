@@ -17,24 +17,18 @@
 //  *  LINK- https://github.com/adobe/aem-core-forms-components/blob/master/ui.af.apps/src/main/content/jcr_root/apps/core/fd/components/form/checkboxgroup/v1/          checkboxgroup/checkboxgroup.html  
 //  ******************************************************************************
 
-import React, { useState } from 'react';
+import React, { useCallback } from 'react';
 import { withRuleEngine } from '../utils/withRuleEngine';
 import { PROPS } from '../utils/type';
+import FieldWrapper from './common/FieldWrapper';
 
 const CheckBoxGroup = (props: PROPS) => {
-  const { id, label, required, enumNames, enum: enums, value, name, isError, errorMessage, description, readOnly, visible, enabled, appliedCssClassNames } = props;
+  const { id, label, required, enumNames, enum: enums, value, name, readOnly, visible, enabled, appliedCssClassNames } = props;
   const options = enumNames && enumNames.length ? enumNames : enums || [];
   const orientation = props.layout?.orientation.toUpperCase();
-  const [shortDescription, setShortDescription] = useState(true);
-  const [longDescription, setLongtDescription] = useState(false);
 
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    event.preventDefault();
-    setShortDescription(!shortDescription);
-    setLongtDescription(!longDescription);
-  };
 
-  const getValue = (value: any) => {
+  const getValue = useCallback((value: any) => {
     if (value) {
       if (value instanceof Array) {
         return value;
@@ -42,11 +36,11 @@ const CheckBoxGroup = (props: PROPS) => {
       return [value];
     }
     return [];
-  };
+  }, []);
 
   const newVal = getValue(value);
 
-  const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const changeHandler = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     const val = event.target.value;
     const checked = event.target.checked;
     let valAdded = [...newVal];
@@ -57,29 +51,46 @@ const CheckBoxGroup = (props: PROPS) => {
       valAdded = valAdded.filter((item) => item != val);
     }
     props.dispatchChange(valAdded);
-  };
+  }, [props.dispatchChange, newVal]);
 
   return (
-    <div className={`cmp-adaptiveform-checkboxgroup ${appliedCssClassNames||''}`}  data-cmp-is="adaptiveFormCheckBoxGroup" data-cmp-visible={visible} data-cmp-enabled={enabled}>
-      {label?.visible && <label htmlFor={`${id}-widget`} className="cmp-adaptiveform-checkboxgroup__label">{label?.value}</label>}
-      {description && <button aria-label='Toggle Button' className="cmp-adaptiveform-checkboxgroup__questionmark" onClick={handleClick}></button>}
-      <div className={`cmp-adaptiveform-checkboxgroup__widget ${orientation}`} id={`${id}-widget`}>
-        {options?.map((item: string, index: number) => {
-          return (
+    <div
+      className={`cmp-adaptiveform-checkboxgroup ${appliedCssClassNames || ''}`}
+      data-cmp-is="adaptiveFormCheckBoxGroup"
+      data-cmp-visible={visible}
+      data-cmp-enabled={enabled}
+    >
+      <FieldWrapper
+        bemBlock='cmp-adaptiveform-checkboxgroup'
+        label={label}
+        id={id}
+        tooltip={props.tooltip}
+        description={props.description}
+        isError={props.isError}
+        errorMessage={props.errorMessage}
+      >
+        <div
+          className={`cmp-adaptiveform-checkboxgroup__widget ${orientation}`}
+          id={`${id}-widget`}
+        >
+          {options?.map((item: string, index: number) => (
             <div className={`cmp-adaptiveform-checkboxgroup-item ${name}`} key={item}>
-              <label className="cmp-adaptiveform-checkbox__label">
-                <input className={newVal[index] === (enums![index]) ? 'cmp-adaptiveform-checkboxgroup__option__widget cmp-adaptiveform-checkboxgroup__option__widget--filled' : 'cmp-adaptiveform-checkboxgroup__option__widget cmp-adaptiveform-checkboxgroup__option__widget--empty'} type='checkbox' required={required} name={name} value={enums![index]} onChange={changeHandler} readOnly={readOnly} />
+              <label className="cmp-adaptiveform-checkboxgroup__option-label">
+                <input
+                  className={`cmp-adaptiveform-checkboxgroup__option__widget cmp-adaptiveform-checkboxgroup__option__widget--${newVal[index] === enums![index] ? 'filled' : 'empty'}`}
+                  type='checkbox'
+                  required={required}
+                  name={name}
+                  value={enums![index]}
+                  onChange={changeHandler}
+                  readOnly={readOnly}
+                />
                 <span>{item}</span>
               </label>
             </div>
-          );
-        })}
-      </div>
-      {shortDescription && props?.tooltip && <div title='Help Text' className='cmp-adaptiveform-checkboxgroup__shortdescription' data-cmp-visible={shortDescription}>{props?.tooltip}</div>}
-      <div aria-live="polite">
-        {longDescription && description && !errorMessage ? <div title='Help Text' data-cmp-visible={longDescription} className="cmp-adaptiveform-checkboxgroup__longdescription">{description}</div> : null}
-      </div>
-      {isError ? <div id={`${id}-errorMessage`} className="cmp-adaptiveform-checkboxgroup__errormessage">{errorMessage}</div> : null}
+          ))}
+        </div>
+      </FieldWrapper>
     </div>
   );
 };

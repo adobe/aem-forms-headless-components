@@ -18,47 +18,58 @@
 
 //  ******************************************************************************
 
-import React, { useState } from 'react';
+import React, { useCallback } from 'react';
 import { withRuleEngine } from '../utils/withRuleEngine';
 import { PROPS } from '../utils/type';
-
+import FieldWrapper from './common/FieldWrapper';
 
 const TextFieldArea = (props: PROPS) => {
-  const { id, label, name, value, required, readOnly, isError, errorMessage, description, minLength, maxLength, visible, enabled, placeholder,appliedCssClassNames } = props;
+  const { id, label, name, value, required, readOnly, minLength, maxLength, visible, enabled, placeholder, appliedCssClassNames } = props;
 
-  const [shortDescription, setShortDescription] = useState(true);
-  const [longDescription, setLongtDescription] = useState(false);
-
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    event.preventDefault();
-    setShortDescription(!shortDescription);
-    setLongtDescription(!longDescription);
-  };
-
-
-  const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const handleChange = useCallback((event: React.ChangeEvent<HTMLTextAreaElement>) => {
     const enteredValue = event?.target?.value;
     props.dispatchChange(enteredValue);
-  };
+  }, [props.dispatchChange]);
 
-  const handleFocus = () => {
+  const handleFocus = useCallback(() => {
     props.dispatchFocus();
-  };
+  }, [props.dispatchFocus]);
 
-  const handleBlur = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const handleBlur = useCallback((event: React.ChangeEvent<HTMLTextAreaElement>) => {
     props.dispatchBlur(event.target.value);
-  };
+  }, [props.dispatchBlur]);
 
   return (
-    <div className={`cmp-adaptiveform-textinput ${appliedCssClassNames||''}`} data-cmp-is="adaptiveFormTextInput" data-cmp-visible={visible} data-cmp-enabled={enabled}>
-      {label?.visible && <label className="cmp-adaptiveform-textinput__label" htmlFor={`${id}-widget`}>{label?.value}</label>}
-      <textarea id={`${id}-widget`} className={value ? 'cmp-adaptiveform-textinput__widget cmp-adaptiveform-textinput__widget--filled' : 'cmp-adaptiveform-textinput__widget cmp-adaptiveform-textinput__widget--empty'} name={name} onChange={handleChange} value={value} required={required} readOnly={readOnly} minLength={minLength} maxLength={maxLength} onFocus={handleFocus} placeholder={placeholder} onBlur={handleBlur} />
-      {description && <button aria-label='Toggle Button' className="cmp-adaptiveform-textinput__questionmark" onClick={handleClick}></button>}
-      {shortDescription && props?.tooltip && <div title='Help Text' data-cmp-visible={shortDescription} className='cmp-adaptiveform-textinput__shortdescription'>{props?.tooltip}</div>}
-      <div aria-live="polite">
-        {longDescription && description && !errorMessage ? <div title='Help Text' data-cmp-visible={longDescription} className="cmp-adaptiveform-textinput__longdescription">{description}</div> : null}
-      </div>
-      {isError ? <div className="cmp-adaptiveform-textinput__errormessage">{errorMessage}</div> : null}
+    <div
+      className={`cmp-adaptiveform-textinput ${appliedCssClassNames || ''}`}
+      data-cmp-is="adaptiveFormTextInput"
+      data-cmp-visible={visible}
+      data-cmp-enabled={enabled}
+    >
+      <FieldWrapper
+        bemBlock='cmp-adaptiveform-textinput'
+        label={label}
+        id={id}
+        tooltip={props.tooltip}
+        description={props.description}
+        isError={props.isError}
+        errorMessage={props.errorMessage}
+      >
+        <textarea
+          id={`${id}-widget`}
+          className={`cmp-adaptiveform-textinput__widget cmp-adaptiveform-textinput__widget--${value ? 'filled' : 'empty'}`}
+          name={name}
+          onChange={handleChange}
+          value={value}
+          required={required}
+          readOnly={readOnly}
+          minLength={minLength}
+          maxLength={maxLength}
+          onFocus={handleFocus}
+          placeholder={placeholder}
+          onBlur={handleBlur}
+        />
+      </FieldWrapper>
     </div>
   );
 };
