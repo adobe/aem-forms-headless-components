@@ -6,9 +6,5 @@
   ],
   "devDependencies": {
     "lerna": "^6.4.0"
-  },
-  "dependencies": {
-    "@mui/x-date-pickers": "^6.8.0",
-    "dayjs": "^1.11.8"
   }
 }
