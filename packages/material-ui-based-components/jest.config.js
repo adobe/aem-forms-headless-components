@@ -1,4 +1,5 @@
 const esModules = ['@adobe/json-formula', '@aemforms/af-formatters'].join('|');
+const path = require('path');
 
 module.exports = {
   transformIgnorePatterns: [`node_modules/(?!${esModules})`],
@@ -18,8 +19,14 @@ module.exports = {
     // Mock static file imports and assets which Jest can’t handle
     // stylesheets use the package identity-obj-proxy
     '@spectrum-css/.*': 'identity-obj-proxy',
-    '^react$': '<rootDir>/node_modules/react',
-    '^react-intl$': '<rootDir>/node_modules/react-intl'
+    '^react$': path.resolve(
+      __dirname, 
+     '../../node_modules/react'
+   ),
+    '^react-intl$': path.resolve(
+      __dirname, 
+     '../../node_modules/react-intl'
+   )
   },
   reporters : ['default', 'jest-junit'],
   setupFilesAfterEnv: ['<rootDir>/__tests__/setupTests.js']
