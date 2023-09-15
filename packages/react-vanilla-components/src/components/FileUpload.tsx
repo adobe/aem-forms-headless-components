@@ -67,9 +67,11 @@ const FileUpload = (props: PROPS) => {
     callUpdateFilesCb(updatedFiles);
   }, [callUpdateFilesCb, setFiles]);
 
+  const isFilled = Array.isArray(files) ? files.length : files;
+
   return (
     <div
-      className={`cmp-adaptiveform-fileinput ${appliedCssClassNames || ''}`}
+      className={`cmp-adaptiveform-fileinput cmp-adaptiveform-fileinput--${isFilled ? 'filled' : 'empty'} ${appliedCssClassNames || ''}`}
       data-cmp-is="adaptiveFormFileInput"
       data-cmp-visible={visible}
       data-cmp-enabled={enabled}

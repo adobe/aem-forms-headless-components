@@ -34,7 +34,7 @@ const RadioButtonGroup = (props: PROPS) => {
 
   return (
     <div
-      className={`cmp-adaptiveform-radiobutton ${appliedCssClassNames || ''}`}
+      className={`cmp-adaptiveform-radiobutton cmp-adaptiveform-radiobutton--${value ? 'filled' : 'empty'} ${appliedCssClassNames || ''}`}
       data-cmp-is="adaptiveFormRadioButton"
       data-cmp-visible={visible}
       data-cmp-enabled={enabled}
@@ -56,7 +56,7 @@ const RadioButtonGroup = (props: PROPS) => {
             <div className="cmp-adaptiveform-radiobutton__option" key={item}>
               <label className="cmp-adaptiveform-radiobutton__option-label">
                 <input
-                  className={`cmp-adaptiveform-radiobutton__option__widget cmp-adaptiveform-radiobutton__option__widget--${value === enums![index] ? 'filled' : 'empty'}`}
+                  className={'cmp-adaptiveform-radiobutton__option__widget'}
                   type='radio'
                   required={required}
                   name={name}

@@ -41,7 +41,7 @@ const TextFieldArea = (props: PROPS) => {
 
   return (
     <div
-      className={`cmp-adaptiveform-textinput ${appliedCssClassNames || ''}`}
+      className={`cmp-adaptiveform-textinput cmp-adaptiveform-textinput--${value ? 'filled' : 'empty'} ${appliedCssClassNames || ''}`}
       data-cmp-is="adaptiveFormTextInput"
       data-cmp-visible={visible}
       data-cmp-enabled={enabled}
@@ -57,7 +57,7 @@ const TextFieldArea = (props: PROPS) => {
       >
         <textarea
           id={`${id}-widget`}
-          className={`cmp-adaptiveform-textinput__widget cmp-adaptiveform-textinput__widget--${value ? 'filled' : 'empty'}`}
+          className={'cmp-adaptiveform-textinput__widget'}
           name={name}
           onChange={handleChange}
           value={value}

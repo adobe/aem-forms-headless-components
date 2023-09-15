@@ -33,7 +33,7 @@ const DropDown = (props: PROPS) => {
 
   return (
     <div
-      className={`cmp-adaptiveform-dropdown ${appliedCssClassNames || ''}`}
+      className={`cmp-adaptiveform-dropdown cmp-adaptiveform-dropdown--${value ? 'filled' : 'empty'} ${appliedCssClassNames || ''}`}
       data-cmp-is="adaptiveFormDropDown"
       data-cmp-visible={visible}
       data-cmp-enabled={enabled}
@@ -52,7 +52,7 @@ const DropDown = (props: PROPS) => {
           data-testid='select'
           name={name}
           title={label?.value}
-          className={`cmp-adaptiveform-dropdown__widget cmp-adaptiveform-dropdown__widget--${value ? 'filled' : 'empty'}`}
+          className={'cmp-adaptiveform-dropdown__widget'}
           onChange={changeHandler}
           value={value}
           disabled={!enabled}

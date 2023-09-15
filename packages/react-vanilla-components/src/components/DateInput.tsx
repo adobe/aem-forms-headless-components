@@ -41,7 +41,7 @@ const DateInput = (props: PROPS) => {
 
   return (
     <div
-      className={`cmp-adaptiveform-datepicker ${appliedCssClassNames || ''}`}
+      className={`cmp-adaptiveform-datepicker cmp-adaptiveform-datepicker--${value ? 'filled' : 'empty'} ${appliedCssClassNames || ''}`}
       data-cmp-is="adaptiveFormDatePicker"
       data-cmp-visible={visible}
       data-cmp-enabled={enabled}
@@ -62,7 +62,7 @@ const DateInput = (props: PROPS) => {
           name={name}
           required={required}
           onChange={changeHandler}
-          className={`cmp-adaptiveform-datepicker__widget cmp-adaptiveform-datepicker__widget--${value ? 'filled' : 'empty'}`}
+          className={'cmp-adaptiveform-datepicker__widget'}
           aria-label={label?.value}
           readOnly={readOnly}
           placeholder={placeholder}

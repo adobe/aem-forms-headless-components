@@ -55,7 +55,7 @@ const CheckBoxGroup = (props: PROPS) => {
 
   return (
     <div
-      className={`cmp-adaptiveform-checkboxgroup ${appliedCssClassNames || ''}`}
+      className={`cmp-adaptiveform-checkboxgroup cmp-adaptiveform-checkboxgroup--${newVal.length ? 'filled' : 'empty'} ${appliedCssClassNames || ''}`}
       data-cmp-is="adaptiveFormCheckBoxGroup"
       data-cmp-visible={visible}
       data-cmp-enabled={enabled}
@@ -77,7 +77,7 @@ const CheckBoxGroup = (props: PROPS) => {
             <div className={`cmp-adaptiveform-checkboxgroup-item ${name}`} key={item}>
               <label className="cmp-adaptiveform-checkboxgroup__option-label">
                 <input
-                  className={`cmp-adaptiveform-checkboxgroup__option__widget cmp-adaptiveform-checkboxgroup__option__widget--${newVal[index] === enums![index] ? 'filled' : 'empty'}`}
+                  className={'cmp-adaptiveform-checkboxgroup__option__widget'}
                   type='checkbox'
                   required={required}
                   name={name}

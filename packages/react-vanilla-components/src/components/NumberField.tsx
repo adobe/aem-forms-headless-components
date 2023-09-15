@@ -39,7 +39,7 @@ const NumberField = (props: PROPS) => {
 
   return (
     <div
-      className={`cmp-adaptiveform-numberinput ${appliedCssClassNames || ''}`}
+      className={`cmp-adaptiveform-numberinput cmp-adaptiveform-numberinput--${value ? 'filled' : 'empty'} ${appliedCssClassNames || ''}`}
       data-cmp-is="adaptiveFormNumberInput"
       data-cmp-visible={visible}
       data-cmp-enabled={enabled}
@@ -56,7 +56,7 @@ const NumberField = (props: PROPS) => {
         <input
           id={`${id}-widget`}
           type='number'
-          className={`cmp-adaptiveform-numberinput__widget cmp-adaptiveform-numberinput__widget--${value ? 'filled' : 'empty'}`}
+          className={'cmp-adaptiveform-numberinput__widget'}
           value={value}
           onChange={changeHandler}
           required={required}

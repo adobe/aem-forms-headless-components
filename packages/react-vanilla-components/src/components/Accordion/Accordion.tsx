@@ -48,7 +48,14 @@ const Accordion = (props: PROPS_PANEL) => {
   };
 
   return (
-    <div className={`cmp-accordion ${appliedCssClassNames || ''}`} data-cmp-is="adaptiveFormAccordion" data-cmp-single-expansion="true" data-placeholder-text="false" data-cmp-visible={visible} data-cmp-enabled={enabled}>
+    <div
+      className={`cmp-accordion ${appliedCssClassNames || ''}`}
+      data-cmp-is="adaptiveFormAccordion"
+      data-cmp-single-expansion="true"
+      data-placeholder-text="false"
+      data-cmp-visible={visible}
+      data-cmp-enabled={enabled}
+    >
       <FieldWrapper
         bemBlock='cmp-accordion'
         label={label}

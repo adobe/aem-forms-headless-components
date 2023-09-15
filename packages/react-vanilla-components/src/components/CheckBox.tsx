@@ -31,7 +31,7 @@ const CheckBox = (props: PROPS) => {
 
   return (
     <div
-      className={`cmp-adaptiveform-checkbox ${appliedCssClassNames || ''}`}
+      className={`cmp-adaptiveform-checkbox cmp-adaptiveform-checkbox--${selectedValue === value ? 'filled' : 'empty'} ${appliedCssClassNames || ''}`}
       data-cmp-is="adaptiveFormCheckBox"
       data-cmp-visible={visible}
       data-cmp-enabled={enabled}
@@ -50,7 +50,7 @@ const CheckBox = (props: PROPS) => {
           <input
             id={`${id}-widget`}
             type='checkbox'
-            className={`cmp-adaptiveform-checkbox__widget cmp-adaptiveform-checkbox__widget--${selectedValue === value ? 'filled' : 'empty'}`}
+            className={'cmp-adaptiveform-checkbox__widget'}
             onChange={handleChange}
             value={value}
             name={name}

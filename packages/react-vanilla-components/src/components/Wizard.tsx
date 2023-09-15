@@ -55,7 +55,7 @@ const Wizard = (props: PROPS_PANEL) => {
   return visible ? (
     <div
       id={id}
-      className={`cmp-adaptiveform-wizard ${appliedCssClassNames || ''}`}
+      className={`cmp-adaptiveform-wizard cmp-adaptiveform-wizard--v2 ${appliedCssClassNames || ''}`}
       data-panelcontainer="wizard"
       data-placeholder-text="Please drag Wizard components here"
       data-cmp-visible={visible}
@@ -69,7 +69,7 @@ const Wizard = (props: PROPS_PANEL) => {
         description={props.description}
       />
       <div
-        className="cmp-adaptiveform-wizard__widget cmp-adaptiveform-wizard__widget--empty"
+        className="cmp-adaptiveform-wizard__widget cmp-adaptiveform-wizard__widget--v2"
         id={`${id}-widget`}
       >
         <div className="cmp-adaptiveform-wizard__tabs-container">
@@ -118,7 +118,7 @@ const Wizard = (props: PROPS_PANEL) => {
           visibleItems.length > 0 ?
             <div
               data-cmp-hook-adaptiveformtabs="tabpanel"
-              className={`cmp-adaptiveform-wizard__wizardpanel ${activeTab === visibleItems[activeTab].index ? 'cmp-adaptiveform-wizard__wizardpanel--active' : ''}`}
+              className={`cmp-adaptiveform-wizard__wizardpanel cmp-adaptiveform-wizard__wizardpanel--v2 ${activeTab === visibleItems[activeTab].index ? 'cmp-adaptiveform-wizard__wizardpanel--active' : ''}`}
               role="tabpanel"
               tabIndex={0}
               aria-hidden={activeTab === visibleItems[activeTab].index ? 'false' : 'true'}

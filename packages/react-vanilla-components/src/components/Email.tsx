@@ -40,7 +40,7 @@ const Email = (props: PROPS) => {
 
   return (
     <div
-      className={`cmp-adaptiveform-emailinput ${appliedCssClassNames || ''}`}
+      className={`cmp-adaptiveform-emailinput cmp-adaptiveform-emailinput--${value ? 'filled' : 'empty'} ${appliedCssClassNames || ''}`}
       data-cmp-enabled={enabled}
       data-cmp-visible={visible}
       id={id}
@@ -59,7 +59,7 @@ const Email = (props: PROPS) => {
         <input
           type="email"
           id={`${id}-widget`}
-          className={`cmp-adaptiveform-emailinput__widget cmp-adaptiveform-emailinput__widget--${value ? 'filled' : 'empty'}`}
+          className={'cmp-adaptiveform-emailinput__widget'}
           value={value}
           onChange={handleChange}
           onBlur={handleBlur}
