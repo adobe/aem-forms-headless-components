@@ -1,6 +1,6 @@
 # React HTML5 Components For Headless Adaptive Forms
 
-The document provides detailed information on React Spectrum Components that you can use to render [Headless Adaptive Form](https://experienceleague.adobe.com/docs/experience-manager-headless-adaptive-forms/using/overview.html?lang=en). To learn about the capabilties of Headless Adaptive Forms, see [Overview of Headless Adaptive Forms](https://experienceleague.adobe.com/docs/experience-manager-headless-adaptive-forms/using/overview.html?lang=en)
+The document provides detailed information on React Vanilla Components(HTML5 based) that you can use to render [Headless Adaptive Form](https://experienceleague.adobe.com/docs/experience-manager-headless-adaptive-forms/using/overview.html?lang=en). To learn about the capabilties of Headless Adaptive Forms, see [Overview of Headless Adaptive Forms](https://experienceleague.adobe.com/docs/experience-manager-headless-adaptive-forms/using/overview.html?lang=en)
 
 ## Demo Link
 
