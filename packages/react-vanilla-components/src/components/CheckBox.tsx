@@ -44,7 +44,7 @@ const CheckBox = (props: PROPS) => {
         description={props.description}
         isError={props.isError}
         errorMessage={props.errorMessage}
-        isHelpContainer
+        onlyQuestionMark
       >
         <div className="cmp-adaptiveform-checkbox__widget-container">
           <input

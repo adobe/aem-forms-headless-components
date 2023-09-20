@@ -21,7 +21,7 @@ import React, { useContext } from 'react';
 import { withRuleEnginePanel } from '../utils/withRuleEngine';
 import { renderChildren, FormContext } from '@aemforms/af-react-renderer';
 import { PROPS_PANEL } from '../utils/type';
-import FieldWrapper from './common/FieldWrapper';
+import LabelWithDescription from './common/LabelWithDescription';
 
 const Panel = function (props: PROPS_PANEL) {
   const { id, visible, enabled, label, handlers, appliedCssClassNames } = props;
@@ -36,7 +36,7 @@ const Panel = function (props: PROPS_PANEL) {
       data-cmp-enabled={enabled}
       data-cmp-is="adaptiveFormPanel"
     >
-      <FieldWrapper
+      <LabelWithDescription
         bemBlock='cmp-container'
         label={label}
         id={id}

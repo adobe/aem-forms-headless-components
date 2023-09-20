@@ -22,7 +22,7 @@ import { FormContext } from '@aemforms/af-react-renderer';
 import { getRenderer } from '@aemforms/af-react-renderer';
 import { withRuleEnginePanel } from '../utils/withRuleEngine';
 import { PROPS_PANEL } from '../utils/type';
-import FieldWrapper from './common/FieldWrapper';
+import LabelWithDescription from './common/LabelWithDescription';
 
 const Wizard = (props: PROPS_PANEL) => {
   // @ts-ignore
@@ -61,7 +61,7 @@ const Wizard = (props: PROPS_PANEL) => {
       data-cmp-visible={visible}
       data-cmp-enabled={enabled}
     >
-      <FieldWrapper
+      <LabelWithDescription
         bemBlock='cmp-adaptiveform-wizard'
         label={label}
         id={id}

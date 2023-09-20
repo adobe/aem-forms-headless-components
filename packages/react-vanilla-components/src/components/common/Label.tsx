@@ -15,35 +15,31 @@
 //  ******************************************************************************
 
 import React from "react";
-import { DESCRIPTION } from '../../utils/type';
+import { LABEL } from '../../utils/type';
 
-const Description = (props: DESCRIPTION) => {
-  const { bemBlock, tooltip, errorMessage, description, showShortDescription, showLongDescription } = props;
-  return (<>
-    {
-      showShortDescription && tooltip && (
-        <div
-          title='Help Text'
-          data-cmp-visible={showShortDescription}
-          className={`${bemBlock}__shortdescription`}
-        >
-          {tooltip}
-        </div>
-      )
-    }
-    <div aria-live="polite">
-      {showLongDescription && description && !errorMessage && (
-        <div
-          title='Help Text'
-          data-cmp-visible={showLongDescription}
-          className={`${bemBlock}__longdescription`}
-        >
-          {description}
-        </div>
-      )
+const Label = (props: LABEL) => {
+  const { bemBlock, label, id, description, onlyQuestionMark, onClick } = props;
+  const isFile = bemBlock === 'cmp-adaptiveform-fileinput';
+  return (
+    <div className={`${bemBlock}__${onlyQuestionMark ? 'help-container' : 'label-container'}`}>
+      {
+        label?.visible && !onlyQuestionMark && (
+          <label className={`${bemBlock}__label`} htmlFor={`${id}${isFile ? '' : '-widget'}`}>
+            {label?.value}
+          </label>
+        )
+      }
+      {
+        description && (
+          <button
+            className={`${bemBlock}__questionmark`}
+            onClick={onClick}
+            aria-label='Toggle Button'
+          ></button>
+        )
       }
     </div>
-  </>)
+  )
 };
 
-export default Description;
+export default Label;

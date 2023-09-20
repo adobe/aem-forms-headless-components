@@ -17,9 +17,9 @@
 import React, { useCallback, useState } from "react";
 import Label from "./Label";
 import Description from "./Description";
-import { FIELD_WRAPPER } from '../../utils/type';
+import { LABEL, DESCRIPTION } from '../../utils/type';
 
-const FieldWrapper = (props: FIELD_WRAPPER) => {
+const LabelWithDescription = (props: LABEL & DESCRIPTION) => {
   const [showShortDescription, setShowShortDescription] = useState(true);
   const [showLongDescription, setShowLongDescription] = useState(false);
 
@@ -35,10 +35,8 @@ const FieldWrapper = (props: FIELD_WRAPPER) => {
       label={props.label}
       id={props.id}
       description={props.description}
-      onlyQuestionMark={props.onlyQuestionMark}
       onClick={questionMarkHandler}
     />
-    {props.children ? props.children : null}
     <Description
       bemBlock={props.bemBlock}
       tooltip={props.tooltip}
@@ -47,12 +45,7 @@ const FieldWrapper = (props: FIELD_WRAPPER) => {
       showShortDescription={showShortDescription}
       showLongDescription={showLongDescription}
     />
-    {
-      props.isError ?
-        <div className={`${props.bemBlock}__errormessage`}>{props.errorMessage}</div>
-        : null
-    }
   </>)
 };
 
-export default FieldWrapper;
+export default LabelWithDescription;

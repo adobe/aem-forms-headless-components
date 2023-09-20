@@ -21,7 +21,7 @@ import React, { useContext, useState, useCallback } from 'react';
 import { FormContext, getRenderer } from '@aemforms/af-react-renderer';
 import { withRuleEnginePanel } from '../../utils/withRuleEngine';
 import { PROPS_PANEL } from '../../utils/type';
-import FieldWrapper from '../common/FieldWrapper';
+import LabelWithDescription from '../common/LabelWithDescription';
 
 const VerticalTab = (props: PROPS_PANEL) => {
   // @ts-ignore
@@ -54,7 +54,7 @@ const VerticalTab = (props: PROPS_PANEL) => {
       data-cmp-visible={visible ? 'true' : 'false'}
       data-cmp-enabled={enabled ? 'true' : 'false'}
     >
-      <FieldWrapper
+      <LabelWithDescription
         bemBlock='cmp-verticaltabs'
         label={label}
         id={id}

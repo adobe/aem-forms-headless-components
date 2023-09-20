@@ -22,7 +22,7 @@ import { withRuleEnginePanel } from '../../utils/withRuleEngine';
 import { PROPS_PANEL } from '../../utils/type';
 import Item from './Item';
 import RepeatableItem from './RepeatableItem';
-import FieldWrapper from '../common/FieldWrapper';
+import LabelWithDescription from '../common/LabelWithDescription';
 
 export const AccordionContext = createContext('' as any);
 
@@ -56,7 +56,7 @@ const Accordion = (props: PROPS_PANEL) => {
       data-cmp-visible={visible}
       data-cmp-enabled={enabled}
     >
-      <FieldWrapper
+      <LabelWithDescription
         bemBlock='cmp-accordion'
         label={label}
         id={id}

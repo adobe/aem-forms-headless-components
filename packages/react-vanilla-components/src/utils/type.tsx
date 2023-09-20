@@ -34,21 +34,29 @@ export type PROPS_PANEL = State<FieldsetJson> & {
   toggle?: (id: string) => void | undefined
 };
 
-export type LABEL_CONTAINER = {
+export type LABEL = {
   bemBlock: string,
   id: string,
-  description?: string,
   label?: {
     value: string;
     richText?: boolean;
     visible?: boolean;
   },
+  description?: string,
+  onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void,
+  onlyQuestionMark?: boolean
+};
+
+export type DESCRIPTION = {
+  bemBlock: string,
+  description?: string,
   showShortDescription?: boolean,
   tooltip?: string,
   showLongDescription?: boolean
-  onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void,
-  isError?: boolean,
   errorMessage?: string,
-  children?: React.ReactNode
-  isHelpContainer?: boolean
 };
+
+export type FIELD_WRAPPER = LABEL & DESCRIPTION & {
+  children?: React.ReactNode,
+  isError?: boolean,
+}

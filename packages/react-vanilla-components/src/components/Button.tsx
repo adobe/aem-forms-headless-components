@@ -39,7 +39,7 @@ const Button = (props: PROPS) => {
         description={props.description}
         isError={props.isError}
         errorMessage={props.errorMessage}
-        isHelpContainer
+        onlyQuestionMark
       >
         <button
           className="cmp-adaptiveform-button__widget"
