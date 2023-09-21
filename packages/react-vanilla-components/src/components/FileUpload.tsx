@@ -107,7 +107,7 @@ const FileUpload = (props: PROPS) => {
               <span
                 onClick={() => removeFile(index)}
                 className="cmp-adaptiveform-fileinput__filedelete"
-                aria-label={`Press Enter to delete the ${item?.name}`}
+                aria-label={item?.name}
                 role="button"
               >
                 x

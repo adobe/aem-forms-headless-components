@@ -23,7 +23,7 @@ const Description = (props: DESCRIPTION) => {
     {
       showShortDescription && tooltip && (
         <div
-          title='Help Text'
+          title={tooltip}
           data-cmp-visible={showShortDescription}
           className={`${bemBlock}__shortdescription`}
         >
@@ -34,7 +34,7 @@ const Description = (props: DESCRIPTION) => {
     <div aria-live="polite">
       {showLongDescription && description && !errorMessage && (
         <div
-          title='Help Text'
+          title={description}
           data-cmp-visible={showLongDescription}
           className={`${bemBlock}__longdescription`}
         >
