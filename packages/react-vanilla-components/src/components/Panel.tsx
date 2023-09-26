@@ -17,31 +17,32 @@
 //  * LINK- https://github.com/adobe/aem-core-forms-components/blob/master/ui.af.apps/src/main/content/jcr_root/apps/core/fd/components/form/panelcontainer/v1/panelcontainer/panelcontainer.html
 //  ******************************************************************************
 
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import { withRuleEnginePanel } from '../utils/withRuleEngine';
 import { renderChildren, FormContext } from '@aemforms/af-react-renderer';
 import { PROPS_PANEL } from '../utils/type';
+import LabelWithDescription from './common/LabelWithDescription';
 
 const Panel = function (props: PROPS_PANEL) {
   const { id, visible, enabled, label, handlers, appliedCssClassNames } = props;
   // @ts-ignore
   const context = useContext(FormContext);
-  const [shortDescription, setShortDescription] = useState(true);
-  const [longDescription, setLongtDescription] = useState(false);
 
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    event.preventDefault();
-    setShortDescription(!shortDescription);
-    setLongtDescription(!longDescription);
-  };
   return (
-    <div className={`cmp-container ${appliedCssClassNames||''}`} id={id} data-cmp-visible={visible} data-cmp-enabled={enabled} data-cmp-is="adaptiveFormPanel">
-      {label?.visible && <label htmlFor={id} className="cmp-container__label">{label?.value}</label>}
-      {props?.description && <button className="cmp-container__questionmark" aria-label='Toggle Button' onClick={handleClick}></button>}
-      {shortDescription && props?.tooltip && <div title='Help Text' data-cmp-visible={shortDescription} className='cmp-container__shortdescription'>{props?.tooltip}</div>}
-      <div aria-live="polite">
-        {longDescription && props?.description && <div title='Help Text' data-cmp-visible={longDescription} className="cmp-container__longdescription">{props?.description}</div>}
-      </div>
+    <div
+      className={`cmp-container ${appliedCssClassNames || ''}`}
+      id={id}
+      data-cmp-visible={visible}
+      data-cmp-enabled={enabled}
+      data-cmp-is="adaptiveFormPanel"
+    >
+      <LabelWithDescription
+        bemBlock='cmp-container'
+        label={label}
+        id={id}
+        tooltip={props.tooltip}
+        description={props.description}
+      />
       {renderChildren(props, context.mappings, context.modelId, handlers)}
     </div>
   );

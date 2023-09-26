@@ -17,44 +17,58 @@
 //  * LINK-https://github.com/adobe/aem-core-forms-components/blob/master/ui.af.apps/src/main/content/jcr_root/apps/core/fd/components/form/numberinput/v1/numberinput/numberinput.html
 //  ******************************************************************************
 
-import React, { useState } from 'react';
+import React, { useCallback } from 'react';
 import { withRuleEngine } from '../utils/withRuleEngine';
 import { PROPS } from '../utils/type';
+import FieldWrapper from './common/FieldWrapper';
 
 const NumberField = (props: PROPS) => {
-  const { id, label, value, required, placeholder, name, maximum, minimum, description, errorMessage, isError, readOnly, visible, enabled, appliedCssClassNames } = props;
+  const { id, label, value, required, placeholder, name, maximum, minimum, readOnly, visible, enabled, appliedCssClassNames } = props;
 
-  const [shortDescription, setShortDescription] = useState(true);
-  const [longDescription, setLongtDescription] = useState(false);
-
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    event.preventDefault();
-    setShortDescription(!shortDescription);
-    setLongtDescription(!longDescription);
-  };
-
-  const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const changeHandler = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     props.dispatchChange(event.target.value);
-  };
+  }, [props.dispatchChange]);
 
-  const handleBlur = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleBlur = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     props.dispatchBlur(event.target.value);
-  };
+  }, [props.dispatchBlur]);
 
-  const handleFocus = () => {
+  const handleFocus = useCallback(() => {
     props.dispatchFocus();
-  };
+  }, [props.dispatchFocus]);
 
   return (
-    <div className={`cmp-adaptiveform-numberinput ${appliedCssClassNames||''}`}  data-cmp-is="adaptiveFormNumberInput" data-cmp-visible={visible} data-cmp-enabled={enabled}>
-      <div>{label?.visible && <label htmlFor={`${id}-widget`}>{label?.value}</label>}</div>
-      <div>{description && <button className="cmp-adaptiveform-numberinput__questionmark" aria-label='Toggle Button' onClick={handleClick}></button>}</div>
-      <input id={`${id}-widget`} type='number' className={value ? 'cmp-adaptiveform-numberinput__widget cmp-adaptiveform-numberinput__widget--filled' : 'cmp-adaptiveform-numberinput__widget cmp-adaptiveform-numberinput__widget--empty'} value={value} onChange={changeHandler} required={required} placeholder={placeholder} name={name} min={minimum} max={maximum} readOnly={readOnly} onFocus={handleFocus} onBlur={handleBlur} />
-      {shortDescription && props?.tooltip && <div title='Help Text' data-cmp-visible={shortDescription} className='cmp-adaptiveform-numberinput__shortdescription'>{props?.tooltip}</div>}
-      <div aria-live="polite">
-        {longDescription && description && !errorMessage ? <div title='Help Text' data-cmp-visible={longDescription} className="cmp-adaptiveform-numberinput__longdescription">{description}</div> : null}
-      </div>
-      {isError ? <div className="cmp-adaptiveform-numberinput__errormessage">{errorMessage}</div> : null}
+    <div
+      className={`cmp-adaptiveform-numberinput cmp-adaptiveform-numberinput--${value ? 'filled' : 'empty'} ${appliedCssClassNames || ''}`}
+      data-cmp-is="adaptiveFormNumberInput"
+      data-cmp-visible={visible}
+      data-cmp-enabled={enabled}
+    >
+      <FieldWrapper
+        bemBlock='cmp-adaptiveform-numberinput'
+        label={label}
+        id={id}
+        tooltip={props.tooltip}
+        description={props.description}
+        isError={props.isError}
+        errorMessage={props.errorMessage}
+      >
+        <input
+          id={`${id}-widget`}
+          type='number'
+          className={'cmp-adaptiveform-numberinput__widget'}
+          value={value}
+          onChange={changeHandler}
+          required={required}
+          placeholder={placeholder}
+          name={name}
+          min={minimum}
+          max={maximum}
+          readOnly={readOnly}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
+        />
+      </FieldWrapper>
     </div>
   );
 };

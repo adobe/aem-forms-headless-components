@@ -18,61 +18,60 @@
 //  ******************************************************************************
 
 
-import React, { useState } from 'react';
+import React, { useCallback } from 'react';
 import { withRuleEngine } from '../utils/withRuleEngine';
 import { PROPS } from '../utils/type';
+import FieldWrapper from './common/FieldWrapper';
 
 const TextField = (props: PROPS) => {
-  const { id, value, label, required, readOnly = false, placeholder, description, errorMessage, minLength, maxLength, enabled, visible, name, isError, appliedCssClassNames } = props;
+  const { id, value, label, required, readOnly = false, placeholder, minLength, maxLength, enabled, visible, name, appliedCssClassNames } = props;
 
-  const [shortDescription, setShortDescription] = useState(true);
-  const [longDescription, setLongtDescription] = useState(false);
-
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     const thisVal = event.target.value;
     props.dispatchChange(thisVal);
-  };
+  }, [props.dispatchChange]);
 
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    event.preventDefault();
-    setShortDescription(!shortDescription);
-    setLongtDescription(!longDescription);
-  };
-
-  const handleBlur = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleBlur = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     props.dispatchBlur(event.target.value);
-  };
+  }, [props.dispatchBlur]);
 
-  const handleFocus = () => {
+  const handleFocus = useCallback(() => {
     props.dispatchFocus();
-  };
+  }, [props.dispatchFocus]);
 
   return (
-    <div className={`cmp-adaptiveform-textinput ${appliedCssClassNames||''}`}  data-cmp-is="adaptiveFormTextInput" data-cmp-visible={visible} data-cmp-enabled={enabled}>
-      {label?.visible && <label className="cmp-adaptiveform-textinput__label" htmlFor={`${id}-widget`}>{label?.value}</label>}
-      <input
-        type="text"
-        id={`${id}-widget`}
-        className={value ? 'cmp-adaptiveform-textinput__widget cmp-adaptiveform-textinput__widget--filled' : 'cmp-adaptiveform-textinput__widget cmp-adaptiveform-textinput__widget--empty'}
-        value={value || ''}
-        onChange={handleChange}
-        onBlur={handleBlur}
-        onFocus={handleFocus}
-        required={required}
-        placeholder={placeholder}
-        readOnly={readOnly}
-        minLength={minLength}
-        maxLength={maxLength}
-        disabled={!enabled}
-        name={name}
-      />
-      {description && <button className="cmp-adaptiveform-textinput__questionmark" onClick={handleClick} aria-label='Toggle Button'></button>}
-      {shortDescription && props?.tooltip && <div title='Help Text' data-cmp-visible={shortDescription} className='cmp-adaptiveform-textinput__shortdescription'>{props?.tooltip}</div>}
-      <div aria-live="polite">
-        {description && longDescription && !errorMessage ? <div title='Help Text' data-cmp-visible={longDescription} className="cmp-adaptiveform-textinput__longdescription">{description}</div> : null}
-      </div>
-      {isError ? <div className="cmp-adaptiveform-textinput__errormessage">{errorMessage}</div> : null}
+    <div
+      className={`cmp-adaptiveform-textinput cmp-adaptiveform-textinput--${value ? 'filled' : 'empty'} ${appliedCssClassNames || ''}`}
+      data-cmp-is="adaptiveFormTextInput"
+      data-cmp-visible={visible}
+      data-cmp-enabled={enabled}
+    >
+      <FieldWrapper
+        bemBlock='cmp-adaptiveform-textinput'
+        label={label}
+        id={id}
+        tooltip={props.tooltip}
+        description={props.description}
+        isError={props.isError}
+        errorMessage={props.errorMessage}
+      >
+        <input
+          type="text"
+          id={`${id}-widget`}
+          className={'cmp-adaptiveform-textinput__widget'}
+          value={value || ''}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          onFocus={handleFocus}
+          required={required}
+          placeholder={placeholder}
+          readOnly={readOnly}
+          minLength={minLength}
+          maxLength={maxLength}
+          disabled={!enabled}
+          name={name}
+        />
+      </FieldWrapper>
     </div>
   );
 };

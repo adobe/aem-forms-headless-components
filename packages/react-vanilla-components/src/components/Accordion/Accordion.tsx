@@ -17,60 +17,61 @@
 //  * LINK- https://github.com/adobe/aem-core-forms-components/blob/master/ui.af.apps/src/main/content/jcr_root/apps/core/fd/components/form/accordion/v1/accordion/accordion.html
 //  ******************************************************************************
 
-import React, {useState, createContext} from 'react';
-import { withRuleEnginePanel }  from '../../utils/withRuleEngine';
+import React, { useState, createContext } from 'react';
+import { withRuleEnginePanel } from '../../utils/withRuleEngine';
 import { PROPS_PANEL } from '../../utils/type';
 import Item from './Item';
 import RepeatableItem from './RepeatableItem';
+import LabelWithDescription from '../common/LabelWithDescription';
 
-export const AppContext = createContext('' as any);
+export const AccordionContext = createContext('' as any);
 
 const Accordion = (props: PROPS_PANEL) => {
-   const {items,id, label, visible, enabled, appliedCssClassNames} = props;
-   const [shortDescription, setShortDescription] = useState(true);
-   const [longDescription, setLongtDescription] = useState(false);
+  const { items, id, label, visible, enabled, appliedCssClassNames } = props;
 
-   const {v: visibleItems} =
-   items.reduce(({v} : any, item) => {
+  const { v: visibleItems } =
+    items.reduce(({ v }: any, item) => {
       const isVisible = item.visible === true;
       return {
-         v: isVisible ? v.concat([item]) : v
+        v: isVisible ? v.concat([item]) : v
       };
-   }, {v: []}); 
+    }, { v: [] });
 
-   const firstItem = visibleItems[0] || {};
+  const firstItem = visibleItems[0] || {};
 
-   // for active first item
-   let panelId = firstItem?.type === 'array' ?  firstItem?.items[0]?.id : firstItem?.id;
-   const [activePanel, setActivePanel] = useState(panelId) ;
+  // for active first item
+  let panelId = firstItem?.type === 'array' ? firstItem?.items[0]?.id : firstItem?.id;
+  const [activePanel, setActivePanel] = useState(panelId);
 
-   const handleToggle = (id: string) => {
-      setActivePanel(id === activePanel ? null : id);
-   };
+  const handleToggle = (id: string) => {
+    setActivePanel(id === activePanel ? null : id);
+  };
 
-   const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-      event.preventDefault();  
-      setShortDescription(!shortDescription);
-      setLongtDescription(!longDescription);
-   };
-
-   return (
-      <div className={`cmp-accordion ${appliedCssClassNames||''}`}   data-cmp-is="adaptiveFormAccordion" data-cmp-single-expansion="true" data-placeholder-text="false" data-cmp-visible={visible} data-cmp-enabled={enabled}>
-         {label?.visible && <label htmlFor={id} className="cmp-accordion__label">{label?.value}</label>}
-         {props?.description && <button aria-label='Toggle Button' className="cmp-accordion__questionmark" onClick={handleClick}></button>} 
-         {shortDescription && props?.tooltip && <div title='Help Text' data-cmp-visible={shortDescription} className='cmp-accordion__shortdescription'>{props?.tooltip}</div>}
-          <div aria-live="polite">
-             {longDescription && props?.description  && <div title='Help Text' data-cmp-visible={longDescription} className="cmp-accordion__longdescription">{props?.description}</div>}
-         </div>
-          {visibleItems?.map((item: PROPS_PANEL) => {
-            return (item?.type === 'array') ?
-            //@ts-ignore
-            <AppContext.Provider value={{onToggle:handleToggle, activePanel:activePanel}}>
-            <RepeatableItem {...item}/> 
-            </AppContext.Provider> :  <AppContext.Provider value={{onToggle:handleToggle, activePanel:activePanel}}><Item {...item} /></AppContext.Provider>;
-            })}
-      </div>
-   ); 
+  return (
+    <div
+      className={`cmp-accordion ${appliedCssClassNames || ''}`}
+      data-cmp-is="adaptiveFormAccordion"
+      data-cmp-single-expansion="true"
+      data-placeholder-text="false"
+      data-cmp-visible={visible}
+      data-cmp-enabled={enabled}
+    >
+      <LabelWithDescription
+        bemBlock='cmp-accordion'
+        label={label}
+        id={id}
+        tooltip={props.tooltip}
+        description={props.description}
+      />
+      <AccordionContext.Provider value={{ onToggle: handleToggle, activePanel: activePanel }}>
+        {
+          visibleItems?.map((item: PROPS_PANEL) => {
+            return item?.type === 'array' ? <RepeatableItem {...item} key={`${item.id}-item`} /> : <Item {...item} key={`${item.id}-item`} />
+          })
+        }
+      </AccordionContext.Provider>
+    </div>
+  );
 };
 
 export default withRuleEnginePanel(Accordion);
