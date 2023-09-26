@@ -50,7 +50,7 @@ const SpectrumCheckboxWrapper = (props: any) => {
     return <Checkbox {...props} onChange={handleChange}>{props.label}</Checkbox>;
 };
 
-const Comp = withErrorMessage(SpectrumCheckboxWrapper);
+const Comp = withErrorMessage(SpectrumCheckboxWrapper as any);
 /**
  * The checkbox component follows the convention that the first value of option is used as selected value
  * while the second option is used as deselected value. Any other option value is ignored.
