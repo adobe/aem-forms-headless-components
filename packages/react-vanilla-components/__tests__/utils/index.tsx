@@ -38,8 +38,8 @@ export const Provider =
       };
       const { children } = props;
       return (
-        /* @ts-ignore */
         <IntlProvider locale={locale} messages={dictionaries}>
+          {/* @ts-ignore */}
           <FormContext.Provider value={c}>{children}</FormContext.Provider>
         </IntlProvider>
       );
