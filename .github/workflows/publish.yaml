@@ -1,4 +1,5 @@
 name: Publish On NPMJS
+
 on:
   pull_request:
     types:
@@ -12,39 +13,41 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
         with:
-          ref: main
           fetch-depth: 0
+
+      - name: Use Node.js 16
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+          registry-url: https://registry.npmjs.org/
 
       - name: Set Git Config
         run: |
-          git config --global user.name ${{ secrets.ADOBE_BOT_GITHUB_NAME }}
-          git config --global user.email ${{ secrets.ADOBE_BOT_GITHUB_EMAIL }}
+          git config --global user.email "ci-build@aemforms"
+          git config --global user.name "ci-build"
         env:
-          GITHUB_TOKEN: ${{ secrets.ADOBE_BOT_GH_TOKEN }}
-          GH_TOKEN: ${{ secrets.ADOBE_BOT_GH_TOKEN }}
-
-      - name: Use NodeJS 16
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16
-          registry-url: https://registry.npmjs.org/
+          GITHUB_TOKEN: ${{ secrets.ADOBE_GH_TOKEN }}
 
       - name: Install Dependencies
-        run: npx lerna bootstrap
-      
-      - name: Authenticate with Registry
         run: |
-          echo "registry=https://registry.npmjs.org/" >> .npmrc
-          echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> .npmrc
-          npm whoami        
+          npm install
+          npx lerna bootstrap
+
+      - name: Run Build
+        run: |
+          npx lerna run build
+          
+      - name: Authenticate with NPM Registry
+        run: |
+          echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
+          npm whoami
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      - name: Version & Publish Packages
+      - name: Version & Publish "react-vanilla-components"
         run: |
-          npx lerna publish patch --no-private --conventional-commits --conventional-graduate --yes
+          npx lerna publish patch --no-private --conventional-commits --conventional-graduate --yes --scope react-vanilla-components
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
