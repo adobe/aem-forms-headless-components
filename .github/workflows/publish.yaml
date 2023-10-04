@@ -29,12 +29,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.ADOBE_BOT_GH_TOKEN }}
           GH_TOKEN: ${{ secrets.ADOBE_BOT_GH_TOKEN }}
 
-      - name: Use NodeJS 16
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16
-          registry-url: https://registry.npmjs.org/
-
       - name: Install Dependencies
         run: npx lerna bootstrap
       
