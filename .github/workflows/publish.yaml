@@ -31,7 +31,12 @@ jobs:
           GH_TOKEN: ${{ secrets.ADOBE_BOT_GH_TOKEN }}
 
       - name: Install Dependencies
-        run: npx lerna bootstrap
+        run: |
+          npm install
+          npx lerna bootstrap
+
+      - name: Run Build
+        run: npx lerna run build
       
       - name: Authenticate with Registry
         run: |
