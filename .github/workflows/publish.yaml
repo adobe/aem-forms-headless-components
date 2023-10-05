@@ -4,32 +4,31 @@ on:
     types:
       - closed
     branches:
-      - main
+      - test-yml
 
 jobs:
   publish:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+      - name: "Checkout"
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
+      - name: "Use NodeJS 16"
+        uses: actions/setup-node@v2
         with:
-          ref: main
-          fetch-depth: 0
+          node-version: '16'
+          registry-url: https://registry.npmjs.org/
 
       - name: Set Git Config
         run: |
           git config --global user.email "ci-build@aemforms"
           git config --global user.name "ci-build"
         env:
-          GITHUB_TOKEN: ${{ secrets.ADOBE_BOT_GH_TOKEN }}
-          GH_TOKEN: ${{ secrets.ADOBE_BOT_GH_TOKEN }}
-
-      - name: Use NodeJS 16
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16
-          registry-url: https://registry.npmjs.org/
+          GITHUB_TOKEN: ${{ secrets.ADOBE_GH_TOKEN }}
+          GH_TOKEN: ${{ secrets.ADOBE_GH_TOKEN }}
 
       - name: Install Dependencies
         run: npx lerna bootstrap
