@@ -48,9 +48,14 @@ jobs:
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
+      - name: Discard Uncommitted Changes
+        run: git reset --hard
+
       - name: Version & Publish
         run: |
-          npx lerna publish patch --no-private --conventional-commits --conventional-graduate --yes
+          npx lerna version patch --no-push --yes -m ":release" --force-publish
+          npx lerna publish from-package --yes
+          git push origin HEAD:main --tags
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
