@@ -1,0 +1,100 @@
+{
+    "adaptiveform": "0.0.10",
+    "metadata": {
+        "version": "1.0.0"
+    },
+    "items": [
+        {
+            "fieldType": "panel",
+            ":type": "core/fd/components/form/accordion/v1/accordion",
+            "name": "guests",
+            "type": "object",
+            "items": [
+                {
+                    "fieldType": "panel",
+                    ":type": "core/fd/components/form/panelcontainer/v1/panelcontainer",
+                    "name": "guestDetails",
+                    "label": {
+                        "value": "Enter name and identity",
+                        "visible": false
+                    },
+                    "type": "object",
+                    "items": [
+                        {
+                            "fieldType": "text-input",
+                            "name": "guestName",
+                            "label": {
+                                "value": "Full Name"
+                            },
+                            "required": true
+                        },
+                        {
+                            "id": "radiobutton-5b2619feda",
+                            "fieldType": "radio-group",
+                            "name": "radiobutton1682332765985",
+                            "visible": true,
+                            "type": "string",
+                            "required": false,
+                            "enabled": true,
+                            "readOnly": false,
+                            "enforceEnum": true,
+                            "enumNames": [
+                              "Item 1",
+                              "Item 2"
+                            ],
+                            "label": {
+                              "value": "Radio Button",
+                              "visible": true,
+                              "richText": false
+                            },
+                            "properties": {
+                              "afs:layout": {
+                                "orientation": "horizontal"
+                              }
+                            },
+                            "enum": [
+                              "0",
+                              "1"
+                            ]
+                          }
+                    ]
+                },
+                {
+                    "fieldType": "panel",
+                    "name": "addressDetails",
+                    "label": {
+                        "value": "Address",
+                        "visible": false
+                    },
+                    "type": "object",
+                    ":type": "core/fd/components/form/panelcontainer/v1/panelcontainer",
+                    "items": [
+                        {
+                            "fieldType": "text-input",
+                            "name": "guestName",
+                            "label": {
+                                "value": "Full Name"
+                            },
+                            "required": true
+                        },
+                        {
+                            "id": "dropdown-2fab7da858",
+                            "fieldType": "drop-down",
+                            "name": "dropdown1682418575718",
+                            "visible": true,
+                            "type": "string",
+                            "required": false,
+                            "enabled": true,
+                            "label": {
+                                "value": "Dropdown",
+                                "visible": true,
+                                "richText": false
+                            },
+                            ":type": "forms-components-examples/components/form/dropdown"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
