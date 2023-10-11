@@ -21,6 +21,11 @@ const helper = renderComponent(Button);
 
 describe('Button', () => {
 
+  test('Snapshot', async () => {
+    const { renderResponse } = await helper(field);
+    expect(renderResponse.container).toMatchSnapshot();
+  });
+
   test('should render with label', () => {
     const f = {
       ...field,

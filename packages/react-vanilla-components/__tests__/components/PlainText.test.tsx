@@ -19,6 +19,11 @@ const helper = renderComponent(PlainText);
 
 describe('Plain Text', () => {
 
+  test('Snapshot', async () => {
+    const { renderResponse } = await helper(field);
+    expect(renderResponse.container).toMatchSnapshot();
+  });
+
   test('should render with value', () => {
     const f = {
       ...field,

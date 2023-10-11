@@ -63,6 +63,12 @@ const emptyWizard = {
   index: 0,
 };
 
+test("Snapshot", () => {
+  const helper = renderComponent(Wizard);
+  const { renderResponse } = helper(WizardWithData);
+  expect(renderResponse.container).toMatchSnapshot();
+});
+
 test("clicking on the next tab should switch from one component to another and on clicking the previous button it should take to the previous component",() => {
   const helper = renderComponent(Wizard);
   const { renderResponse } = helper(WizardWithData);

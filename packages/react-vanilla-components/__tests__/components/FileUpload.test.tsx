@@ -75,6 +75,11 @@ const fieldWithMultipleFiles = {
 const helper = renderComponent(FileUpload);
 
 describe("File Upload", () => {
+  test('Snapshot', async () => {
+    const { renderResponse } = await helper(field);
+    expect(renderResponse.container).toMatchSnapshot();
+  });
+  
   test("render file label", async () => {
     const f = {
       ...field,

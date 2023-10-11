@@ -56,6 +56,12 @@ const panelWithField = {
   ]
 };
 
+test("Snapshot", () => {
+  const helper = renderComponent(Panel);
+  const { renderResponse } = helper(panelWithField);
+  expect(renderResponse.container).toMatchSnapshot();
+});
+
 test('panel should get rendered if it is visible', () => {
   const helper = renderComponent(Panel);
   const { renderResponse } = helper(emptyPanel);

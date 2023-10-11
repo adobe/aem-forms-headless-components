@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Snapshot 1`] = `
+<div>
+  <div
+    class="cmp-container "
+    data-cmp-enabled="true"
+    data-cmp-is="adaptiveFormPanel"
+    data-cmp-visible="true"
+    id="panelWithField"
+  >
+    <div
+      class="cmp-container__label-container"
+    >
+      <label
+        class="cmp-container__label"
+        for="panelWithField-widget"
+      >
+        panel title
+      </label>
+      <button
+        aria-label="[object Object]"
+        class="cmp-container__questionmark"
+      />
+    </div>
+    <div
+      aria-live="polite"
+    />
+  </div>
+</div>
+`;

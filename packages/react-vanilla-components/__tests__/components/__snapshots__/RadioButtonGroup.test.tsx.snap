@@ -1,0 +1,85 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`radio Group Snapshot 1`] = `
+<div>
+  <div
+    class="cmp-adaptiveform-radiobutton cmp-adaptiveform-radiobutton--empty "
+    data-cmp-enabled="true"
+    data-cmp-is="adaptiveFormRadioButton"
+    data-cmp-visible="true"
+  >
+    <div
+      class="cmp-adaptiveform-radiobutton__label-container"
+    >
+      <label
+        class="cmp-adaptiveform-radiobutton__label"
+        for="SzJ1tfY3VW6-widget"
+      >
+        radio group
+      </label>
+    </div>
+    <div
+      class="cmp-adaptiveform-radiobutton__widget HORIZONTAL"
+      id="SzJ1tfY3VW6-widget"
+    >
+      <div
+        class="cmp-adaptiveform-radiobutton__option"
+      >
+        <label
+          class="cmp-adaptiveform-radiobutton__option-label"
+        >
+          <input
+            aria-checked="false"
+            class="cmp-adaptiveform-radiobutton__option__widget"
+            name="radio"
+            type="radio"
+            value="1"
+          />
+          <span>
+            radio 1
+          </span>
+        </label>
+      </div>
+      <div
+        class="cmp-adaptiveform-radiobutton__option"
+      >
+        <label
+          class="cmp-adaptiveform-radiobutton__option-label"
+        >
+          <input
+            aria-checked="false"
+            class="cmp-adaptiveform-radiobutton__option__widget"
+            name="radio"
+            type="radio"
+            value="2"
+          />
+          <span>
+            radio 2
+          </span>
+        </label>
+      </div>
+      <div
+        class="cmp-adaptiveform-radiobutton__option"
+      >
+        <label
+          class="cmp-adaptiveform-radiobutton__option-label"
+        >
+          <input
+            aria-checked="false"
+            class="cmp-adaptiveform-radiobutton__option__widget"
+            name="radio"
+            type="radio"
+            value="3"
+          />
+          <span>
+            radio 3
+          </span>
+        </label>
+      </div>
+    </div>
+    <div
+      aria-live="polite"
+    />
+  </div>
+</div>
+`;

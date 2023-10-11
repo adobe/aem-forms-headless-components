@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Button Snapshot 1`] = `
+<div>
+  <div
+    class="cmp-adaptiveform-button "
+  >
+    <div
+      class="cmp-adaptiveform-checkbox__help-container"
+    />
+    <button
+      aria-label=""
+      class="cmp-adaptiveform-button__widget"
+    >
+      <span
+        class="cmp-adaptiveform-button__text"
+      >
+        button
+      </span>
+    </button>
+    <div
+      aria-live="polite"
+    />
+  </div>
+</div>
+`;

@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Text Area Field Snapshot 1`] = `
+<div>
+  <div
+    class="cmp-adaptiveform-textinput cmp-adaptiveform-textinput--empty "
+    data-cmp-enabled="true"
+    data-cmp-is="adaptiveFormTextInput"
+    data-cmp-visible="true"
+  >
+    <div
+      class="cmp-adaptiveform-textinput__label-container"
+    >
+      <label
+        class="cmp-adaptiveform-textinput__label"
+        for="Duav3OCuTR6-widget"
+      >
+        multi line field
+      </label>
+    </div>
+    <textarea
+      class="cmp-adaptiveform-textinput__widget"
+      id="Duav3OCuTR6-widget"
+      name="multiline"
+      placeholder="multiline field"
+      required=""
+    />
+    <div
+      aria-live="polite"
+    />
+  </div>
+</div>
+`;

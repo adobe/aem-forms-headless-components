@@ -21,7 +21,7 @@
   "scripts": {
     "clean": "rm -rf lib target",
     "eslint": "npx eslint src/**/*.ts*",
-    "build": "npm run clean && npm run eslint && npx tsc",
+    "build1": "npm run clean && npm run eslint && npx tsc",
     "test:ci": "jest --silent --coverage",
     "prepublishOnly": "npm run build && npm run test",
     "test": "jest --silent"

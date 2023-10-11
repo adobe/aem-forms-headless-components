@@ -1,0 +1,84 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Snapshot 1`] = `
+<div>
+  <div
+    class="cmp-adaptiveform-wizard cmp-adaptiveform-wizard--v2 "
+    data-cmp-enabled="true"
+    data-cmp-visible="true"
+    data-panelcontainer="wizard"
+    data-placeholder-text="Please drag Wizard components here"
+    id="wizard"
+  >
+    <div
+      class="cmp-adaptiveform-wizard__label-container"
+    >
+      <label
+        class="cmp-adaptiveform-wizard__label"
+        for="wizard-widget"
+      >
+        Wizard
+      </label>
+    </div>
+    <div
+      aria-live="polite"
+    />
+    <div
+      class="cmp-adaptiveform-wizard__widget cmp-adaptiveform-wizard__widget--v2"
+      id="wizard-widget"
+    >
+      <div
+        class="cmp-adaptiveform-wizard__tabs-container"
+      >
+        <ol
+          class="cmp-adaptiveform-wizard__tabList"
+          id="wizard_guide-item-nav-container"
+          role="tablist"
+        >
+          <li
+            aria-selected="true"
+            class="cmp-adaptiveform-wizard__tab cmp-adaptiveform-wizard__tab--active"
+            data-cmp-hook-adaptiveformwizard="tab"
+            id="field_wizard-item-nav"
+            role="tab"
+            tabindex="0"
+            title="text field label"
+          >
+            text field label
+          </li>
+          <li
+            aria-selected="false"
+            class="cmp-adaptiveform-wizard__tab "
+            data-cmp-hook-adaptiveformwizard="tab"
+            id="tabsWithData_wizard-item-nav"
+            role="tab"
+            tabindex="-1"
+            title="tab label"
+          >
+            tab label
+          </li>
+        </ol>
+      </div>
+      <div
+        class="cmp-adaptiveform-wizard__containerNav"
+      >
+        <div
+          aria-label="Next Button"
+          class="cmp-adaptiveform-wizard__nav cmp-adaptiveform-wizard__nav--next"
+          role="navigation"
+          tabindex="0"
+        />
+      </div>
+      <div
+        aria-hidden="false"
+        aria-labelledby="field_wizard-item-nav"
+        class="cmp-adaptiveform-wizard__wizardpanel cmp-adaptiveform-wizard__wizardpanel--v2 cmp-adaptiveform-wizard__wizardpanel--active"
+        data-cmp-hook-adaptiveformtabs="tabpanel"
+        data-cmp-hook-adaptiveformwizard="wizardpanel"
+        role="tabpanel"
+        tabindex="0"
+      />
+    </div>
+  </div>
+</div>
+`;

@@ -24,6 +24,11 @@ const helper = renderComponent(NumberField);
 
 describe('Number Field', () => {
 
+  test('Snapshot', async () => {
+    const { renderResponse } = await helper(field);
+    expect(renderResponse.container).toMatchSnapshot();
+  });
+
   test('value entered by user in text field is set in model', async () => {
     const f = {
       ...field,

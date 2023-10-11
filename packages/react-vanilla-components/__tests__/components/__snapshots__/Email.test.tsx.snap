@@ -1,0 +1,36 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Text Field Snapshot 1`] = `
+<div>
+  <div
+    class="cmp-adaptiveform-emailinput cmp-adaptiveform-emailinput--empty "
+    data-cmp-enabled="true"
+    data-cmp-is="adaptiveFormEmailInput"
+    data-cmp-visible="true"
+    id="BliYlaO6X4D"
+  >
+    <div
+      class="cmp-adaptiveform-emailinput__label-container"
+    >
+      <label
+        class="cmp-adaptiveform-emailinput__label"
+        for="BliYlaO6X4D-widget"
+      >
+        Email
+      </label>
+    </div>
+    <input
+      autocomplete="on"
+      class="cmp-adaptiveform-emailinput__widget"
+      id="BliYlaO6X4D-widget"
+      name="email"
+      placeholder="enter text field"
+      type="email"
+      value=""
+    />
+    <div
+      aria-live="polite"
+    />
+  </div>
+</div>
+`;

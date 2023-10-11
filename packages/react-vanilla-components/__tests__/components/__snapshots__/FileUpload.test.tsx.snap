@@ -1,0 +1,46 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`File Upload Snapshot 1`] = `
+<div>
+  <div
+    class="cmp-adaptiveform-fileinput cmp-adaptiveform-fileinput--empty "
+    data-cmp-enabled="true"
+    data-cmp-is="adaptiveFormFileInput"
+    data-cmp-visible="true"
+  >
+    <div
+      class="cmp-adaptiveform-fileinput__label-container"
+    >
+      <label
+        class="cmp-adaptiveform-fileinput__label"
+        for="RdEKIdDN7U1"
+      >
+        Upload Image
+      </label>
+    </div>
+    <br />
+    <label
+      class="cmp-adaptiveform-fileinput__widgetlabel"
+      for="RdEKIdDN7U1"
+    >
+      Attach
+    </label>
+    <input
+      accept="audio/*,video/*,image/*,text/*,application/pdf"
+      class="cmp-adaptiveform-fileinput__widget"
+      id="RdEKIdDN7U1"
+      max-file-size="5MB"
+      multiple=""
+      name="fileupload"
+      style="display: none;"
+      type="file"
+    />
+    <ul
+      class="cmp-adaptiveform-fileinput__filelist"
+    />
+    <div
+      aria-live="polite"
+    />
+  </div>
+</div>
+`;

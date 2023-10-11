@@ -1,0 +1,82 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Checkbox Group Snapshot 1`] = `
+<div>
+  <div
+    class="cmp-adaptiveform-checkboxgroup cmp-adaptiveform-checkboxgroup--empty "
+    data-cmp-enabled="true"
+    data-cmp-is="adaptiveFormCheckBoxGroup"
+    data-cmp-visible="true"
+  >
+    <div
+      class="cmp-adaptiveform-checkboxgroup__label-container"
+    >
+      <label
+        class="cmp-adaptiveform-checkboxgroup__label"
+        for="ZUshSK8vz1s-widget"
+      >
+        Checkbox group
+      </label>
+    </div>
+    <div
+      class="cmp-adaptiveform-checkboxgroup__widget HORIZONTAL"
+      id="ZUshSK8vz1s-widget"
+    >
+      <div
+        class="cmp-adaptiveform-checkboxgroup-item checkbox"
+      >
+        <label
+          class="cmp-adaptiveform-checkboxgroup__option-label"
+        >
+          <input
+            class="cmp-adaptiveform-checkboxgroup__option__widget"
+            name="checkbox"
+            type="checkbox"
+            value="1"
+          />
+          <span>
+            checkbox 1
+          </span>
+        </label>
+      </div>
+      <div
+        class="cmp-adaptiveform-checkboxgroup-item checkbox"
+      >
+        <label
+          class="cmp-adaptiveform-checkboxgroup__option-label"
+        >
+          <input
+            class="cmp-adaptiveform-checkboxgroup__option__widget"
+            name="checkbox"
+            type="checkbox"
+            value="2"
+          />
+          <span>
+            checkbox 2
+          </span>
+        </label>
+      </div>
+      <div
+        class="cmp-adaptiveform-checkboxgroup-item checkbox"
+      >
+        <label
+          class="cmp-adaptiveform-checkboxgroup__option-label"
+        >
+          <input
+            class="cmp-adaptiveform-checkboxgroup__option__widget"
+            name="checkbox"
+            type="checkbox"
+            value="3"
+          />
+          <span>
+            checkbox 3
+          </span>
+        </label>
+      </div>
+    </div>
+    <div
+      aria-live="polite"
+    />
+  </div>
+</div>
+`;

@@ -25,6 +25,11 @@ const helper = renderComponent(CheckBox);
 
 describe('Checkbox', () => {
 
+  test('Snapshot', async () => {
+    const { renderResponse } = await helper(field);
+    expect(renderResponse.container).toMatchSnapshot();
+  });
+
   test('selection made by the user sets the value', async () => {
     const f = {
       ...field,

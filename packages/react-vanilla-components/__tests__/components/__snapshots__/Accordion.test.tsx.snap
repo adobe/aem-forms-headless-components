@@ -1,0 +1,100 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Snapshot 1`] = `
+<div>
+  <div
+    class="cmp-accordion "
+    data-cmp-enabled="true"
+    data-cmp-is="adaptiveFormAccordion"
+    data-cmp-single-expansion="true"
+    data-cmp-visible="true"
+    data-placeholder-text="false"
+  >
+    <div
+      class="cmp-accordion__label-container"
+    >
+      <label
+        class="cmp-accordion__label"
+        for="accordion-widget"
+      >
+        Accordion
+      </label>
+    </div>
+    <div
+      aria-live="polite"
+    />
+    <div
+      class="cmp-accordion__item"
+      data-cmp-hook-accordion="item"
+      id="panelcontainer-541adbc656-widget"
+    >
+      <h3
+        class="cmp-accordion__header"
+      >
+        <button
+          aria-controls="panelcontainer-541adbc656"
+          aria-expanded="true"
+          class="cmp-accordion__button cmp-accordion__button--expanded"
+          data-cmp-hook-accordion="button"
+          id="panelcontainer-541adbc656-button"
+          role="button"
+          type="button"
+        >
+          <span
+            class="cmp-accordion__title"
+          >
+            Items
+          </span>
+          <span
+            class="cmp-accordion__icon"
+          />
+        </button>
+      </h3>
+      <div
+        aria-hidden="false"
+        aria-labelledby="panelcontainer-541adbc656-button"
+        class="cmp-accordion__panel cmp-accordion__panel--expanded"
+        data-cmp-hook-adaptiveformaccordion="panel"
+        id="panelcontainer-541adbc656-panel"
+        role="region"
+      />
+    </div>
+    <div
+      class="cmp-accordion__item"
+      data-cmp-hook-accordion="item"
+      id="panelcontainer-e48ec263e1-widget"
+    >
+      <h3
+        class="cmp-accordion__header"
+      >
+        <button
+          aria-controls="panelcontainer-e48ec263e1"
+          aria-expanded="false"
+          class="cmp-accordion__button "
+          data-cmp-hook-accordion="button"
+          id="panelcontainer-e48ec263e1-button"
+          role="button"
+          type="button"
+        >
+          <span
+            class="cmp-accordion__title"
+          >
+            Number
+          </span>
+          <span
+            class="cmp-accordion__icon"
+          />
+        </button>
+      </h3>
+      <div
+        aria-hidden="true"
+        aria-labelledby="panelcontainer-e48ec263e1-button"
+        class="cmp-accordion__panel cmp-accordion__panel--hidden"
+        data-cmp-hook-adaptiveformaccordion="panel"
+        id="panelcontainer-e48ec263e1-panel"
+        role="region"
+      />
+    </div>
+  </div>
+</div>
+`;

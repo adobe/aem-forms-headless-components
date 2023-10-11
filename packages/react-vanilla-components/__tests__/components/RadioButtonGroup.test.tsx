@@ -24,6 +24,11 @@ const helper = renderComponent(RadioButtonGroup);
 
 describe('radio Group', () => {
 
+  test('Snapshot', async () => {
+    const { renderResponse } = await helper(field);
+    expect(renderResponse.container).toMatchSnapshot();
+  });
+
   test('option selected by user is set in the model', async () => {
     const f = {
       ...field,

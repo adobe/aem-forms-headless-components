@@ -1,0 +1,37 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Checkbox Snapshot 1`] = `
+<div>
+  <div
+    class="cmp-adaptiveform-checkbox cmp-adaptiveform-checkbox--empty "
+    data-cmp-enabled="true"
+    data-cmp-is="adaptiveFormCheckBox"
+    data-cmp-visible="true"
+  >
+    <div
+      class="cmp-adaptiveform-checkbox__help-container"
+    />
+    <div
+      class="cmp-adaptiveform-checkbox__widget-container"
+    >
+      <input
+        aria-checked="false"
+        class="cmp-adaptiveform-checkbox__widget"
+        id="W1yNs1AsHf3-widget"
+        name="checkbox"
+        type="checkbox"
+        value=""
+      />
+      <label
+        class="cmp-adaptiveform-checkbox__label"
+        for="W1yNs1AsHf3-widget"
+      >
+        CheckBox Button
+      </label>
+    </div>
+    <div
+      aria-live="polite"
+    />
+  </div>
+</div>
+`;

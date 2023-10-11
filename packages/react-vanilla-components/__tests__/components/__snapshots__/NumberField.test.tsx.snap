@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Number Field Snapshot 1`] = `
+<div>
+  <div
+    class="cmp-adaptiveform-numberinput cmp-adaptiveform-numberinput--empty "
+    data-cmp-enabled="true"
+    data-cmp-is="adaptiveFormNumberInput"
+    data-cmp-visible="true"
+  >
+    <div
+      class="cmp-adaptiveform-numberinput__label-container"
+    >
+      <label
+        class="cmp-adaptiveform-numberinput__label"
+        for="o2pjkfs8EnX-widget"
+      >
+        number field
+      </label>
+    </div>
+    <input
+      class="cmp-adaptiveform-numberinput__widget"
+      id="o2pjkfs8EnX-widget"
+      name="number"
+      placeholder="enter number field"
+      required=""
+      type="number"
+      value=""
+    />
+    <div
+      aria-live="polite"
+    />
+  </div>
+</div>
+`;

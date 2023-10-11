@@ -1,0 +1,59 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Drop Down Snapshot 1`] = `
+<div>
+  <div
+    class="cmp-adaptiveform-dropdown cmp-adaptiveform-dropdown--empty "
+    data-cmp-enabled="true"
+    data-cmp-is="adaptiveFormDropDown"
+    data-cmp-visible="true"
+  >
+    <div
+      class="cmp-adaptiveform-dropdown__label-container"
+    >
+      <label
+        class="cmp-adaptiveform-dropdown__label"
+        for="PgmQO2P1DQ6-widget"
+      >
+        Drop Down
+      </label>
+    </div>
+    <select
+      class="cmp-adaptiveform-dropdown__widget"
+      data-testid="select"
+      id="PgmQO2P1DQ6-widget"
+      name="dropdown"
+      title="Drop Down"
+    >
+      <option
+        disabled=""
+        value=""
+      >
+        select
+      </option>
+      <option
+        class="cmp-adaptiveform-dropdown__option"
+        value="1"
+      >
+        option 1
+      </option>
+      <option
+        class="cmp-adaptiveform-dropdown__option"
+        value="2"
+      >
+        option 2
+      </option>
+      <option
+        class="cmp-adaptiveform-dropdown__option"
+        value="3"
+      >
+        option 3
+      </option>
+      ;
+    </select>
+    <div
+      aria-live="polite"
+    />
+  </div>
+</div>
+`;

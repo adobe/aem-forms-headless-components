@@ -1,0 +1,66 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Snapshot 1`] = `
+<div>
+  <div
+    class="cmp-tabs "
+    data-cmp-enabled="true"
+    data-cmp-is="adaptiveFormTabs"
+    data-cmp-visible="true"
+    data-placeholder-text="false"
+    id="tabsWithData"
+  >
+    <div
+      class="cmp-tabs__label-container"
+    >
+      <label
+        class="cmp-tabs__label"
+        for="tabsWithData-widget"
+      >
+        tab label
+      </label>
+    </div>
+    <div
+      aria-live="polite"
+    />
+    <ol
+      aria-multiselectable="false"
+      class="cmp-tabs__tablist"
+      id="tabsWithData-widget"
+      role="tablist"
+    >
+      <li
+        aria-controls="field__tabpanel"
+        aria-selected="true"
+        class="cmp-tabs__tab cmp-tabs__tab--active"
+        data-cmp-hook-adaptiveformtabs="tab"
+        id="field__tab"
+        role="tab"
+        tabindex="0"
+      >
+        text field label
+      </li>
+      <li
+        aria-controls="field2__tabpanel"
+        aria-selected="false"
+        class="cmp-tabs__tab"
+        data-cmp-hook-adaptiveformtabs="tab"
+        id="field2__tab"
+        role="tab"
+        tabindex="-1"
+      >
+        text field 2 label
+      </li>
+    </ol>
+    <div
+      aria-hidden="false"
+      aria-labelledby="field__tab"
+      class="cmp-tabs__tabpanel cmp-tabs__tabpanel--active"
+      data-cmp-hook-adaptiveformtabs="tabpanel"
+      id="field__tabpanel"
+      role="tabpanel"
+      tabindex="0"
+    />
+  </div>
+</div>
+`;

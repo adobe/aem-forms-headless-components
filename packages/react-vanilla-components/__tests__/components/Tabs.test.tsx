@@ -49,6 +49,12 @@ const tabsWithData = {
 
 const helper = renderComponent(HorizontalTab);
 
+test("Snapshot", () => {
+  const helper = renderComponent(HorizontalTab);
+  const { renderResponse } = helper(tabsWithData);
+  expect(renderResponse.container).toMatchSnapshot();
+});
+
 test("Tabs should not rendered if item length is zero", () => {
   const { renderResponse } = helper(emptyTabs);
   expect(renderResponse.queryByText(emptyTabs.label.value)).not.toBeNull();
@@ -67,22 +73,23 @@ test("Tabs should not rendered if visible is false", () => {
   expect(container.innerHTML.length).toEqual(0);
 });
 
-test("clicking on the horizontal tabs should switch from one tab to another",() => {
+test("clicking on the horizontal tabs should switch from one tab to another", () => {
   const { renderResponse } = helper(tabsWithData);
-  const tablist = renderResponse.getAllByRole('tab');
+  const tablist = renderResponse.getAllByRole("tab");
   expect(tablist).toHaveLength(2);
-  expect(tablist[0].className.includes('cmp-tabs__tab cmp-tabs__tab--active'))
-  expect(tablist[1].className.includes('cmp-tabs__tab'))
+  expect(tablist[0].className.includes("cmp-tabs__tab cmp-tabs__tab--active"));
+  expect(tablist[1].className.includes("cmp-tabs__tab"));
   userEvent.click(tablist[1]);
-  expect(tablist[0].className.includes('cmp-tabs__tab'))
-  expect(tablist[1].className.includes('cmp-tabs__tab cmp-tabs__tab--active'))
+  expect(tablist[0].className.includes("cmp-tabs__tab"));
+  expect(tablist[1].className.includes("cmp-tabs__tab cmp-tabs__tab--active"));
 });
 
 test("tabs should get rendered with undefined element if no mapping is defined", () => {
   const { renderResponse } = helper(tabsWithData);
   const tabs = renderResponse.container.querySelectorAll('[role="tab"]');
   expect(tabs.length).toEqual(2);
-  const tabPanels = renderResponse.container.querySelectorAll(".undefined-element");
+  const tabPanels =
+    renderResponse.container.querySelectorAll(".undefined-element");
   expect(tabPanels.length).toEqual(0);
 });
 
@@ -120,15 +127,17 @@ test("Tabs should not rendered if all the items are not visible", () => {
   expect(tabPanels.length).toEqual(0);
 });
 
-test('html in the label should be handled for non rich text', () => {
+test("html in the label should be handled for non rich text", () => {
   const f = {
     ...tabsWithData,
     label: {
-      value: '<p>title inside p tags</p>',
+      value: "<p>title inside p tags</p>",
       richText: true,
-      visible: true
-    }
-  }
+      visible: true,
+    },
+  };
   let { renderResponse } = helper(f);
-  expect(renderResponse.container.innerHTML).toContain('<p>title inside p tags</p>');
+  expect(renderResponse.container.innerHTML).toContain(
+    "<p>title inside p tags</p>"
+  );
 });

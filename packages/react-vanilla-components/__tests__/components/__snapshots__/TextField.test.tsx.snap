@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Text Field Snapshot 1`] = `
+<div>
+  <div
+    class="cmp-adaptiveform-textinput cmp-adaptiveform-textinput--empty "
+    data-cmp-enabled="true"
+    data-cmp-is="adaptiveFormTextInput"
+    data-cmp-visible="true"
+  >
+    <div
+      class="cmp-adaptiveform-textinput__label-container"
+    >
+      <label
+        class="cmp-adaptiveform-textinput__label"
+        for="k84FYtWAObp-widget"
+      >
+        text field
+      </label>
+    </div>
+    <input
+      class="cmp-adaptiveform-textinput__widget"
+      id="k84FYtWAObp-widget"
+      name="text"
+      placeholder="enter text field"
+      required=""
+      type="text"
+      value=""
+    />
+    <div
+      aria-live="polite"
+    />
+  </div>
+</div>
+`;

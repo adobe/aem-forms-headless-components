@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Plain Text Snapshot 1`] = `
+<div>
+  <div
+    class="text base"
+  >
+    <div
+      class="cmp-adaptiveform-text"
+      data-cmp-is="adaptiveFormText"
+      data-cmp-visible="true"
+      id="F2c8pJsL5bM"
+    >
+      Plain Text
+    </div>
+  </div>
+</div>
+`;
