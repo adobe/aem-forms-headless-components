@@ -46,6 +46,7 @@ const Button = (props: PROPS) => {
           aria-label={label?.visible === false ? label?.value : ''}
           disabled={!enabled}
           onClick={clickHandler}
+          type='button'
         >
           {label?.visible && <span className="cmp-adaptiveform-button__text">{label.value}</span>}
         </button>
