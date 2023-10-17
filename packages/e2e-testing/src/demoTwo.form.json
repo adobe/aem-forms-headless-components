@@ -1,0 +1,61 @@
+{
+    "adaptiveform": "0.0.10",
+    "metadata": {
+      "version": "1.0.0"
+    },
+    "items": [
+      {
+        "id": "tabsontop-86aea6d533",
+        "fieldType": "panel",
+        "name": "tabsontop1679288021097",
+        "description": "Car",
+        "tooltip": "Select from top",
+        "visible": true,
+        "enabled": true,
+        ":type": "core/fd/components/form/tabsontop/v1/tabsontop",
+        "items": [
+          {
+            "id": "checkboxgroup-c0c057333c",
+            "fieldType": "checkbox-group",
+            "name": "item_16792916436481679291648355",
+            "visible": true,
+            "type": "number[]",
+            "enabled": true,
+            "enumNames": [
+              "Male",
+              "Female"
+            ],
+            "label": {
+              "value": "Select",
+              "visible": true,
+              "richText": false
+            },
+            "enum": [
+              0,
+              1
+            ]
+          },
+          {
+            "id": "numberinput-d5f36deec8",
+            "fieldType": "number-input",
+            "name": "item_16824325701471682432584410",
+            "visible": true,
+            "type": "string",
+            "required": false,
+            "enabled": true,
+            "readOnly": false,
+            "label": {
+                "value": "Number Input",
+                "visible": true,
+                "richText": false
+            }
+        }
+        ],
+        "label": {
+          "value": "Tabs on top",
+          "visible": true,
+          "richText": false
+        }
+      }
+    ]
+  }

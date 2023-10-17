@@ -1,0 +1,93 @@
+{
+    "adaptiveform": "0.0.10",
+    "metadata": {
+        "version": "1.0.0"
+    },
+    "items": [
+        {
+            "id": "panelcontainer-e48b0a4997",
+            "fieldType": "panel",
+            "name": "panelcontainer1683540858451",
+            "visible": true,
+            "description": "Panel",
+            "tooltip": "panel",
+            "enabled": true,
+            "items": [
+                {
+                    "id": "fileinput-2ea0ef1aa6",
+                    "fieldType": "file-input",
+                    "name": "fileinput_11496821301678785755049",
+                    "visible": true,
+                    "type": "file",
+                    "required": false,
+                    "enabled": true,
+                    "readOnly": false,
+                    "accept": [
+                        "audio/*",
+                        " video/*",
+                        " image/*",
+                        " text/*",
+                        " application/pdf"
+                    ],
+                    "label": {
+                        "value": "File Attachment",
+                        "visible": true,
+                        "richText": false
+                    }
+                },
+                {
+                    "id": "numberinput-d5f36deec8",
+                    "fieldType": "number-input",
+                    "name": "item_16824325701471682432584410",
+                    "visible": true,
+                    "description": "Number",
+                    "tooltip": "number",
+                    "type": "string",
+                    "required": false,
+                    "enabled": true,
+                    "readOnly": false,
+                    "label": {
+                        "value": "Number Input",
+                        "visible": true,
+                        "richText": false
+                    }
+                },
+                {
+                    "id": "emailinput-4ec3f8d917",
+                    "fieldType": "email",
+                    "name": "emailinput1687434333874",
+                    "description": "Email",
+                    "tooltip": "email",
+                    "type": "string",
+                    "label": {
+                        "value": "Email Input"
+                    }
+                },
+                {
+                    "id": "checkbox-5de6e243d5",
+                    "fieldType": "checkbox",
+                    "name": "checkbox1689321601641",
+                    "visible": true,
+                    "type": "string",
+                    "description": "Agree",
+                    "tooltip": "agree",
+                    "enabled": true,
+                    "label": {
+                      "value": "Agree",
+                      "visible": true
+                    },
+                    "enum": [
+                      "true",
+                      "false"
+                    ]
+                  }
+            ],
+            "label": {
+                "value": "Panel",
+                "visible": true,
+                "richText": false
+            },
+            ":type": "core/fd/components/form/panelcontainer/v1/panelcontainer"
+        }
+    ]
+}
