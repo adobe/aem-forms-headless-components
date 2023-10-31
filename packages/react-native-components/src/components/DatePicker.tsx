@@ -79,17 +79,20 @@ const DatePickerComponent = function (props: PROPS) {
           {...inputProps as any}
           InputRightElement={(
             <Button onPress={() => setOpen(true)} style={styles.button}>
-              <Image
-                source={calendar}
-                alt='calendar'
-                style={styles.calendar}
-              />
+              {// @ts-ignore
+                <Image
+                  source={calendar}
+                  alt='calendar'
+                  style={styles.calendar}
+                />
+              }
             </Button>
           )}
         />
         {errorMessage ? <FormControl.ErrorMessage testID={`${props.id}-error`}>{errorMessage}</FormControl.ErrorMessage> : null}
         {description && !errorMessage ? <FormControl.HelperText testID={`${props.id}-description`}>{description}</FormControl.HelperText> : null}
       </FormControl>
+     {// @ts-ignore
       <DatePicker
         modal
         open={open}
@@ -98,6 +101,7 @@ const DatePickerComponent = function (props: PROPS) {
         onConfirm={confirmHandler}
         onCancel={cancelHandler}
       />
+     }
     </>
   );
 };

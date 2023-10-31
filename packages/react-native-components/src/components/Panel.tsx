@@ -24,6 +24,7 @@ import { useRuleEngine, useFormIntl, renderChildren, FormContext } from '@aemfor
 import { Box, Text } from 'native-base';
 
 const Panel = function (fieldset: State<FieldsetJson>) {
+  // @ts-ignore
   const context = useContext(FormContext);
   const [props, handlers] = useRuleEngine(fieldset);
   const translationId = getOrElse(props, ['properties', 'afs:translationIds', 'label.value']);
@@ -35,8 +36,13 @@ const Panel = function (fieldset: State<FieldsetJson>) {
 
   if (props.visible) {
     return (
+      // @ts-ignore
       <Box>
-        {props.label?.visible !== false ? <Text>{localizedLabel}</Text> : null}
+        {
+        props.label?.visible !== false ?
+        // @ts-ignore
+        <Text>{localizedLabel}</Text> : null
+        }
         {renderChildren(props, context.mappings, context.modelId, handlers)}
       </Box>);
   } else {

@@ -25,11 +25,14 @@ import { useRuleEngine, renderChildren, FormContext } from '@aemforms/af-react-r
 import { Text } from 'react-native';
 
 const Form = function (fieldset: State<FieldsetJson>) {
+  // @ts-ignore
   const context = useContext(FormContext);
   const [props, handlers] = useRuleEngine(fieldset);
   return (
     <>
-      {props?.label?.value ?<Text>{props.label.value}</Text> : null}
+      {props?.label?.value ? 
+      // @ts-ignore 
+      <Text>{props.label.value}</Text> : null}
       {renderChildren(props, context.mappings, context.modelId, handlers)}
     </>
   );
