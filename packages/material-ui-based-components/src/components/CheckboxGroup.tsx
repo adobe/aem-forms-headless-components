@@ -63,7 +63,7 @@ const CheckboxGroupComponent = (props: PROPS) => {
               value={value ? value : []}
               name={text}
               key={enums[index]}
-              control={<Checkbox value={enums[index]} color={props.layout?.color}  />}
+              control={<Checkbox checked={value?.includes(enums[index])} value={enums[index]} color={props.layout?.color}  />}
               label={text}
               onChange={changeHandler}
             />
