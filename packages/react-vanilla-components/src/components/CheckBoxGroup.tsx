@@ -84,6 +84,7 @@ const CheckBoxGroup = (props: PROPS) => {
                   value={enums![index]}
                   onChange={changeHandler}
                   readOnly={readOnly}
+                  checked={value?.includes(enums?.[index])}
                 />
                 <span>{item}</span>
               </label>
