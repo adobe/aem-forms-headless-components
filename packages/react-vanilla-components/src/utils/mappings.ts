@@ -37,6 +37,8 @@ import Switch from '../components/Switch';
 import ReCaptcha from '../components/ReCaptcha';
 import HCaptcha from '../components/HCaptcha';
 import Image from '../components/Image';
+import TermsAndCondition from '../components/TermsAndCondition';
+import ToggleableLink from '../components/ToggleableLink';
 
 const mappings = {
   'text-input': TextField,
@@ -62,6 +64,8 @@ const mappings = {
   'core/fd/components/form/hcaptcha/v1/hcaptcha': HCaptcha,
   captcha: ReCaptcha,
   image: Image,
+  'core/fd/components/form/termsandconditions/v1/termsandconditions': TermsAndCondition,
+  'core/fd/components/form/toggleablelink/v1/toggleablelink': ToggleableLink,
   form: Form
 };
 

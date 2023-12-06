@@ -53,6 +53,18 @@ const CheckBoxGroup = (props: PROPS) => {
     props.dispatchChange(valAdded);
   }, [props.dispatchChange, newVal]);
 
+  const changeHandlerToggleableLink = useCallback(
+       (val: string) => {
+         let valAdded = [...newVal];
+         if (!valAdded.includes(val)) {
+           valAdded.push(val);
+         }
+         props.dispatchChange(valAdded);
+       },
+      [props.dispatchChange, newVal]);
+  
+  const type = props[':type']?.split('/').pop();
+  
   return (
     <div
       className={`cmp-adaptiveform-checkboxgroup cmp-adaptiveform-checkboxgroup--${newVal.length ? 'filled' : 'empty'} ${appliedCssClassNames || ''}`}
@@ -79,6 +91,22 @@ const CheckBoxGroup = (props: PROPS) => {
           {options?.map((item, index: number) => (
             <div className={`cmp-adaptiveform-checkboxgroup-item ${name}`} key={enums![index]}>
               <label className="cmp-adaptiveform-checkboxgroup__option-label">
+                {
+                  type === 'toggleablelink' ? 
+                  <a
+                    className={'cmp-adaptiveform-checkboxgroup__links'}
+                    href={enums![index]}
+                    aria-checked={value?.includes(enums?.[index])}
+                    title={item}
+                    target="_blank"
+                    onClick={() => {
+                      changeHandlerToggleableLink(enums![index]);
+                  }}
+                  >
+                  <span>{item}</span>
+                 </a> : 
+                (
+                <>
                 <input
                   className={'cmp-adaptiveform-checkboxgroup__option__widget'}
                   type='checkbox'
@@ -90,7 +118,9 @@ const CheckBoxGroup = (props: PROPS) => {
                   checked={value?.includes(enums?.[index])}
                   aria-invalid={!valid}
                 />
-                {item}
+                 <span>{item}</span>
+                </>
+                )}
               </label>
             </div>
           ))}

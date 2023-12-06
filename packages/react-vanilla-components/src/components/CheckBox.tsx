@@ -55,7 +55,7 @@ const CheckBox = (props: PROPS) => {
             type='checkbox'
             className={'cmp-adaptiveform-checkbox__widget'}
             onChange={handleChange}
-            value={value}
+            value={value || ''}
             checked={selectedValue === value ? true : false}
             name={name}
             required={required}
