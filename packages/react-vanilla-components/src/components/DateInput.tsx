@@ -45,6 +45,7 @@ const DateInput = (props: PROPS) => {
       data-cmp-is="adaptiveFormDatePicker"
       data-cmp-visible={visible}
       data-cmp-enabled={enabled}
+      data-cmp-required={required}
     >
       <FieldWrapper
         bemBlock='cmp-adaptiveform-datepicker'

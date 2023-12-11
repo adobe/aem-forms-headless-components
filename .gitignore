@@ -1,6 +1,6 @@
 node_modules/
-packages/react-native/node_modules/
-packages/react-native/lib/
+packages/react-native-components/node_modules/
+packages/react-native-components/lib/
 packages/react-spectrum/node_modules/
 packages/react-spectrum/lib/
 packages/react-vanilla-components/node_modules/

@@ -38,6 +38,7 @@ const RadioButtonGroup = (props: PROPS) => {
       data-cmp-is="adaptiveFormRadioButton"
       data-cmp-visible={visible}
       data-cmp-enabled={enabled}
+      data-cmp-required={required}
     >
       <FieldWrapper
         bemBlock='cmp-adaptiveform-radiobutton'
@@ -52,8 +53,8 @@ const RadioButtonGroup = (props: PROPS) => {
           className={`cmp-adaptiveform-radiobutton__widget ${orientation}`}
           id={`${id}-widget`}
         >
-          {options?.map((item: string, index: number) => (
-            <div className="cmp-adaptiveform-radiobutton__option" key={item}>
+          {options?.map((item, index: number) => (
+            <div className="cmp-adaptiveform-radiobutton__option" key={enums![index]}>
               <label className="cmp-adaptiveform-radiobutton__option-label">
                 <input
                   className={'cmp-adaptiveform-radiobutton__option__widget'}
@@ -64,8 +65,9 @@ const RadioButtonGroup = (props: PROPS) => {
                   onChange={changeHandler}
                   readOnly={readOnly}
                   aria-checked={value === enums![index] ? 'true' : 'false'}
+                  checked={value?.length ? value?.includes(enums?.[index]) : null}
                 />
-                <span>{item}</span>
+                {item}
               </label>
             </div>
           ))}

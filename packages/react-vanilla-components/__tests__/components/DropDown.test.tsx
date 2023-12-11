@@ -19,6 +19,26 @@ const field = {
   fieldType: "drop-down",
   placeholder: "select",
   enum: [1, 2, 3],
+  enumNames: [{
+    value: "option 1"
+  },
+  {
+    value: "option 2"
+  },
+  {
+    value: "option 3"
+  }],
+};
+
+const fieldTwo = {
+  name: "dropdown",
+  visible: true,
+  label: {
+    value: "Drop Down",
+  },
+  fieldType: "drop-down",
+  placeholder: "select",
+  enum: [1, 2, 3],
   enumNames: ["option 1", "option 2", "option 3"],
 };
 const helper = renderComponent(DropDown);
@@ -38,9 +58,37 @@ describe("Drop Down", () => {
     ).toBeTruthy();
   });
 
+  test("option selected by user is set in the model", async () => {
+    const f = {
+      ...fieldTwo,
+    };
+    const { renderResponse } = await helper(f);
+    userEvent.selectOptions(
+      renderResponse.getByRole("combobox"),
+      renderResponse.getByRole("option", { name: "option 1" })
+    );
+    expect(
+      renderResponse.getByRole("option", { name: "option 1" })
+    ).toBeTruthy();
+  });
+
   test("selection made by the user sets the value", async () => {
     const f = {
       ...field,
+    };
+    const { renderResponse, element } = await helper(f);
+
+    userEvent.click(renderResponse.getByTestId("select"));
+    userEvent.selectOptions(
+      renderResponse.getByRole("combobox"),
+      renderResponse.getByRole("option", { name: "option 1" })
+    );
+    expect(element?.value).toEqual(1);
+  });
+
+  test("selection made by the user sets the value", async () => {
+    const f = {
+      ...fieldTwo,
     };
     const { renderResponse, element } = await helper(f);
 

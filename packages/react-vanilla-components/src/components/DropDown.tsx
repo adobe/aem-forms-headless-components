@@ -23,7 +23,7 @@ import { PROPS } from '../utils/type';
 import FieldWrapper from './common/FieldWrapper';
 
 const DropDown = (props: PROPS) => {
-  const { id, enum: enums, enumNames, label, value, placeholder, name, enabled, visible, appliedCssClassNames } = props;
+  const { id, enum: enums, enumNames, label, value, placeholder, name, required, enabled, visible, appliedCssClassNames } = props;
   const dropValue = enumNames && enumNames.length ? enumNames : enums || [];
 
   const changeHandler = useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -37,6 +37,7 @@ const DropDown = (props: PROPS) => {
       data-cmp-is="adaptiveFormDropDown"
       data-cmp-visible={visible}
       data-cmp-enabled={enabled}
+      data-cmp-required={required}
     >
       <FieldWrapper
         bemBlock='cmp-adaptiveform-dropdown'
@@ -55,12 +56,14 @@ const DropDown = (props: PROPS) => {
           className={'cmp-adaptiveform-dropdown__widget'}
           onChange={changeHandler}
           value={value}
+          required={required}
           disabled={!enabled}
+          defaultValue={'DEFAULT'}
         >
-          <option value="" disabled selected>{placeholder}</option>
+          <option value="DEFAULT" disabled>{placeholder}</option>
           {
-            dropValue?.map((item: string, index: number) => {
-              return <option className="cmp-adaptiveform-dropdown__option" key={item} value={enums![index]}>{item}</option>;
+            dropValue?.map((item, index: number) => {
+              return <option className="cmp-adaptiveform-dropdown__option" key={enums![index]} value={enums![index]}>{item}</option>;
             })
           };
         </select>

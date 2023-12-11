@@ -15,7 +15,7 @@
 //  ******************************************************************************
 
 import React, { JSXElementConstructor } from 'react';
-import { State, FieldJson, FieldsetJson, getOrElse, isEmpty, checkIfConstraintsArePresent } from '@aemforms/af-core';
+import { State, FieldJson, FieldsetJson, getOrElse, isEmpty, checkIfConstraintsArePresent, EnumName } from '@aemforms/af-core';
 import { useRuleEngine, useFormIntl } from '@aemforms/af-react-renderer';
 import sanitizeHTML from 'sanitize-html';
 import { FieldViewState } from './type';
@@ -23,7 +23,7 @@ const DEFAULT_ERROR_MESSAGE = 'There is an error in the field';
 
 export const richTextString = (stringMsg = '') => {
   const htmlProp = { __html: sanitizeHTML(stringMsg) };
-  return (<div dangerouslySetInnerHTML={htmlProp} />);
+  return (<span dangerouslySetInnerHTML={htmlProp} />);
 };
 const formateErrorMessage = (state: FieldViewState) => {
   const errorMessage = state.errorMessage === '' && state.valid === false ? DEFAULT_ERROR_MESSAGE : state.errorMessage;
@@ -50,6 +50,16 @@ const getLocalizePlaceholder = (i18n: any, state: FieldViewState) => {
   return placeholder;
 };
 
+const getLocalizeEnumNames = (i18n: any, state: FieldViewState) => {
+    const enumNames = state?.enumNames || [];
+    return enumNames.map((item: EnumName | string, index: number) => {
+    const EnumName = typeof item === 'object' ? item.value : item;
+    const localizeEnumId = getOrElse(state, ['properties', 'afs:translationIds', 'enumNames']);
+    const localizeEnumName = localizeEnumId ? i18n.formatMessage({ id: `localizeEnumId##${index}`, defaultMessage: EnumName }) : EnumName;
+    return typeof item === 'object' && item?.richText ? richTextString(localizeEnumName) : localizeEnumName;
+  });
+};
+
 const getToolTip = (state: FieldViewState) => {
   return state.tooltip ? richTextString(state.tooltip) : null;
 };
@@ -72,7 +82,8 @@ export function withRuleEngine(Component: JSXElementConstructor<any>) {
       layout: {
         orientation: 'horizontal',
         ...(getOrElse(state, ['properties', 'afs:layout'], {}))
-      }
+      },
+      enumNames: getLocalizeEnumNames(i18n, state)
     };
     const visible = typeof state.visible === 'undefined' || state.visible;
     // @ts-ignore
