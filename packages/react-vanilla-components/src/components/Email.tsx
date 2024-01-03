@@ -23,7 +23,7 @@ import { PROPS } from '../utils/type';
 import FieldWrapper from './common/FieldWrapper';
 
 const Email = (props: PROPS) => {
-  const { id, value, label, valid, enabled, visible, name, placeholder, appliedCssClassNames } = props;
+  const { id, value, label, valid, enabled, visible, name, placeholder, required, appliedCssClassNames } = props;
 
   const handleChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     const thisVal = event.target.value;
@@ -46,6 +46,7 @@ const Email = (props: PROPS) => {
       id={id}
       data-cmp-is="adaptiveFormEmailInput"
       data-cmp-valid={valid}
+      data-cmp-required={required}
     >
       <FieldWrapper
         bemBlock='cmp-adaptiveform-emailinput'

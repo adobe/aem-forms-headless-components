@@ -32,6 +32,7 @@ import Email from '../components/Email';
 import VerticalTab from '../components/tabs/VerticalTab';
 import Form from '../components/Form';
 import PlainText from '../components/PlainText';
+import TelephoneInput from '../components/TelephoneInput';
 
 const mappings = {
   'text-input': TextField,
@@ -45,12 +46,13 @@ const mappings = {
   'file-input': FileUpload,
   email: Email,
   'multiline-input': TextFieldArea,
-  'core/fd/components/form/wizard/v2/wizard': Wizard,
+  'core/fd/components/form/wizard/v1/wizard': Wizard,
   'core/fd/components/form/accordion/v1/accordion': Accordion,
   'core/fd/components/form/tabsontop/v1/tabsontop': HorizontalTab,
   'core/fd/components/form/verticaltabs/v1/verticaltabs': VerticalTab,
   'plain-text': PlainText,
   'core/fd/components/form/panelcontainer/v1/panelcontainer': Panel,
+  'core/fd/components/form/telephoneinput/v1/telephoneinput': TelephoneInput,
   form: Form
 };
 

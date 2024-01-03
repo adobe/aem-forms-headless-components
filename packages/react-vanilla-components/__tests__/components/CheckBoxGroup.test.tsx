@@ -18,8 +18,29 @@ const field = {
   },
   fieldType: 'checkbox-group',
   enum: [1, 2, 3],
+  enumNames: [ {
+    value: "checkbox 1",
+  },
+  {
+    value: "checkbox 2"
+  },
+  {
+    value: "checkbox 3"
+  }
+]
+};
+
+const fieldTwo = {
+  name: 'checkbox',
+  visible: true,
+  label: {
+    value: 'Checkbox group'
+  },
+  fieldType: 'checkbox-group',
+  enum: [1, 2, 3],
   enumNames: ['checkbox 1', 'checkbox 2', 'checkbox 3']
 };
+
 const helper = renderComponent(CheckBoxGroup);
 
 describe('Checkbox Group', () => {
@@ -27,6 +48,21 @@ describe('Checkbox Group', () => {
   test('option selected by user is set in the model', async () => {
     const f = {
       ...field,
+    };
+    const { renderResponse, element } = await helper(f);
+
+    expect(element?.getState().value).toBeUndefined();
+
+    userEvent.click(renderResponse.getByText(f.enumNames[0].value));
+    expect(element?.value).toEqual([1]);
+
+    userEvent.click(renderResponse.getByText(f.enumNames[2].value));
+    expect(element?.value).toEqual([1, 3]);
+  });
+
+  test('option selected by user is set in the model', async () => {
+    const f = {
+      ...fieldTwo,
     };
     const { renderResponse, element } = await helper(f);
 
@@ -42,6 +78,26 @@ describe('Checkbox Group', () => {
   test('selection made by the user sets the value', async () => {
     const f = {
       ...field,
+    };
+    const { renderResponse, element } = await helper(f);
+
+    userEvent.click(renderResponse.getByText(f.enumNames[0].value));
+    expect(element.value).toEqual([1]);
+
+    userEvent.click(renderResponse.getByText(f.enumNames[1].value));
+    expect(element.value).toEqual([1, 2]);
+
+    userEvent.click(renderResponse.getByText(f.enumNames[2].value));
+    expect(element.value).toEqual([1, 2, 3]);
+
+
+    userEvent.click(renderResponse.getByText(f.enumNames[1].value));
+    expect(element.value).toEqual([1, 3]);
+  });
+
+  test('selection made by the user sets the value', async () => {
+    const f = {
+      ...fieldTwo,
     };
     const { renderResponse, element } = await helper(f);
 
@@ -65,9 +121,9 @@ describe('Checkbox Group', () => {
       visible: false,
     };
     const { renderResponse } = await helper(f);
-    expect(renderResponse.queryByText(f.enumNames[0])).toBeNull();
-    expect(renderResponse.queryByText(f.enumNames[1])).toBeNull();
-    expect(renderResponse.queryByText(f.enumNames[2])).toBeNull();
+    expect(renderResponse.queryByText(f.enumNames[0].value)).toBeNull();
+    expect(renderResponse.queryByText(f.enumNames[1].value)).toBeNull();
+    expect(renderResponse.queryByText(f.enumNames[2].value)).toBeNull();
   });
 
   test('In case of both tooltip and description, tooltip should be visible and onclick of toggle button, description should be visible', async () => {
@@ -94,5 +150,31 @@ describe('Checkbox Group', () => {
     }
     let { renderResponse } = await helper(f);
     expect(renderResponse.container.innerHTML).toContain('<p>title inside p tags</p>');
+  });
+
+  test('Enumnames should be handled for non rich text', async () => {
+    const f = {
+      ...field,
+      enumNames: field.enumNames.map((x) => ({
+        ...x,
+        value:'<i>checkbox 1</i>',
+        richText: true
+      })),
+    }
+    let { renderResponse } = await helper(f);
+    expect(renderResponse.container.innerHTML).toContain('<i>checkbox 1</i>');
+  });
+  
+  test('Enumnames should be handled for non rich text', async () => {
+    const f = {
+      ...field,
+      enumNames: field.enumNames.map((x) => ({
+        ...x,
+        value:'<i>checkbox 1</i>',
+        richText: false
+      })),
+    }
+    let { renderResponse } = await helper(f);
+    expect(renderResponse.container.innerHTML).toContain('checkbox 1');
   });
 });

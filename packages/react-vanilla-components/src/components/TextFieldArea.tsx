@@ -45,6 +45,7 @@ const TextFieldArea = (props: PROPS) => {
       data-cmp-is="adaptiveFormTextInput"
       data-cmp-visible={visible}
       data-cmp-enabled={enabled}
+      data-cmp-required={required}
     >
       <FieldWrapper
         bemBlock='cmp-adaptiveform-textinput'

@@ -27,7 +27,6 @@ const CheckBoxGroup = (props: PROPS) => {
   const options = enumNames && enumNames.length ? enumNames : enums || [];
   const orientation = props.layout?.orientation.toUpperCase();
 
-
   const getValue = useCallback((value: any) => {
     if (value) {
       if (value instanceof Array) {
@@ -59,6 +58,7 @@ const CheckBoxGroup = (props: PROPS) => {
       data-cmp-is="adaptiveFormCheckBoxGroup"
       data-cmp-visible={visible}
       data-cmp-enabled={enabled}
+      data-cmp-required={required}
     >
       <FieldWrapper
         bemBlock='cmp-adaptiveform-checkboxgroup'
@@ -73,8 +73,8 @@ const CheckBoxGroup = (props: PROPS) => {
           className={`cmp-adaptiveform-checkboxgroup__widget ${orientation}`}
           id={`${id}-widget`}
         >
-          {options?.map((item: string, index: number) => (
-            <div className={`cmp-adaptiveform-checkboxgroup-item ${name}`} key={item}>
+          {options?.map((item, index: number) => (
+            <div className={`cmp-adaptiveform-checkboxgroup-item ${name}`} key={enums![index]}>
               <label className="cmp-adaptiveform-checkboxgroup__option-label">
                 <input
                   className={'cmp-adaptiveform-checkboxgroup__option__widget'}
@@ -86,7 +86,7 @@ const CheckBoxGroup = (props: PROPS) => {
                   readOnly={readOnly}
                   checked={value?.includes(enums?.[index])}
                 />
-                <span>{item}</span>
+                {item}
               </label>
             </div>
           ))}

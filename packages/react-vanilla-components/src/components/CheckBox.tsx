@@ -20,7 +20,7 @@ import { PROPS } from '../utils/type';
 import FieldWrapper from './common/FieldWrapper';
 
 const CheckBox = (props: PROPS) => {
-  const { id, label, enum: enums, value, name, readOnly, enabled, visible, appliedCssClassNames } = props;
+  const { id, label, enum: enums, required, value, name, readOnly, enabled, visible, appliedCssClassNames } = props;
   const selectedValue = enums?.[0];
   const unSelectedValue = (enums?.length || 0) < 2 ? null : enums?.[1];
 
@@ -35,6 +35,7 @@ const CheckBox = (props: PROPS) => {
       data-cmp-is="adaptiveFormCheckBox"
       data-cmp-visible={visible}
       data-cmp-enabled={enabled}
+      data-cmp-required={required}
     >
       <FieldWrapper
         bemBlock='cmp-adaptiveform-checkbox'
@@ -55,6 +56,7 @@ const CheckBox = (props: PROPS) => {
             value={value}
             checked={selectedValue === value ? true : false}
             name={name}
+            required={required}
             readOnly={readOnly}
             disabled={!enabled}
             aria-checked={selectedValue === value ? 'true' : 'false'}

@@ -75,6 +75,7 @@ const FileUpload = (props: PROPS) => {
       data-cmp-is="adaptiveFormFileInput"
       data-cmp-visible={visible}
       data-cmp-enabled={enabled}
+      data-cmp-required={required}
     >
       <FieldWrapper
         bemBlock='cmp-adaptiveform-fileinput'

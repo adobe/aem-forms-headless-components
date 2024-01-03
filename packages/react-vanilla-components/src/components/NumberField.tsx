@@ -43,6 +43,7 @@ const NumberField = (props: PROPS) => {
       data-cmp-is="adaptiveFormNumberInput"
       data-cmp-visible={visible}
       data-cmp-enabled={enabled}
+      data-cmp-required={required}
     >
       <FieldWrapper
         bemBlock='cmp-adaptiveform-numberinput'
