@@ -25,7 +25,8 @@ const Form = function (fieldset: State<FieldsetJson>) {
   const [props, handlers] = useRuleEngine(fieldset);
 
   return (
-    <form>
+    <form
+      className={'cmp-adaptiveform-container cmp-adaptiveform-container__wrapper'}>
       {props?.label?.value ? <h2>{props.label.value}</h2> : null}
       {renderChildren(props, context.mappings, context.modelId, handlers)}
     </form>
