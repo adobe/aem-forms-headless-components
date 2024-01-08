@@ -33,6 +33,7 @@ import VerticalTab from '../components/tabs/VerticalTab';
 import Form from '../components/Form';
 import PlainText from '../components/PlainText';
 import TelephoneInput from '../components/TelephoneInput';
+import Switch from '../components/Switch';
 
 const mappings = {
   'text-input': TextField,
@@ -53,6 +54,7 @@ const mappings = {
   'plain-text': PlainText,
   'core/fd/components/form/panelcontainer/v1/panelcontainer': Panel,
   'core/fd/components/form/telephoneinput/v1/telephoneinput': TelephoneInput,
+  'core/fd/components/form/switch/v1/switch': Switch,
   form: Form
 };
 
