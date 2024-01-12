@@ -9,7 +9,9 @@
 import FileUpload from "../../src/components/FileUpload";
 import { renderComponent } from "../utils";
 import userEvent from "@testing-library/user-event";
+import { fireEvent } from '@testing-library/react';
 import { FileObject } from "@aemforms/af-core";
+import "@testing-library/jest-dom/extend-expect"
 
 const field = {
   name: "fileupload",
@@ -20,6 +22,9 @@ const field = {
   maxFileSize: "5MB",
   fieldType: "file-input",
   visible: true,
+  properties: {
+    dragDropText: "Drag and drop to Upload"
+  },
 };
 
 const fieldTwo = {
@@ -253,5 +258,19 @@ describe("File Upload", () => {
     const input = await renderResponse.container.getElementsByClassName('cmp-adaptiveform-fileinput__widget');
     const label = await renderResponse.queryByText(field.label.value);
     expect(input[0]?.getAttribute('id')).toEqual(label?.getAttribute('for'));
+  });
+
+  test('Drag and drop files', async () => {
+    const f = {
+      ...field,
+      type: "file",
+    };
+    const { renderResponse } = await helper(f);
+    const dragArea = renderResponse.queryByText(f.properties.dragDropText) as HTMLAreaElement
+    expect(dragArea).toBeInTheDocument();
+    const mockFile = new File(['mock content'], 'mockfile.txt', { type: 'text/plain' });
+    const dataTransfer = { files: [mockFile] };
+    fireEvent.drop(dragArea, { dataTransfer });
+    expect(renderResponse.queryByText('mockfile.txt')).toBeInTheDocument();
   });
 });
