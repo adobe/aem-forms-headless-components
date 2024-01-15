@@ -1,0 +1,31 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "esnext",
+    "lib": [
+      "esnext",
+      "dom"
+    ],
+    "jsx": "react",
+    "allowJs": true,
+    "declaration": true,
+    "outDir": "./build/",
+    "rootDir": "./src/",
+    "strict": true,
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
+    "noFallthroughCasesInSwitch": true,
+    "isolatedModules": true,
+    "noEmit": false
+  },
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "./build/**/*"
+  ]
+}

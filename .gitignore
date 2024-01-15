@@ -5,6 +5,9 @@ packages/react-spectrum/node_modules/
 packages/react-spectrum/lib/
 packages/react-vanilla-components/node_modules/
 packages/react-vanilla-components/lib/
+packages/e2e-testing/node_modules/
+packages/e2e-testing/lib/
+packages/e2e-testing/build/
 
 
 

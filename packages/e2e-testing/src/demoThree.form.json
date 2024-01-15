@@ -1,0 +1,43 @@
+{
+    "adaptiveform": "0.0.10",
+    "metadata": {
+      "version": "1.0.0"
+    },
+    "items": [
+        {
+            "id": "verticaltabs-7971ccaa43",
+            "fieldType": "panel",
+            "name": "verticaltabs1687434321558",
+            "description": "Vertical Tabs",
+            "tooltip": "vertical tab",
+            "label": {
+              "value": "Vertical Tabs"
+            },
+            "properties": {
+              "fd:path": "/content/forms/af/kjnk-/jcr:content/guideContainer/panelcontainer/verticaltabs"
+            },
+            "items": [
+              {
+                "id": "datepicker-c388882cad",
+                "fieldType": "date-input",
+                "name": "datepicker1687434328538",
+                "type": "string",
+                "label": {
+                  "value": "Date Input"
+                },
+                "format": "date"
+              },
+              {
+                "id": "emailinput-4ec3f8d917",
+                "fieldType": "email",
+                "name": "emailinput1687434333874",
+                "type": "string",
+                "label": {
+                  "value": "Email Input"
+                }
+              }
+            ],
+            ":type": "core/fd/components/form/verticaltabs/v1/verticaltabs"
+          }
+    ]
+  }

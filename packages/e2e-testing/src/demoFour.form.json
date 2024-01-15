@@ -1,0 +1,98 @@
+{
+    "adaptiveform": "0.0.10",
+    "metadata": {
+      "version": "1.0.0"
+    },
+    "items": [
+        {
+            "id": "wizard-b1560be6ae",
+            "name": "wizard1675921454508",
+            "description": "Wizard",
+            "tooltip": "wizard",   
+            "fieldType": "panel", 
+            "visible": true,
+            "enabled": true,
+            "items": [
+              {
+                "id": "dropdown-05cf514a7c",
+                "fieldType": "drop-down",
+                "name": "dropdown1675921470393",
+                "visible": true,
+                "type": "string",
+                "required": false,
+                "enabled": true,
+                "label": {
+                  "value": "Dropdown",
+                  "visible": true,
+                  "richText": false
+                }
+              },
+              {
+                "id": "textinput-489dc03a6d",
+                "fieldType": "multiline-input",
+                "name": "textinput_4483522471678955258174",
+                "visible": true,
+                "type": "string",
+                "required": false,
+                "enabled": true,
+                "readOnly": false,
+                "autoComplete": "off",
+                "label": {
+                  "value": "Text Input",
+                  "visible": true,
+                  "richText": false
+                }
+              },
+              {
+                "id": "numberinput-f0604b773e",
+                "fieldType": "number-input",
+                "name": "numberinput1682331735787",
+                "visible": true,
+                "type": "string",
+                "required": false,
+                "enabled": true,
+                "label": {
+                  "value": "Number Input",
+                  "visible": true,
+                  "richText": false
+                }
+              },
+              {
+                "id": "radiobutton-5b2619feda",
+                "fieldType": "radio-group",
+                "name": "radiobutton1682332765985",
+                "visible": true,
+                "type": "string",
+                "required": false,
+                "enabled": true,
+                "readOnly": false,
+                "enforceEnum": true,
+                "enumNames": [
+                  "Item 1",
+                  "Item 2"
+                ],
+                "label": {
+                  "value": "Radio Button",
+                  "visible": true,
+                  "richText": false
+                },
+                "properties": {
+                  "afs:layout": {
+                    "orientation": "horizontal"
+                  }
+                },
+                "enum": [
+                  "0",
+                  "1"
+                ]
+              }
+            ],
+            "label": {
+              "value": "wizard",
+              "visible": true,
+              "richText": false
+            },
+            ":type":"core/fd/components/form/wizard/v1/wizard"
+          }
+    ]
+  }
