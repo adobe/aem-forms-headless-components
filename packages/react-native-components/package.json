@@ -21,7 +21,8 @@
   "scripts": {
     "clean": "rm -rf lib target",
     "eslint": "npx eslint src/**/*.ts*",
-    "build": "npm run clean && npm run eslint && npx tsc",
+    "copy-assets": "cp -R src/image/ lib/image/",
+    "build": "npm run clean && npm run eslint && npx tsc && npm run copy-assets",
     "test:ci": "jest --silent --coverage",
     "prepublishOnly": "npm run build && npm run test",
     "test": "jest --silent"
