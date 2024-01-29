@@ -19,7 +19,7 @@
 *************************************************************************/
 
 import { Handlers, WithViewState } from '@aemforms/af-react-renderer';
-import { FileObject, FieldJson, State } from '@aemforms/af-core';
+import { FileObject, FieldJson, FieldsetJson, State } from '@aemforms/af-core';
 import { GestureResponderEvent } from 'react-native';
 
 export type InputFieldTypes = {
@@ -96,4 +96,15 @@ export type HandlersTypes = {
   richText?: boolean
 }
 
-export type PROPS = State<FieldJson & HandlersTypes>;
+export type PROPS = State<FieldJson & HandlersTypes & {
+  layout?: {
+    [key: string]: any;
+  },
+}>;
+
+
+export type PROPS_PANEL = State<FieldsetJson> & {
+  handlers: Handlers,
+  activePanel?: string,
+  toggle?: (id: string) => void | undefined
+};

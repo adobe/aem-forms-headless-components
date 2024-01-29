@@ -56,7 +56,7 @@ const TextFieldComponent = function (props: PROPS) {
   const Comp = props.fieldType === 'multiline-input' ? TextArea: Input;
 
   return (
-    <FormControl isInvalid={isError} isRequired={required}>
+    <FormControl isInvalid={isError} isRequired={required} {...props.layout}>
       {label?.visible && <FormControl.Label>{label?.value}</FormControl.Label>}
       <Comp {...inputProps as any} />
       {errorMessage && <FormControl.ErrorMessage testID={`${props.id}-error`}>{errorMessage}</FormControl.ErrorMessage>}

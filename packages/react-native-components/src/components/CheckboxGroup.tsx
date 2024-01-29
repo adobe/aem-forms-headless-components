@@ -46,7 +46,7 @@ const CheckboxGroupComponent = function (props: PROPS) {
   }, [value, isArray, dispatchChange]);
 
   return (
-    <FormControl isInvalid={isError} isRequired={required}>
+    <FormControl isInvalid={isError} isRequired={required} {...props.layout}>
       {label?.visible && <FormControl.Label>{label?.value}</FormControl.Label>}
       <Checkbox.Group onChange={changeHandler}>
         {options?.map((text: string, index)=>(

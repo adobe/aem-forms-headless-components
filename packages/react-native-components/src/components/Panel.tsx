@@ -18,30 +18,22 @@
 * the terms of the Adobe license agreement accompanying it.
 *************************************************************************/
 
-import { FieldsetJson, State, getOrElse } from '@aemforms/af-core';
 import React, { useContext } from 'react';
-import { useRuleEngine, useFormIntl, renderChildren, FormContext } from '@aemforms/af-react-renderer';
+import { renderChildren, FormContext } from '@aemforms/af-react-renderer';
 import { Box, Text } from 'native-base';
+import { withRuleEnginePanel } from '../shared/withRuleEngine';
+import { PROPS_PANEL } from '../utils/types';
 
-const Panel = function (fieldset: State<FieldsetJson>) {
+const Panel = function (props: PROPS_PANEL) {
+  const { label, handlers } = props;
   const context = useContext(FormContext);
-  const [props, handlers] = useRuleEngine(fieldset);
-  const translationId = getOrElse(props, ['properties', 'afs:translationIds', 'label.value']);
-  const i18n = useFormIntl();
-  let localizedLabel = props?.label?.value;
-  if (translationId) {
-    localizedLabel = i18n.formatMessage({ id: translationId, defaultMessage: props?.label?.value });
-  }
 
-  if (props.visible) {
-    return (
-      <Box>
-        {props.label?.visible !== false ? <Text>{localizedLabel}</Text> : null}
-        {renderChildren(props, context.mappings, context.modelId, handlers)}
-      </Box>);
-  } else {
-    return null;
-  }
+  return (
+    <Box>
+      {label?.visible !== false ? <Text>{label?.value}</Text> : null}
+      {renderChildren(props, context.mappings, context.modelId, handlers)}
+    </Box>
+  );
 };
 
-export default Panel;
+export default withRuleEnginePanel(Panel);

@@ -36,7 +36,7 @@ const RadioGroupComponent = function (props: PROPS) {
   }, [dispatchChange]);
 
   return (
-    <FormControl isInvalid={isError} isRequired={required}>
+    <FormControl isInvalid={isError} isRequired={required} {...props.layout}>
       {label?.visible && <FormControl.Label>{label?.value}</FormControl.Label>}
       <Radio.Group onChange={changeHandler} value={value} name={name || 'radio'}>
         {options?.map((text: string, index) => (

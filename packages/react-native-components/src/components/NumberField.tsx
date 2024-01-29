@@ -53,7 +53,7 @@ const NumberComponent = function (props: PROPS) {
   };
 
   return (
-    <FormControl isInvalid={isError} isRequired={required}>
+    <FormControl isInvalid={isError} isRequired={required} {...props.layout}>
       {label?.visible && <FormControl.Label>{label?.value}</FormControl.Label>}
       <Input {...inputProps} />
       {errorMessage ? <FormControl.ErrorMessage testID={`${props.id}-error`}>{errorMessage}</FormControl.ErrorMessage> : null}

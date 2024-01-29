@@ -36,7 +36,7 @@ const DropDownComponent = function (props: PROPS) {
   }, [dispatchChange]);
 
   return (
-    <FormControl isInvalid={isError} isRequired={required}>
+    <FormControl isInvalid={isError} isRequired={required} {...props.layout}>
       {label?.visible && <FormControl.Label>{label?.value}</FormControl.Label>}
       <Select onValueChange={changeHandler} selectedValue={value} placeholder={placeholder}>
         {options?.map((text: string, index) => (
