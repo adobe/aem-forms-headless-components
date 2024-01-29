@@ -34,7 +34,7 @@ const CheckboxComponent = function (props: PROPS) {
   }, [dispatchChange, selectedValue, unselectedValue]);
 
   return (
-    <FormControl isInvalid={isError} isRequired={required}>
+    <FormControl isInvalid={isError} isRequired={required} {...props.layout}>
       <Checkbox onChange={changeHandler} value={value}>{label?.visible ? label?.value : ''}</Checkbox>
       {errorMessage ? <FormControl.ErrorMessage testID={`${props.id}-error`}>{errorMessage}</FormControl.ErrorMessage> : null}
       {description && !errorMessage ? <FormControl.HelperText testID={`${props.id}-description`}>{description}</FormControl.HelperText> : null}

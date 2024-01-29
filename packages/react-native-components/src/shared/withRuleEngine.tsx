@@ -19,7 +19,7 @@
 *************************************************************************/
 
 import React, { JSXElementConstructor } from 'react';
-import { State, FieldJson, getOrElse, isEmpty, checkIfConstraintsArePresent } from '@aemforms/af-core';
+import { State, FieldJson, FieldsetJson, getOrElse, isEmpty, checkIfConstraintsArePresent } from '@aemforms/af-core';
 import { useRuleEngine, useFormIntl } from '@aemforms/af-react-renderer';
 import { FieldViewState } from '../utils/types';
 
@@ -65,10 +65,32 @@ export default function withRuleEngine(Component: JSXElementConstructor<any>) {
         visible: state.label?.visible !== false
       },
       isError: getValidationState(state) === 'invalid',
-      errorMessage: formateErrorMessage(state)
+      errorMessage: formateErrorMessage(state),
+      layout: {
+        orientation: 'horizontal',
+        marginBottom: 2, 
+        marginTop: 2,
+        ...(getOrElse(state, ['properties', 'afs:layout'], {}))
+      }
     };
     const visible = typeof state.visible === 'undefined' || state.visible;
     return visible ? <Component {...localizeState} {...handlers} /> : null;
   };
-
+}
+export function withRuleEnginePanel(Component: JSXElementConstructor<any>) {
+  return function WrappedComponent(fieldset: State<FieldsetJson>) {
+    const [state, handlers] = useRuleEngine(fieldset);
+    const i18n = useFormIntl();
+    const localizeState = {
+      ...state,
+      label: {
+        ...state?.label,
+        value: getLocalizeLabel(i18n, state),
+        visible: state.label?.visible !== false
+      },
+      description: getLocalizeDescription(i18n, state)
+    };
+    const visible = typeof state.visible === 'undefined' || state.visible;
+    return visible ? <Component {...localizeState} handlers={handlers} /> : null;
+  };
 }

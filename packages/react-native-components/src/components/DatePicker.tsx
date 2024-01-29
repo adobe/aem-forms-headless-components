@@ -73,7 +73,7 @@ const DatePickerComponent = function (props: PROPS) {
 
   return (
     <>
-      <FormControl isInvalid={isError} isRequired={required}>
+      <FormControl isInvalid={isError} isRequired={required} {...props.layout}>
         {label?.visible && <FormControl.Label>{label?.value}</FormControl.Label>}
         <Input
           {...inputProps as any}
