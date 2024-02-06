@@ -14,23 +14,26 @@
 //  * limitations under the License.
 //  ******************************************************************************
 
-import { FieldsetJson } from '@aemforms/af-core';
-import React, { useContext } from 'react';
-import { State } from '@aemforms/af-core';
-import { useRuleEngine, renderChildren, FormContext } from '@aemforms/af-react-renderer';
+import React from 'react';
+import ResponsiveGrid from './ResponsiveGrid';
+import { withRuleEnginePanel } from '../utils/withRuleEngine';
+import { PROPS_PANEL } from '../utils/type';
 
-const Form = function (fieldset: State<FieldsetJson>) {
-  // @ts-ignore
-  const context = useContext(FormContext);
-  const [props, handlers] = useRuleEngine(fieldset);
+const Form = function (props: PROPS_PANEL) {
 
   return (
-    <form
-      className={'cmp-adaptiveform-container cmp-adaptiveform-container__wrapper'}>
-      {props?.label?.value ? <h2>{props.label.value}</h2> : null}
-      {renderChildren(props, context.mappings, context.modelId, handlers)}
-    </form>
+    <div className='cmp cmp-adaptiveform-container'>
+      <form
+        className={'cmp-adaptiveform-container cmp-container'}
+        data-cmp-is="adaptiveFormContainer"
+      >
+        <div className={`cmp-adaptiveform-container__wrapper ${props.gridClassNames || ''}`}>
+          {props?.label?.value ? <h2>{props.label.value}</h2> : null}
+          <ResponsiveGrid {...props} />
+        </div>
+      </form>
+    </div>
   );
 };
 
-export default Form;
+export default withRuleEnginePanel(Form);

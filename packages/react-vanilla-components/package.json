@@ -35,7 +35,7 @@
   "dependencies": {
     "@aemforms/af-core": "^0.22.61",
     "@aemforms/af-formatters": "^0.22.45",
-    "@aemforms/af-react-renderer": "^0.22.52",
+    "@aemforms/af-react-renderer": "^0.22.72",
     "react-intl": "^5.8.4",
     "sanitize-html": "^2.10.0"
   },

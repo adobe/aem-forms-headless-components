@@ -53,7 +53,7 @@ const mappings = {
   'core/fd/components/form/verticaltabs/v1/verticaltabs': VerticalTab,
   'plain-text': PlainText,
   'core/fd/components/form/panelcontainer/v1/panelcontainer': Panel,
-  'panel' : Panel,
+  panel : Panel,
   'core/fd/components/form/telephoneinput/v1/telephoneinput': TelephoneInput,
   'core/fd/components/form/switch/v1/switch': Switch,
   form: Form
