@@ -22,29 +22,46 @@ import { FileObject } from '@aemforms/af-core';
 import { getFileSizeInBytes } from '@aemforms/af-core';
 import { withRuleEngine } from '../utils/withRuleEngine';
 import { PROPS } from '../utils/type';
+import { formatBytes } from '../utils/utils';
 import FieldWrapper from './common/FieldWrapper';
 
 const FileUpload = (props: PROPS) => {
   const fileInputField = useRef(null);
-  const { id, name, value, label, required, accept, maxFileSize, visible, enabled, appliedCssClassNames } = props;
-  let val = value && ((value instanceof Array) ? value : [value]);
+  const {
+    id,
+    name,
+    value,
+    label,
+    required,
+    accept,
+    maxFileSize,
+    visible,
+    enabled,
+    appliedCssClassNames,
+    properties
+  } = props;
+  let val = value && (value instanceof Array ? value : [value]);
   const [files, setFiles] = useState<FileObject[]>(val || []);
+  const [ dragOver, setDragOver ] = useState(false);
 
   const maxFileSizeInBytes = getFileSizeInBytes(maxFileSize);
-  let newMultiple = props.type?.endsWith('[]') ? { multiple: true } : {};
+  let multiple = props.type?.endsWith('[]') ? { multiple: true } : {};
 
-  const callUpdateFilesCb = useCallback((files: Array<File | FileObject>) => {
-    if (newMultiple) {
-      props.dispatchChange(files);
-    } else {
-      props.dispatchChange(files.length > 0 ? files[0] : null);
-    }
-  }, [newMultiple, props.dispatchChange]);
+  const fileChangeHandler = useCallback(
+    (files: Array<File | FileObject>) => {
+      if (multiple) {
+        props.dispatchChange(files);
+      } else {
+        props.dispatchChange(files.length > 0 ? files[0] : null);
+      }
+    },
+    [multiple, props.dispatchChange]
+  );
 
-  const fileListToArray = useCallback((newFiles: FileList) => {
+  const fileListToArray = useCallback((files: FileList) => {
     let localFiles = [];
     //@ts-ignore
-    for (const file of newFiles) {
+    for (const file of files) {
       if (file.size <= maxFileSizeInBytes) {
         localFiles.push(file);
       }
@@ -52,33 +69,53 @@ const FileUpload = (props: PROPS) => {
     return localFiles;
   }, []);
 
-  const handleNewFileUpload = useCallback((e: { target: { files: FileList | null; }; }) => {
-    const { files: newFiles } = e.target;
-    if (newFiles?.length) {
-      const updatedFiles = files.concat(fileListToArray(newFiles));
-      setFiles(updatedFiles);
-      callUpdateFilesCb(updatedFiles);
-    }
-  }, [setFiles, callUpdateFilesCb]);
+  const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    setDragOver(true);
+  };
 
-  const removeFile = useCallback((index: number) => {
-    const updatedFiles = files.slice(0, index).concat(files.slice(index + 1));
-    setFiles(updatedFiles);
-    callUpdateFilesCb(updatedFiles);
-  }, [callUpdateFilesCb, setFiles]);
+  const handleDragLeave = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    setDragOver(false);
+  };
+
+  const fileUploadHandler = useCallback((e) => {
+      e.preventDefault();
+      const newFiles = e.dataTransfer?.files || e?.target?.files || e.clipboardData.files;
+      if (newFiles?.length) {
+        const updatedFiles = files.concat(fileListToArray(newFiles));
+        setFiles(updatedFiles);
+        fileChangeHandler(updatedFiles);
+      }
+      setDragOver(false);
+    },
+    [files, fileChangeHandler]
+  );
+
+  const removeFile = useCallback(
+    (index: number) => {
+      const fileList = [...files];
+      fileList.splice(index,1);
+      setFiles(fileList);
+      fileChangeHandler(fileList);
+    },
+    [files, fileChangeHandler]
+  );
 
   const isFilled = Array.isArray(files) ? files.length : files;
 
   return (
     <div
-      className={`cmp-adaptiveform-fileinput cmp-adaptiveform-fileinput--${isFilled ? 'filled' : 'empty'} ${appliedCssClassNames || ''}`}
+      className={`cmp-adaptiveform-fileinput cmp-adaptiveform-fileinput--${
+        isFilled ? 'filled' : 'empty'
+      } ${appliedCssClassNames || ''}`}
       data-cmp-is="adaptiveFormFileInput"
       data-cmp-visible={visible}
       data-cmp-enabled={enabled}
       data-cmp-required={required}
     >
       <FieldWrapper
-        bemBlock='cmp-adaptiveform-fileinput'
+        bemBlock="cmp-adaptiveform-fileinput"
         label={label}
         id={id}
         tooltip={props.tooltip}
@@ -87,35 +124,67 @@ const FileUpload = (props: PROPS) => {
         errorMessage={props.errorMessage}
       >
         <br />
-        <label htmlFor={id} className="cmp-adaptiveform-fileinput__widgetlabel">Attach</label>
-        <input
-          ref={fileInputField}
-          className="cmp-adaptiveform-fileinput__widget"
-          id={id}
-          type='file'
-          name={name}
-          onChange={handleNewFileUpload}
-          required={required}
-          accept={accept?.toString()}
-          multiple
-          max-file-size={maxFileSize}
-          style={{ display: 'none' }}
-        />
-        <ul className="cmp-adaptiveform-fileinput__filelist">
-          {files && files?.map((item: FileObject, index) => (
-            <li className="cmp-adaptiveform-fileinput__fileitem" key={item?.name}>
-              <span className="cmp-adaptiveform-fileinput__filename">{item?.name}</span>
-              <span
-                onClick={() => removeFile(index)}
-                className="cmp-adaptiveform-fileinput__filedelete"
-                aria-label={item?.name}
-                role="button"
-              >
-                x
-              </span>
-            </li>
-          ))}
-        </ul>
+        <div className="cmp-adaptiveform-fileinput__container">
+          <div
+            className={dragOver ? 'cmp-adaptiveform-fileinput__dragarea cmp-adaptiveform-fileinput__dragarea--active' : 'cmp-adaptiveform-fileinput__dragarea'}
+            onDragOver={handleDragOver}
+            onDrop={fileUploadHandler}
+            onDragLeave={handleDragLeave}
+            onPaste={fileUploadHandler}
+          >
+            <div className="cmp-adaptiveform-fileinput__icon"></div>
+            <div className="cmp-adaptiveform-fileinput__dragtext">
+              {properties?.dragDropText}
+            </div>
+            <label
+              htmlFor={id}
+              className="cmp-adaptiveform-fileinput__widgetlabel"
+            >
+              Attach
+            </label>
+            <input
+              ref={fileInputField}
+              className="cmp-adaptiveform-fileinput__widget"
+              id={id}
+              type="file"
+              name={name}
+              onChange={fileUploadHandler}
+              required={required}
+              accept={accept?.toString()}
+              multiple
+              max-file-size={maxFileSize}
+              style={{ display: 'none' }}
+            />
+          </div>
+          <ul className="cmp-adaptiveform-fileinput__filelist">
+            {files &&
+              files?.map((item: FileObject, index) => (
+                <li
+                  className="cmp-adaptiveform-fileinput__fileitem"
+                  key={item?.name}
+                >
+                  <span
+                    className="cmp-adaptiveform-fileinput__filename"
+                    aria-label={item?.name}
+                  >
+                    {item?.name}
+                  </span>
+                  <span className="cmp-adaptiveform-fileinput__fileendcontainer">
+                    <span className="cmp-adaptiveform-fileinput__filesize">
+                      {formatBytes(item?.size)}
+                    </span>
+                    <button
+                      onClick={() => removeFile(index)}
+                      className="cmp-adaptiveform-fileinput__filedelete"
+                      role="button"
+                    >
+                      x
+                    </button>
+                  </span>
+                </li>
+              ))}
+          </ul>
+        </div>
       </FieldWrapper>
     </div>
   );
