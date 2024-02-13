@@ -31,7 +31,15 @@ export type PROPS = State<FieldJson & Handlers & {
 export type PROPS_PANEL = State<FieldsetJson> & {
   handlers: Handlers,
   activePanel?: string,
-  toggle?: (id: string) => void | undefined
+  toggle?: (id: string) => void | undefined,
+  gridClassNames?: string,
+  columnClassNames?: {
+    [key: string]: any;
+};
+  ':items'?: {
+    [key: string]: any;
+};
+':itemsOrder'?: []
 };
 
 export type LABEL = {
@@ -59,4 +67,9 @@ export type DESCRIPTION = {
 export type FIELD_WRAPPER = LABEL & DESCRIPTION & {
   children?: React.ReactNode,
   isError?: boolean,
-}
+};
+
+export type ITEM_PROPS = State<FieldJson> & {
+  id: string
+};
+

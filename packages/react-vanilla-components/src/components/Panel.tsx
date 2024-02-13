@@ -17,16 +17,14 @@
 //  * LINK- https://github.com/adobe/aem-core-forms-components/blob/master/ui.af.apps/src/main/content/jcr_root/apps/core/fd/components/form/panelcontainer/v1/panelcontainer/panelcontainer.html
 //  ******************************************************************************
 
-import React, { useContext } from 'react';
+import React from 'react';
 import { withRuleEnginePanel } from '../utils/withRuleEngine';
-import { renderChildren, FormContext } from '@aemforms/af-react-renderer';
 import { PROPS_PANEL } from '../utils/type';
 import LabelWithDescription from './common/LabelWithDescription';
+import ResponsiveGrid from './ResponsiveGrid';
 
 const Panel = function (props: PROPS_PANEL) {
-  const { id, visible, enabled, label, handlers, appliedCssClassNames } = props;
-  // @ts-ignore
-  const context = useContext(FormContext);
+  const { id, visible, enabled, label, appliedCssClassNames } = props;
 
   return (
     <div
@@ -43,7 +41,9 @@ const Panel = function (props: PROPS_PANEL) {
         tooltip={props.tooltip}
         description={props.description}
       />
-      {renderChildren(props, context.mappings, context.modelId, handlers)}
+        <div className={props.gridClassNames || ''}>
+          <ResponsiveGrid {...props} />
+        </div>
     </div>
   );
 };
