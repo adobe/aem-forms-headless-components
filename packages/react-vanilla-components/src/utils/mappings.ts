@@ -33,6 +33,8 @@ import VerticalTab from '../components/tabs/VerticalTab';
 import Form from '../components/Form';
 import PlainText from '../components/PlainText';
 import TelephoneInput from '../components/TelephoneInput';
+import TermsAndCondition from '../components/TermsAndCondition';
+import Link from '../components/Link';
 import Switch from '../components/Switch';
 
 const mappings = {
@@ -55,6 +57,8 @@ const mappings = {
   'core/fd/components/form/panelcontainer/v1/panelcontainer': Panel,
   panel : Panel,
   'core/fd/components/form/telephoneinput/v1/telephoneinput': TelephoneInput,
+  'core/fd/components/form/termsandconditions/v1/termsandconditions': TermsAndCondition,
+  'core/fd/components/form/toggleablelink/v1/toggleablelink': Link,
   'core/fd/components/form/switch/v1/switch': Switch,
   form: Form
 };
