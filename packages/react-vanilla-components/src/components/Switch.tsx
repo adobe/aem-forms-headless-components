@@ -33,7 +33,8 @@ const Switch = (props: PROPS) => {
     name,
     enabled,
     visible,
-    appliedCssClassNames
+    appliedCssClassNames,
+    valid
   } = props;
 
   const selectedValue = enums?.[0];
@@ -56,6 +57,7 @@ const Switch = (props: PROPS) => {
         data-cmp-visible={visible}
         data-cmp-enabled={enabled}
         data-cmp-required={required}
+        data-cmp-valid={valid}
       >
         <FieldWrapper
           bemBlock="cmp-adaptiveform-switch"

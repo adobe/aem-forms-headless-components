@@ -23,7 +23,7 @@ import { PROPS } from '../utils/type';
 import FieldWrapper from './common/FieldWrapper';
 
 const CheckBoxGroup = (props: PROPS) => {
-  const { id, label, required, enumNames, enum: enums, value, name, readOnly, visible, enabled, appliedCssClassNames } = props;
+  const { id, label, required, enumNames, enum: enums, value, name, readOnly, visible, enabled, appliedCssClassNames, valid } = props;
   const options = enumNames && enumNames.length ? enumNames : enums || [];
   const orientation = props.layout?.orientation.toUpperCase();
 
@@ -59,6 +59,7 @@ const CheckBoxGroup = (props: PROPS) => {
       data-cmp-visible={visible}
       data-cmp-enabled={enabled}
       data-cmp-required={required}
+      data-cmp-valid={valid}
     >
       <FieldWrapper
         bemBlock='cmp-adaptiveform-checkboxgroup'

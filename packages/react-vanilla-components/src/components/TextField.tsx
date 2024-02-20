@@ -24,7 +24,7 @@ import { PROPS } from '../utils/type';
 import FieldWrapper from './common/FieldWrapper';
 
 const TextField = (props: PROPS) => {
-  const { id, value, label, required, readOnly = false, placeholder, minLength, maxLength, enabled, visible, name, appliedCssClassNames } = props;
+  const { id, value, label, required, readOnly = false, placeholder, minLength, maxLength, enabled, visible, name, appliedCssClassNames, valid } = props;
 
   const handleChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     const thisVal = event.target.value;
@@ -46,6 +46,7 @@ const TextField = (props: PROPS) => {
       data-cmp-visible={visible}
       data-cmp-enabled={enabled}
       data-cmp-required={required}
+      data-cmp-valid={valid}
     >
       <FieldWrapper
         bemBlock='cmp-adaptiveform-textinput'

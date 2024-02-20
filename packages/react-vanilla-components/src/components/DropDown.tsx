@@ -23,7 +23,7 @@ import { PROPS } from '../utils/type';
 import FieldWrapper from './common/FieldWrapper';
 
 const DropDown = (props: PROPS) => {
-  const { id, enum: enums, enumNames, label, value, placeholder, name, required, enabled, visible, appliedCssClassNames } = props;
+  const { id, enum: enums, enumNames, label, value, placeholder, name, required, enabled, visible, appliedCssClassNames, valid } = props;
   const dropValue = enumNames && enumNames.length ? enumNames : enums || [];
 
   const changeHandler = useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -38,6 +38,7 @@ const DropDown = (props: PROPS) => {
       data-cmp-visible={visible}
       data-cmp-enabled={enabled}
       data-cmp-required={required}
+      data-cmp-valid={valid}
     >
       <FieldWrapper
         bemBlock='cmp-adaptiveform-dropdown'

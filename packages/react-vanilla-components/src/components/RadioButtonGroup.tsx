@@ -23,7 +23,7 @@ import { PROPS } from '../utils/type';
 import FieldWrapper from './common/FieldWrapper';
 
 const RadioButtonGroup = (props: PROPS) => {
-  const { id, label, required, enumNames, enum: enums, name, visible, enabled, value, readOnly, appliedCssClassNames } = props;
+  const { id, label, required, enumNames, enum: enums, name, visible, enabled, value, readOnly, appliedCssClassNames, valid } = props;
   const options = enumNames && enumNames.length ? enumNames : enums || [];
   const orientation = props.layout?.orientation.toUpperCase();
 
@@ -39,6 +39,7 @@ const RadioButtonGroup = (props: PROPS) => {
       data-cmp-visible={visible}
       data-cmp-enabled={enabled}
       data-cmp-required={required}
+      data-cmp-valid={valid}
     >
       <FieldWrapper
         bemBlock='cmp-adaptiveform-radiobutton'
