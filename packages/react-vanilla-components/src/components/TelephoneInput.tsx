@@ -4,7 +4,7 @@ import FieldWrapper from './common/FieldWrapper';
 import { withRuleEngine } from '../utils/withRuleEngine';
 
 const TelephoneInput = (props: PROPS) => {
-    const { id, label, name, value, required, readOnly, visible, enabled, placeholder, appliedCssClassNames } = props;
+    const { id, label, name, value, required, readOnly, visible, enabled, placeholder, appliedCssClassNames, valid } = props;
 
     const handleChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
         const thisVal = event.target.value;
@@ -21,7 +21,13 @@ const TelephoneInput = (props: PROPS) => {
 
     
    return (
-     <div className={`cmp-adaptiveform-telephoneinput cmp-adaptiveform-telephoneinput--${value ? 'filled' : 'empty'} ${appliedCssClassNames || ''}`} data-cmp-is="adaptiveFormTelephoneInput"  data-cmp-visible={visible} data-cmp-enabled={enabled}  data-cmp-required={required}>
+     <div className={`cmp-adaptiveform-telephoneinput cmp-adaptiveform-telephoneinput--${value ? 'filled' : 'empty'} ${appliedCssClassNames || ''}`} 
+       data-cmp-is="adaptiveFormTelephoneInput"  
+       data-cmp-visible={visible} 
+       data-cmp-enabled={enabled} 
+       data-cmp-required={required} 
+       data-cmp-valid={valid}
+      >
        <FieldWrapper
         bemBlock='cmp-adaptiveform-telephoneinput'
         label={label}

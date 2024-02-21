@@ -23,7 +23,7 @@ import { PROPS } from '../utils/type';
 import FieldWrapper from './common/FieldWrapper';
 
 const NumberField = (props: PROPS) => {
-  const { id, label, value, required, placeholder, name, maximum, minimum, readOnly, visible, enabled, appliedCssClassNames } = props;
+  const { id, label, value, required, placeholder, name, maximum, minimum, readOnly, visible, enabled, appliedCssClassNames, valid } = props;
 
   const changeHandler = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     props.dispatchChange(event.target.value);
@@ -44,6 +44,7 @@ const NumberField = (props: PROPS) => {
       data-cmp-visible={visible}
       data-cmp-enabled={enabled}
       data-cmp-required={required}
+      data-cmp-valid={valid}
     >
       <FieldWrapper
         bemBlock='cmp-adaptiveform-numberinput'

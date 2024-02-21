@@ -23,7 +23,7 @@ import { PROPS } from '../utils/type';
 import FieldWrapper from './common/FieldWrapper';
 
 const DateInput = (props: PROPS) => {
-  const { id, label, value, required, name, readOnly, placeholder, visible, enabled, appliedCssClassNames } = props;
+  const { id, label, value, required, name, readOnly, placeholder, visible, enabled, appliedCssClassNames, valid } = props;
   const finalValue = value === undefined ? '' : value;
 
   const changeHandler = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
@@ -46,6 +46,7 @@ const DateInput = (props: PROPS) => {
       data-cmp-visible={visible}
       data-cmp-enabled={enabled}
       data-cmp-required={required}
+      data-cmp-valid={valid}
     >
       <FieldWrapper
         bemBlock='cmp-adaptiveform-datepicker'

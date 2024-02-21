@@ -38,7 +38,8 @@ const FileUpload = (props: PROPS) => {
     visible,
     enabled,
     appliedCssClassNames,
-    properties
+    properties,
+    valid
   } = props;
   let val = value && (value instanceof Array ? value : [value]);
   const [files, setFiles] = useState<FileObject[]>(val || []);
@@ -113,6 +114,7 @@ const FileUpload = (props: PROPS) => {
       data-cmp-visible={visible}
       data-cmp-enabled={enabled}
       data-cmp-required={required}
+      data-cmp-valid={valid}
     >
       <FieldWrapper
         bemBlock="cmp-adaptiveform-fileinput"
