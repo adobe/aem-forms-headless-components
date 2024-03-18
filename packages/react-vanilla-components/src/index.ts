@@ -23,8 +23,14 @@ import HorizontalTab from './components/tabs/HorizontalTab';
 import VerticalTab from './components/tabs/VerticalTab';
 import Email from './components/Email';
 import PlainText from './components/PlainText';
+import Switch from './components/Switch';
+import TelephoneInput from './components/TelephoneInput';
+import Form from './components/Form';
 import mappings from './utils/mappings';
 
+export * from './utils/withRuleEngine';
+export * from './utils/type';
+export * from './utils/utils';
 export {
   mappings,
   TextField,
@@ -43,5 +49,8 @@ export {
   Wizard,
   Accordion,
   HorizontalTab,
-  VerticalTab
+  VerticalTab,
+  Switch,
+  TelephoneInput,
+  Form
 };
