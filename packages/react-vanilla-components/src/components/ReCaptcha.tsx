@@ -41,6 +41,7 @@ const ReCAPTCHAComponent = (props: PROPS) => {
       data-cmp-enabled={enabled}
       data-cmp-required={required}
       data-cmp-valid={valid}
+      data-testid={props.id}
     >
       {label?.visible ? <div className={`${bemClass}__label`}>{label.value}</div> : null}
       <div className={`${bemClass}__widget`}>

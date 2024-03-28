@@ -11,6 +11,7 @@ import { renderComponent } from '../utils';
 
 const field = {
   name: 'recaptcha',
+  id: 'recaptcha',
   label: {
     value: 'ReCaptcha',
     visible: true,
@@ -53,6 +54,15 @@ describe('ReCaptcha', () => {
     const { renderResponse } = await helper(f);
     const res = await renderResponse.queryByText(f.label.value)
     expect(res).toEqual(null);
+  });
+
+  test('Should not render re-captcha', async () => {
+    const f = {
+      ...field,
+      visible: false
+    };
+    const { renderResponse } = await helper(f);
+    expect(renderResponse.queryByTestId(f.id)).toEqual(null);
   });
 
 });
