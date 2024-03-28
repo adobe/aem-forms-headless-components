@@ -1,6 +1,6 @@
 {
   "name": "@aemforms/af-react-vanilla-components",
-  "version": "1.0.12",
+  "version": "1.0.13",
   "description": "HTML5 based React Components for Headless Forms",
   "author": "Adobe Systems",
   "license": "Adobe Proprietary",
@@ -36,8 +36,8 @@
     "@aemforms/af-core": "^0.22.76",
     "@aemforms/af-formatters": "^0.22.76",
     "@aemforms/af-react-renderer": "^0.22.76",
-    "react-intl": "^5.8.4",
     "react-google-recaptcha": "^3.1.0",
+    "react-intl": "^5.8.4",
     "sanitize-html": "^2.10.0"
   },
   "peerDependencies": {
