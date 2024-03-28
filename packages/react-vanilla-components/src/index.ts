@@ -27,6 +27,7 @@ import Switch from './components/Switch';
 import TelephoneInput from './components/TelephoneInput';
 import Form from './components/Form';
 import mappings from './utils/mappings';
+import ReCaptcha from './components/ReCaptcha';
 
 export * from './utils/withRuleEngine';
 export * from './utils/type';
@@ -52,5 +53,6 @@ export {
   VerticalTab,
   Switch,
   TelephoneInput,
+  ReCaptcha,
   Form
 };

@@ -34,6 +34,7 @@ import Form from '../components/Form';
 import PlainText from '../components/PlainText';
 import TelephoneInput from '../components/TelephoneInput';
 import Switch from '../components/Switch';
+import ReCaptcha from '../components/ReCaptcha';
 
 const mappings = {
   'text-input': TextField,
@@ -56,6 +57,7 @@ const mappings = {
   panel : Panel,
   'core/fd/components/form/telephoneinput/v1/telephoneinput': TelephoneInput,
   'core/fd/components/form/switch/v1/switch': Switch,
+  captcha: ReCaptcha,
   form: Form
 };
 

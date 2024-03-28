@@ -26,6 +26,7 @@ The document provides detailed information on React Vanilla Components(HTML5 bas
   - Vertical Tab
   - Horizontal Tab
   - Plain Text
+  - ReCAPTCHA
 - Mappings
 
 ## Before you start {#pre-requisites}
