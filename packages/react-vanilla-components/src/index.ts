@@ -28,6 +28,7 @@ import TelephoneInput from './components/TelephoneInput';
 import Form from './components/Form';
 import mappings from './utils/mappings';
 import ReCaptcha from './components/ReCaptcha';
+import Image from './components/Image';
 
 export * from './utils/withRuleEngine';
 export * from './utils/type';
@@ -54,5 +55,6 @@ export {
   Switch,
   TelephoneInput,
   ReCaptcha,
+  Image,
   Form
 };
