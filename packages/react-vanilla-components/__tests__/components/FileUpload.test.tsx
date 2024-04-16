@@ -273,4 +273,24 @@ describe("File Upload", () => {
     fireEvent.drop(dragArea, { dataTransfer });
     expect(renderResponse.queryByText('mockfile.txt')).toBeInTheDocument();
   });
+
+  test("file size should not exceed max file size", async () => {
+    const maxFileSizeInBytes = 1024 * 1024; // 1MB
+    const f = {
+      ...field,
+      maxFileSize: "1MB",
+    };
+    const { renderResponse } = await helper(f);
+    const uploadButton = await renderResponse.findByText("Attach");
+  
+    // Create a file with size greater than the maximum allowed size
+    const oversizedFile = new File(["(⌐□_□)"], "oversized.png", { type: "image/png" });
+    Object.defineProperty(oversizedFile, 'size', {value: maxFileSizeInBytes + 1});
+  
+    // Upload the oversized file
+    userEvent.upload(uploadButton, oversizedFile);
+  
+    // Expect the oversized file not to be uploaded
+    expect(renderResponse.queryByText("oversized.png")).toBeNull();
+  });
 });

@@ -59,17 +59,6 @@ const FileUpload = (props: PROPS) => {
     [multiple, props.dispatchChange]
   );
 
-  const fileListToArray = useCallback((files: FileList) => {
-    let localFiles = [];
-    //@ts-ignore
-    for (const file of files) {
-      if (file.size <= maxFileSizeInBytes) {
-        localFiles.push(file);
-      }
-    }
-    return localFiles;
-  }, []);
-
   const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
     setDragOver(true);
@@ -81,17 +70,22 @@ const FileUpload = (props: PROPS) => {
   };
 
   const fileUploadHandler = useCallback((e) => {
-      e.preventDefault();
-      const newFiles = e.dataTransfer?.files || e?.target?.files || e.clipboardData.files;
-      if (newFiles?.length) {
-        const updatedFiles = files.concat(fileListToArray(newFiles));
-        setFiles(updatedFiles);
-        fileChangeHandler(updatedFiles);
+    e.preventDefault();
+    const newFiles = Array.from<File>(e.dataTransfer?.files || e?.target?.files || e.clipboardData?.files || []);
+    if (newFiles?.length) {
+      const validFiles = newFiles.filter((file: File) => file.size <= maxFileSizeInBytes);
+      if (validFiles.length < newFiles.length) {
+        // Show constraint message for files with size exceeding the limit
+        alert(`${props.constraintMessages?.maxFileSize}`);
       }
-      setDragOver(false);
-    },
-    [files, fileChangeHandler]
-  );
+      const updatedFiles = [...files, ...validFiles];
+      setFiles(updatedFiles as FileObject[]);
+      fileChangeHandler(updatedFiles);
+    }
+    setDragOver(false);
+  },
+  [files, fileChangeHandler, maxFileSizeInBytes, props?.constraintMessages]
+);
 
   const removeFile = useCallback(
     (index: number) => {
