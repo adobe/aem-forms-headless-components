@@ -36,6 +36,7 @@ import TelephoneInput from '../components/TelephoneInput';
 import Switch from '../components/Switch';
 import ReCaptcha from '../components/ReCaptcha';
 import HCaptcha from '../components/HCaptcha';
+import Image from '../components/Image';
 
 const mappings = {
   'text-input': TextField,
@@ -60,6 +61,7 @@ const mappings = {
   'core/fd/components/form/switch/v1/switch': Switch,
   'core/fd/components/form/hcaptcha/v1/hcaptcha': HCaptcha,
   captcha: ReCaptcha,
+  image: Image,
   form: Form
 };
 
