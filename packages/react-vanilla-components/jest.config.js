@@ -1,11 +1,11 @@
-const esModules = ['@adobe/json-formula', '@aemforms/af-formatters'].join('|');
+const esModules = ['@adobe/json-formula', '@aemforms/af-formatters', '@hcaptcha/loader'].join('|');
 
 module.exports = {
   transformIgnorePatterns: [`node_modules/(?!${esModules})`],
   preset: 'ts-jest',
   transform: {
     '^.+\\.(ts|tsx)?$': 'ts-jest',
-    '^.+\\.(js|jsx)$': 'babel-jest'
+    '^.+\\.(m?js|jsx)$': 'babel-jest'
   },
   coverageDirectory: 'target/coverage',
   coverageReporters: ['json', 'lcov', 'text', 'clover', 'cobertura'],
@@ -19,7 +19,8 @@ module.exports = {
     // stylesheets use the package identity-obj-proxy
     '@spectrum-css/.*': 'identity-obj-proxy',
     '^react$': '<rootDir>/node_modules/react',
-    '^react-intl$': '<rootDir>/node_modules/react-intl'
+    '^react-intl$': '<rootDir>/node_modules/react-intl',
+    '^@hcaptcha/react-hcaptcha$': '<rootDir>/__tests__/mocks/@hcaptcha/react-hcaptcha.js'
   },
   reporters : ['default', 'jest-junit'],
   setupFilesAfterEnv: ['<rootDir>/__tests__/setupTests.js']
