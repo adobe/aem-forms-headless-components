@@ -35,6 +35,7 @@ import PlainText from '../components/PlainText';
 import TelephoneInput from '../components/TelephoneInput';
 import Switch from '../components/Switch';
 import ReCaptcha from '../components/ReCaptcha';
+import HCaptcha from '../components/HCaptcha';
 import Image from '../components/Image';
 
 const mappings = {
@@ -58,6 +59,7 @@ const mappings = {
   panel : Panel,
   'core/fd/components/form/telephoneinput/v1/telephoneinput': TelephoneInput,
   'core/fd/components/form/switch/v1/switch': Switch,
+  'core/fd/components/form/hcaptcha/v1/hcaptcha': HCaptcha,
   captcha: ReCaptcha,
   image: Image,
   form: Form
