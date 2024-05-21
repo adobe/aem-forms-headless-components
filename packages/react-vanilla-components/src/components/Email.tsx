@@ -21,6 +21,7 @@ import React, { useCallback } from 'react';
 import { withRuleEngine } from '../utils/withRuleEngine';
 import { PROPS } from '../utils/type';
 import FieldWrapper from './common/FieldWrapper';
+import { syncAriaDescribedBy } from '../utils/utils';
 
 const Email = (props: PROPS) => {
   const { id, value, label, valid, enabled, visible, name, placeholder, required, appliedCssClassNames } = props;
@@ -68,6 +69,8 @@ const Email = (props: PROPS) => {
           autoComplete='on'
           name={name}
           placeholder={placeholder}
+          aria-invalid={!valid}
+          aria-describedby={syncAriaDescribedBy(id, props.tooltip, props.description, props.errorMessage)}
         />
       </FieldWrapper>
     </div>

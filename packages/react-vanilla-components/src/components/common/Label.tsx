@@ -34,7 +34,7 @@ const Label = (props: LABEL) => {
           <button
             className={`${bemBlock}__questionmark`}
             onClick={onClick}
-            aria-label={description}
+            title="Help text"
           ></button>
         )
       }

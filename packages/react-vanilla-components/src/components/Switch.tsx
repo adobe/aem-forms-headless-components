@@ -21,6 +21,7 @@ import React, { useCallback } from 'react';
 import { withRuleEngine } from '../utils/withRuleEngine';
 import { PROPS } from '../utils/type';
 import FieldWrapper from './common/FieldWrapper';
+import { syncAriaDescribedBy } from '../utils/utils';
 
 const Switch = (props: PROPS) => {
   const {
@@ -83,6 +84,8 @@ const Switch = (props: PROPS) => {
                 checked={value === selectedValue ? true : false}
                 value={value || ''}
                 onChange={handleChange}
+                aria-invalid={!valid}
+                aria-describedby={syncAriaDescribedBy(id, props.tooltip, props.description, props.errorMessage)}
               />
               <div className="cmp-adaptiveform-switch__widget-slider">
                 <div className="cmp-adaptiveform-switch__circle-indicator"></div>

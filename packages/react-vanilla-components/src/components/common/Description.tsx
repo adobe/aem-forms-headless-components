@@ -18,12 +18,12 @@ import React from "react";
 import { DESCRIPTION } from '../../utils/type';
 
 const Description = (props: DESCRIPTION) => {
-  const { bemBlock, tooltip, errorMessage, description, showShortDescription, showLongDescription } = props;
+  const { bemBlock, tooltip, errorMessage, description, showShortDescription, showLongDescription, id } = props;
   return (<>
     {
       showShortDescription && tooltip && (
         <div
-          title={tooltip}
+          id={`${id}__shortdescription`}
           data-cmp-visible={showShortDescription}
           className={`${bemBlock}__shortdescription`}
         >
@@ -31,10 +31,9 @@ const Description = (props: DESCRIPTION) => {
         </div>
       )
     }
-    <div aria-live="polite">
       {showLongDescription && description && !errorMessage && (
         <div
-          title={description}
+          id={`${id}__longdescription`}
           data-cmp-visible={showLongDescription}
           className={`${bemBlock}__longdescription`}
         >
@@ -42,7 +41,6 @@ const Description = (props: DESCRIPTION) => {
         </div>
       )
       }
-    </div>
   </>)
 };
 

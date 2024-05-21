@@ -10,6 +10,7 @@ import Switch from "../../src/components/Switch";
 import { renderComponent } from "../utils";
 import "@testing-library/jest-dom/extend-expect";
 import userEvent from "@testing-library/user-event";
+import "@testing-library/jest-dom/extend-expect";
 
 const field = {
   ":type": "core/fd/components/form/switch/v1/switch",
@@ -124,5 +125,18 @@ describe("Switch", () => {
     const { element } = await helper(f);
     let state = element?.getState();
     expect(state.value).toBe("1");
+  });
+
+  test('Aria-describedby should contain long des short desc if present otherwise it should be empty', async () => {
+    const f= {
+      ...field,
+      id: 'switch-123',
+      tooltip: "short description",
+      description: "long description"
+    };
+    const { renderResponse } = await helper(f);
+    const input = renderResponse.container.getElementsByClassName("cmp-adaptiveform-switch__widget");
+    expect(input).toHaveLength(1);
+    expect(input[0]).toHaveAttribute('aria-describedby', `${f.id}__longdescription ${f.id}__shortdescription`)
   });
 });

@@ -18,6 +18,7 @@ import React, { useCallback } from 'react';
 import { withRuleEngine } from '../utils/withRuleEngine';
 import { PROPS } from '../utils/type';
 import FieldWrapper from './common/FieldWrapper';
+import { syncAriaDescribedBy } from '../utils/utils';
 
 const CheckBox = (props: PROPS) => {
   const { id, label, enum: enums, required, value, name, readOnly, enabled, visible, appliedCssClassNames, valid } = props;
@@ -60,7 +61,8 @@ const CheckBox = (props: PROPS) => {
             required={required}
             readOnly={readOnly}
             disabled={!enabled}
-            aria-checked={selectedValue === value ? 'true' : 'false'}
+            aria-checked={selectedValue === value ? 'true' : 'false'} aria-invalid={!valid}
+            aria-describedby={syncAriaDescribedBy(id, props.tooltip, props.description, props.errorMessage)}
           />
           {label?.visible && <label className="cmp-adaptiveform-checkbox__label" htmlFor={`${id}-widget`}>{label?.value}</label>}
         </div>

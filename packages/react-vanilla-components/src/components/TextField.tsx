@@ -22,6 +22,7 @@ import React, { useCallback } from 'react';
 import { withRuleEngine } from '../utils/withRuleEngine';
 import { PROPS } from '../utils/type';
 import FieldWrapper from './common/FieldWrapper';
+import { syncAriaDescribedBy } from '../utils/utils';
 
 const TextField = (props: PROPS) => {
   const { id, value, label, required, readOnly = false, placeholder, minLength, maxLength, enabled, visible, name, appliedCssClassNames, valid } = props;
@@ -72,6 +73,8 @@ const TextField = (props: PROPS) => {
           maxLength={maxLength}
           disabled={!enabled}
           name={name}
+          aria-invalid={!valid}
+          aria-describedby={syncAriaDescribedBy(id, props.tooltip, props.description, props.errorMessage)}
         />
       </FieldWrapper>
     </div>

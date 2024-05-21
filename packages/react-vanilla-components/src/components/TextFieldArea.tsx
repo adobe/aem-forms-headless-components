@@ -22,6 +22,7 @@ import React, { useCallback } from 'react';
 import { withRuleEngine } from '../utils/withRuleEngine';
 import { PROPS } from '../utils/type';
 import FieldWrapper from './common/FieldWrapper';
+import { syncAriaDescribedBy } from '../utils/utils';
 
 const TextFieldArea = (props: PROPS) => {
   const { id, label, name, value, required, readOnly, minLength, maxLength, visible, enabled, placeholder, appliedCssClassNames, valid } = props;
@@ -70,6 +71,8 @@ const TextFieldArea = (props: PROPS) => {
           onFocus={handleFocus}
           placeholder={placeholder}
           onBlur={handleBlur}
+          aria-invalid={!valid}
+          aria-describedby={syncAriaDescribedBy(id, props.tooltip, props.description, props.errorMessage)}
         />
       </FieldWrapper>
     </div>

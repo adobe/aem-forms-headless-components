@@ -9,6 +9,7 @@
 import DropDown from "../../src/components/DropDown";
 import { renderComponent } from "../utils";
 import userEvent from "@testing-library/user-event";
+import "@testing-library/jest-dom/extend-expect";
 
 const field = {
   name: "dropdown",
@@ -146,5 +147,18 @@ describe("Drop Down", () => {
     }
     let { renderResponse } = await helper(f);
     expect(renderResponse.container.innerHTML).toContain('<p>title inside p tags</p>');
+  });
+
+  test('Aria-describedby should contain long des short desc if present otherwise it should be empty', async () => {
+    const f= {
+      ...field,
+      id: 'dropdown-123',
+      tooltip: "short description",
+      description: "long description"
+    };
+    const { renderResponse } = await helper(f);
+    const input = renderResponse.container.getElementsByClassName("cmp-adaptiveform-dropdown__widget");
+    expect(input).toHaveLength(1);
+    expect(input[0]).toHaveAttribute('aria-describedby', `${f.id}__longdescription ${f.id}__shortdescription`)
   });
 });

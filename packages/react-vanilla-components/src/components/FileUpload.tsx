@@ -22,7 +22,7 @@ import { FileObject } from '@aemforms/af-core';
 import { getFileSizeInBytes } from '@aemforms/af-core';
 import { withRuleEngine } from '../utils/withRuleEngine';
 import { PROPS } from '../utils/type';
-import { formatBytes } from '../utils/utils';
+import { formatBytes, syncAriaDescribedBy } from '../utils/utils';
 import FieldWrapper from './common/FieldWrapper';
 
 const FileUpload = (props: PROPS) => {
@@ -150,6 +150,8 @@ const FileUpload = (props: PROPS) => {
               multiple
               max-file-size={maxFileSize}
               style={{ display: 'none' }}
+              aria-invalid={!valid}
+              aria-describedby={syncAriaDescribedBy(id, props.tooltip, props.description, props.errorMessage)}
             />
           </div>
           <ul className="cmp-adaptiveform-fileinput__filelist">

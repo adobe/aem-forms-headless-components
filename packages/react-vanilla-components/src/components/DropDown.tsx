@@ -21,6 +21,7 @@ import React, { useCallback } from 'react';
 import { withRuleEngine } from '../utils/withRuleEngine';
 import { PROPS } from '../utils/type';
 import FieldWrapper from './common/FieldWrapper';
+import { syncAriaDescribedBy } from '../utils/utils';
 
 const DropDown = (props: PROPS) => {
   const { id, enum: enums, enumNames, label, value, placeholder, name, required, enabled, visible, appliedCssClassNames, valid } = props;
@@ -60,6 +61,8 @@ const DropDown = (props: PROPS) => {
           required={required}
           disabled={!enabled}
           defaultValue={'DEFAULT'}
+          aria-invalid={!valid}
+          aria-describedby={syncAriaDescribedBy(id, props.tooltip, props.description, props.errorMessage)}
         >
           <option value="DEFAULT" disabled>{placeholder}</option>
           {

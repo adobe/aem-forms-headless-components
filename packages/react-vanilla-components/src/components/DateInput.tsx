@@ -21,6 +21,7 @@ import React, { useCallback } from 'react';
 import { withRuleEngine } from '../utils/withRuleEngine';
 import { PROPS } from '../utils/type';
 import FieldWrapper from './common/FieldWrapper';
+import { syncAriaDescribedBy } from '../utils/utils';
 
 const DateInput = (props: PROPS) => {
   const { id, label, value, required, name, readOnly, placeholder, visible, enabled, appliedCssClassNames, valid } = props;
@@ -70,6 +71,8 @@ const DateInput = (props: PROPS) => {
           placeholder={placeholder}
           onFocus={handleFocus}
           onBlur={handleBlur}
+          aria-invalid={!valid}
+          aria-describedby={syncAriaDescribedBy(id, props.tooltip, props.description, props.errorMessage)}
         />
       </FieldWrapper>
     </div>

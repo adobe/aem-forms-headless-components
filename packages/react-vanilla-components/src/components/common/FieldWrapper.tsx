@@ -40,6 +40,7 @@ const FieldWrapper = (props: FIELD_WRAPPER) => {
     />
     {props.children ? props.children : null}
     <Description
+      id={props.id}
       bemBlock={props.bemBlock}
       tooltip={props.tooltip}
       description={props.description}
@@ -49,7 +50,7 @@ const FieldWrapper = (props: FIELD_WRAPPER) => {
     />
     {
       props.isError ?
-        <div className={`${props.bemBlock}__errormessage`}>{props.errorMessage}</div>
+        <div id={`${props.id}__errormessage`} className={`${props.bemBlock}__errormessage`}>{props.errorMessage}</div>
         : null
     }
   </>)
