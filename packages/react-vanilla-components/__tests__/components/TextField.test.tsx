@@ -9,6 +9,7 @@
 import TextField from "../../src/components/TextField";
 import userEvent from "@testing-library/user-event";
 import { renderComponent, DEFAULT_ERROR_MESSAGE } from '../utils';
+import "@testing-library/jest-dom/extend-expect";
 
 const field = {
   name: 'text',
@@ -128,6 +129,19 @@ describe('Text Field', () => {
     const state = element.getState();
     input?.blur();
     expect(state?.value).toEqual(inputVal);
+  });
+
+  test('Aria-describedby should contain long des short desc if present otherwise it should be empty', async () => {
+    const f= {
+      ...field,
+      id: 'text-123',
+      tooltip: "short description",
+      description: "long description"
+    };
+    const { renderResponse } = await helper(f);
+    const input = renderResponse.container.getElementsByClassName("cmp-adaptiveform-textinput__widget");
+    expect(input).toHaveLength(1);
+    expect(input[0]).toHaveAttribute('aria-describedby', `${f.id}__longdescription ${f.id}__shortdescription`);
   });
 });
 

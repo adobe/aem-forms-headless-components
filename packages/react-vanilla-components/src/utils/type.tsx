@@ -56,6 +56,7 @@ export type LABEL = {
 };
 
 export type DESCRIPTION = {
+  id?: string,
   bemBlock: string,
   description?: string,
   showShortDescription?: boolean,

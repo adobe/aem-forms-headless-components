@@ -24,7 +24,7 @@ const field = {
   visible: true,
   properties: {
     dragDropText: "Drag and drop to Upload"
-  },
+  }
 };
 
 const fieldTwo = {
@@ -293,4 +293,17 @@ describe("File Upload", () => {
     // Expect the oversized file not to be uploaded
     expect(renderResponse.queryByText("oversized.png")).toBeNull();
   });
+
+  test('Aria-describedby should contain long des short desc if present otherwise it should be empty', async () => {
+    const f= {
+      ...field,
+      id: 'file-123',
+      tooltip: "short description",
+      description: "long description"
+    };
+    const { renderResponse } = await helper(f);
+    const input = renderResponse.container.getElementsByClassName("cmp-adaptiveform-fileinput__widget");
+    expect(input).toHaveLength(1);
+    expect(input[0]).toHaveAttribute('aria-describedby', `${f.id}__longdescription ${f.id}__shortdescription`)
+  })
 });

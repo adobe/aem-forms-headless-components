@@ -2,6 +2,7 @@ import React, {useCallback} from 'react';
 import { PROPS } from '../utils/type';
 import FieldWrapper from './common/FieldWrapper';
 import { withRuleEngine } from '../utils/withRuleEngine';
+import { syncAriaDescribedBy } from '../utils/utils';
 
 const TelephoneInput = (props: PROPS) => {
     const { id, label, name, value, required, readOnly, visible, enabled, placeholder, appliedCssClassNames, valid } = props;
@@ -50,6 +51,8 @@ const TelephoneInput = (props: PROPS) => {
           readOnly={readOnly}
           disabled={!enabled}
           name={name}
+          aria-invalid={!valid}
+          aria-describedby={syncAriaDescribedBy(id, props.tooltip, props.description, props.errorMessage)}
         />
       </FieldWrapper>
     </div>

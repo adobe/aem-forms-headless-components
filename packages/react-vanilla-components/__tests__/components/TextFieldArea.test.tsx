@@ -9,6 +9,7 @@
 import userEvent from "@testing-library/user-event";
 import TextFieldArea from '../../src/components/TextFieldArea';
 import { renderComponent, DEFAULT_ERROR_MESSAGE } from '../utils';
+import "@testing-library/jest-dom/extend-expect";
 
 const field = {
   name: 'multiline',
@@ -112,5 +113,18 @@ describe('Text Area Field', () => {
     const input = await renderResponse.findByPlaceholderText(field.placeholder);
     const label = await renderResponse.queryByText(field.label.value)
     expect(input?.getAttribute('id')).toEqual(label?.getAttribute('for'));
+  });
+
+  test('Aria-describedby should contain long des short desc if present otherwise it should be empty', async () => {
+    const f= {
+      ...field,
+      id: 'multiline-123',
+      tooltip: "short description",
+      description: "long description"
+    };
+    const { renderResponse } = await helper(f);
+    const input = renderResponse.container.getElementsByClassName("cmp-adaptiveform-textinput__widget");
+    expect(input).toHaveLength(1);
+    expect(input[0]).toHaveAttribute('aria-describedby', `${f.id}__longdescription ${f.id}__shortdescription`);
   });
 });

@@ -21,6 +21,7 @@ import React, { useCallback } from 'react';
 import { withRuleEngine } from '../utils/withRuleEngine';
 import { PROPS } from '../utils/type';
 import FieldWrapper from './common/FieldWrapper';
+import { syncAriaDescribedBy } from '../utils/utils';
 
 const RadioButtonGroup = (props: PROPS) => {
   const { id, label, required, enumNames, enum: enums, name, visible, enabled, value, readOnly, appliedCssClassNames, valid } = props;
@@ -53,6 +54,8 @@ const RadioButtonGroup = (props: PROPS) => {
         <div
           className={`cmp-adaptiveform-radiobutton__widget ${orientation}`}
           id={`${id}-widget`}
+          role="radiogroup"
+          aria-describedby={syncAriaDescribedBy(id, props.tooltip, props.description, props.errorMessage)}
         >
           {options?.map((item, index: number) => (
             <div className="cmp-adaptiveform-radiobutton__option" key={enums![index]}>
@@ -67,6 +70,7 @@ const RadioButtonGroup = (props: PROPS) => {
                   readOnly={readOnly}
                   aria-checked={value === enums![index] ? 'true' : 'false'}
                   checked={value?.length ? value?.includes(enums?.[index]) : null}
+                  aria-invalid={!valid}
                 />
                 {item}
               </label>

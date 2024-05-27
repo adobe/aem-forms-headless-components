@@ -9,3 +9,19 @@ export const formatBytes = (bytes: number, decimals = 0) => {
 
     return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`;
   };
+
+  export const syncAriaDescribedBy = (id: string, tooltip?: string, description?: string, error?: string) => {
+    const descriptions = [];
+
+    if (description) {
+        descriptions.push(`${id}__longdescription`);
+    }
+    if (tooltip) {
+        descriptions.push(`${id}__shortdescription`);
+    }
+    if (error) {
+        descriptions.push(`${id}__errormessage`);
+    }
+
+    return descriptions.join(' ');
+};

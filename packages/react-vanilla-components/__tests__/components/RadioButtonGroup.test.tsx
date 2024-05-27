@@ -170,4 +170,17 @@ describe('radio Group', () => {
     let { renderResponse } = await helper(f);
     expect(renderResponse.container.innerHTML).toContain('radio 1');
   });
+
+  test('Aria-describedby should contain long des short desc if present otherwise it should be empty', async () => {
+    const f= {
+      ...field,
+      id: 'radio-123',
+      tooltip: "short description",
+      description: "long description"
+    };
+    const { renderResponse } = await helper(f);
+    const input = renderResponse.container.getElementsByClassName("cmp-adaptiveform-radiobutton__widget");
+    expect(input).toHaveLength(1);
+    expect(input[0]).toHaveAttribute('aria-describedby', `${f.id}__longdescription ${f.id}__shortdescription`)
+  });
 });

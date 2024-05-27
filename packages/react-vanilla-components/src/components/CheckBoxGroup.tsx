@@ -21,6 +21,7 @@ import React, { useCallback } from 'react';
 import { withRuleEngine } from '../utils/withRuleEngine';
 import { PROPS } from '../utils/type';
 import FieldWrapper from './common/FieldWrapper';
+import { syncAriaDescribedBy } from '../utils/utils';
 
 const CheckBoxGroup = (props: PROPS) => {
   const { id, label, required, enumNames, enum: enums, value, name, readOnly, visible, enabled, appliedCssClassNames, valid } = props;
@@ -73,6 +74,7 @@ const CheckBoxGroup = (props: PROPS) => {
         <div
           className={`cmp-adaptiveform-checkboxgroup__widget ${orientation}`}
           id={`${id}-widget`}
+          aria-describedby={syncAriaDescribedBy(id, props.tooltip, props.description, props.errorMessage)}
         >
           {options?.map((item, index: number) => (
             <div className={`cmp-adaptiveform-checkboxgroup-item ${name}`} key={enums![index]}>
@@ -86,6 +88,7 @@ const CheckBoxGroup = (props: PROPS) => {
                   onChange={changeHandler}
                   readOnly={readOnly}
                   checked={value?.includes(enums?.[index])}
+                  aria-invalid={!valid}
                 />
                 {item}
               </label>
