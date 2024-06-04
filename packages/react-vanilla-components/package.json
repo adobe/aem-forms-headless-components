@@ -42,8 +42,8 @@
     "sanitize-html": "^2.10.0"
   },
   "peerDependencies": {
-    "react": "^16.14.0 || ^17.0.2",
-    "react-dom": "^16.14.0 || ^17.0.2"
+    "react": "16.14.0 - 18",
+    "react-dom": "16.14.0 - 18"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.21.5",
