@@ -5,7 +5,7 @@ import { withRuleEngine } from '../utils/withRuleEngine';
 import { syncAriaDescribedBy } from '../utils/utils';
 
 const TelephoneInput = (props: PROPS) => {
-    const { id, label, name, value, required, readOnly, visible, enabled, placeholder, appliedCssClassNames, valid } = props;
+    const { id, label, name, value, required, readOnly, visible, enabled, placeholder, appliedCssClassNames, valid, minLength, maxLength } = props;
 
     const handleChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
         const thisVal = event.target.value;
@@ -50,6 +50,8 @@ const TelephoneInput = (props: PROPS) => {
           placeholder={placeholder}
           readOnly={readOnly}
           disabled={!enabled}
+          minLength={minLength}
+          maxLength={maxLength}
           name={name}
           aria-invalid={!valid}
           aria-describedby={syncAriaDescribedBy(id, props.tooltip, props.description, props.errorMessage)}
