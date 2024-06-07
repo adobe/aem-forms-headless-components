@@ -103,4 +103,56 @@ describe('Telephone-input', () => {
     expect(input).toHaveLength(1);
     expect(input[0]).toHaveAttribute('aria-describedby', `${f.id}__longdescription ${f.id}__shortdescription`)
   });
+
+  test('it should handle maxlength constraint(entered value is more than max limit)', async () => {
+    const f = {
+      ...field,
+      maxLength: 5
+    };
+    let { renderResponse, element } = await helper(f);
+    const input = await renderResponse.findByPlaceholderText(f.placeholder);
+    userEvent.type(input, '+192345');
+    expect(element.getState().value).toEqual('+192345');
+    const errorMsg = renderResponse.container.querySelector(`#${f.id}__errormessage`);
+    expect(errorMsg).not.toBeNull();
+  });
+
+  test('it should handle maxlength constraint(entered value is equal to max limit)', async () => {
+    const f = {
+      ...field,
+      maxLength: 5
+    };
+    let { renderResponse, element } = await helper(f);
+    const input = await renderResponse.findByPlaceholderText(f.placeholder);
+    userEvent.type(input, '+1923');
+    expect(element.getState().value).toEqual('+1923');
+    const errorMsg = renderResponse.container.querySelector(`#${f.id}__errormessage`);
+    expect(errorMsg).toBeNull();
+  });
+
+  test('it should handle minLength constraint(entered value is less than min limit)', async () => {
+    const f = {
+      ...field,
+      minLength: 5
+    };
+    let { renderResponse, element } = await helper(f);
+    const input = await renderResponse.findByPlaceholderText(f.placeholder);
+    userEvent.type(input, '+19');
+    expect(element.getState().value).toEqual('+19');
+    const errorMsg = renderResponse.container.querySelector(`#${f.id}__errormessage`);
+    expect(errorMsg).not.toBeNull();
+  });
+
+  test('it should handle minLength constraint(entered value is more than min limit)', async () => {
+    const f = {
+      ...field,
+      minLength: 5
+    };
+    let { renderResponse, element } = await helper(f);
+    const input = await renderResponse.findByPlaceholderText(f.placeholder);
+    userEvent.type(input, '+19234');
+    expect(element.getState().value).toEqual('+19234');
+    const errorMsg = renderResponse.container.querySelector(`#${f.id}__errormessage`);
+    expect(errorMsg).toBeNull();
+  });
 });
