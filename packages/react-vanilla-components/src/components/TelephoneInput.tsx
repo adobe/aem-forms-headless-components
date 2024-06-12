@@ -22,7 +22,8 @@ const TelephoneInput = (props: PROPS) => {
 
     
    return (
-     <div className={`cmp-adaptiveform-telephoneinput cmp-adaptiveform-telephoneinput--${value ? 'filled' : 'empty'} ${appliedCssClassNames || ''}`} 
+     <div className={`cmp-adaptiveform-telephoneinput cmp-adaptiveform-telephoneinput--${value ? 'filled' : 'empty'} ${appliedCssClassNames || ''}`}
+       id={id}
        data-cmp-is="adaptiveFormTelephoneInput"  
        data-cmp-visible={visible} 
        data-cmp-enabled={enabled} 

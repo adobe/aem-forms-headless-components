@@ -36,6 +36,7 @@ const DropDown = (props: PROPS) => {
     <div
       className={`cmp-adaptiveform-dropdown cmp-adaptiveform-dropdown--${value ? 'filled' : 'empty'} ${appliedCssClassNames || ''}`}
       data-cmp-is="adaptiveFormDropDown"
+      id={id}
       data-cmp-visible={visible}
       data-cmp-enabled={enabled}
       data-cmp-required={required}

@@ -44,6 +44,7 @@ const DateInput = (props: PROPS) => {
     <div
       className={`cmp-adaptiveform-datepicker cmp-adaptiveform-datepicker--${value ? 'filled' : 'empty'} ${appliedCssClassNames || ''}`}
       data-cmp-is="adaptiveFormDatePicker"
+      id={id}
       data-cmp-visible={visible}
       data-cmp-enabled={enabled}
       data-cmp-required={required}

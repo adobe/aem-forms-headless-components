@@ -55,6 +55,7 @@ const Switch = (props: PROPS) => {
           selectedValue === value ? 'filled' : 'empty'
         }`}
         data-cmp-is="adaptiveFormSwitch"
+        id={id}
         data-cmp-visible={visible}
         data-cmp-enabled={enabled}
         data-cmp-required={required}
