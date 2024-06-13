@@ -57,6 +57,7 @@ const CheckBoxGroup = (props: PROPS) => {
     <div
       className={`cmp-adaptiveform-checkboxgroup cmp-adaptiveform-checkboxgroup--${newVal.length ? 'filled' : 'empty'} ${appliedCssClassNames || ''}`}
       data-cmp-is="adaptiveFormCheckBoxGroup"
+      id={id}
       data-cmp-visible={visible}
       data-cmp-enabled={enabled}
       data-cmp-required={required}

@@ -30,7 +30,7 @@ const Button = (props: PROPS) => {
   }, [props.dispatchClick]);
 
   return (
-    <div className={`cmp-adaptiveform-button ${appliedCssClassNames || ''}`}>
+    <div className={`cmp-adaptiveform-button ${appliedCssClassNames || ''}`} id={id}>
       <FieldWrapper
         bemBlock='cmp-adaptiveform-checkbox'
         label={label}

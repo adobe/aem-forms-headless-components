@@ -256,8 +256,8 @@ describe("File Upload", () => {
   test('labels and inputs are linked with for and id attribute', async () => {
     let { renderResponse } = await helper(field);
     const input = await renderResponse.container.getElementsByClassName('cmp-adaptiveform-fileinput__widget');
-    const label = await renderResponse.queryByText(field.label.value);
-    expect(input[0]?.getAttribute('id')).toEqual(label?.getAttribute('for'));
+    const label = await renderResponse.container.getElementsByClassName('cmp-adaptiveform-fileinput__widgetlabel');
+    expect(input[0]?.getAttribute('id')).toEqual(label[0]?.getAttribute('for'));
   });
 
   test('Drag and drop files', async () => {

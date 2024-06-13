@@ -37,6 +37,7 @@ const HCaptchaComponent = (props: PROPS) => {
     <div
       className={`${bemClass} ${bemClass}--${value ? 'filled' : 'empty'} ${appliedCssClassNames || ''}`}
       data-cmp-is="adaptiveFormHCaptcha"
+      id={props.id}
       data-cmp-visible={visible}
       data-cmp-enabled={enabled}
       data-cmp-required={required}
