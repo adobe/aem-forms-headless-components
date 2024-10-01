@@ -1,0 +1,1 @@
+declare module '@aemforms/af-custom-functions'

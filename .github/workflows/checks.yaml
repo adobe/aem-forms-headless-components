@@ -9,6 +9,8 @@ on:
 jobs:
   checks:
     runs-on: ubuntu-latest
+    paths:
+      - 'packages/**'
 
     steps:
     - name: "Checkout"
