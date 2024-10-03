@@ -60,7 +60,12 @@ describe('Text Field', () => {
     const f = {
       ...field,
       tooltip: 'Short Description',
-      description: 'Mandatory'
+      description: 'Mandatory',
+      properties: {
+        "afs:layout": {
+            tooltipVisible: true
+        },
+      }
     };
     const { renderResponse } = await helper(f);
     expect(renderResponse.getByText('Short Description')).not.toBeNull();
@@ -136,7 +141,12 @@ describe('Text Field', () => {
       ...field,
       id: 'text-123',
       tooltip: "short description",
-      description: "long description"
+      description: "long description",
+      properties: {
+        "afs:layout": {
+            tooltipVisible: true
+        },
+      },
     };
     const { renderResponse } = await helper(f);
     const input = renderResponse.container.getElementsByClassName("cmp-adaptiveform-textinput__widget");

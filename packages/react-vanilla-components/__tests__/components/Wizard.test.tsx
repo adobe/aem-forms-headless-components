@@ -11,6 +11,7 @@ import React from "react";
 import { render } from "@testing-library/react";
 import { renderComponent } from "../utils";
 import userEvent from "@testing-library/user-event";
+import "@testing-library/jest-dom/extend-expect";
 
 const WizardWithData = {
   id: "wizard",
@@ -39,7 +40,7 @@ const WizardWithData = {
           fieldType: "text-field",
           visible: true,
           index: 0,
-          label: { value: "text field label" },
+          label: { value: "text field label", visible: true },
         },
         {
           id: "field2",
@@ -47,7 +48,7 @@ const WizardWithData = {
           fieldType: "text-field",
           visible: true,
           index: 1,
-          label: { value: "text field 2 label" },
+          label: { value: "text field 2 label", visible: true },
         },
       ],
     }
@@ -61,6 +62,32 @@ const emptyWizard = {
   label: { value: "empty label" },
   items: [],
   index: 0,
+};
+
+const WizardWithDataForValidation = {
+  id: "wizard-withData",
+  ":type": "core/fd/components/form/wizard/v1/wizard",
+  visible: true,
+  label: { value: "Wizard" },
+  items: [
+    {
+      id: "field1",
+      fieldType: "text-field",
+      name: "text-1",
+      visible: true,
+      required: true,
+      index: 0,
+      label: { value: "text field label 1" },
+    },
+    {
+      id: "field2",
+      fieldType: "text-field",
+      required: false,
+      visible: true,
+      index: 1,
+      label: { value: "text field label 2" },
+    }
+  ],
 };
 
 test("clicking on the next tab should switch from one component to another and on clicking the previous button it should take to the previous component",() => {
@@ -141,7 +168,12 @@ test('In case of both tooltip and description, tooltip should be visible and onc
   const f = {
     ...WizardWithData,
     tooltip: 'Short Description',
-    description: 'Mandatory'
+    description: 'Mandatory',
+    properties: {
+      "afs:layout": {
+          tooltipVisible: true
+      },
+    }
   };
   const helper = renderComponent(Wizard);
   const { renderResponse } = helper(f);
@@ -149,4 +181,26 @@ test('In case of both tooltip and description, tooltip should be visible and onc
   const button = renderResponse.container.getElementsByClassName('cmp-adaptiveform-wizard__questionmark');
   userEvent.click(button[0]);
   expect(renderResponse.getByText('Mandatory')).not.toBeNull();
+});
+
+test("clicking on the next tab should not work if validation fails",() => {
+  const helper = renderComponent(Wizard);
+  const { renderResponse } = helper(WizardWithDataForValidation);
+ 
+  const NextTab = renderResponse.container.getElementsByClassName(
+    "cmp-adaptiveform-wizard__nav--next"
+  );
+  const PrevTab = renderResponse.container.getElementsByClassName(
+    "cmp-adaptiveform-wizard__nav--previous"
+  );
+  expect(NextTab.length).toEqual(1);
+  expect(PrevTab.length).toEqual(0);
+  const tablist = renderResponse.getAllByRole('tab');
+  expect(tablist).toHaveLength(2);
+  expect(tablist[0].className.includes('cmp-adaptiveform-wizard__tab cmp-adaptiveform-wizard__tab--active'));
+  expect(tablist[1].className.includes('cmp-adaptiveform-wizard__tab'));
+  const tabPanels = renderResponse.queryAllByRole("tabpanel");
+  expect(tabPanels.length).toEqual(1);
+  userEvent.click(NextTab[0]);
+  expect(NextTab.length).toEqual(1)
 });

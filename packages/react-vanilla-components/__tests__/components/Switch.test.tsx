@@ -132,7 +132,12 @@ describe("Switch", () => {
       ...field,
       id: 'switch-123',
       tooltip: "short description",
-      description: "long description"
+      description: "long description",
+      properties: {
+        "afs:layout": {
+            tooltipVisible: true
+        },
+      }
     };
     const { renderResponse } = await helper(f);
     const input = renderResponse.container.getElementsByClassName("cmp-adaptiveform-switch__widget");
