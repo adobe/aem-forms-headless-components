@@ -12,6 +12,8 @@ import Radiobutton from '../components/Radiobutton';
 import CheckboxGroup from '../components/CheckboxGroup';
 import Checkbox from '../components/Checkbox';
 import Accordion from '../components/Accordion';
+import VerticalTab from '../components/VerticalTab';
+import HorizontalTab from '../components/HorizontalTab';
 
 export default {
   form: Form,
@@ -30,5 +32,7 @@ export default {
   'multiline-input': TextField,
   email:TextField,
   'forms-components-examples/components/demo/component':Panel,
-  'forms-components-examples/components/form/panelcontainer': Panel
+  'forms-components-examples/components/form/panelcontainer': Panel,
+  'forms-components-examples/components/form/verticaltabs': VerticalTab,
+  'forms-components-examples/components/form/horizontaltabs': HorizontalTab
 };

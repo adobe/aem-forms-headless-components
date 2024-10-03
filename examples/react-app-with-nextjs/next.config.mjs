@@ -5,9 +5,6 @@
 
 // export default nextConfig;
 
-
-// import { createProxyMiddleware } from 'next-http-proxy-middleware';
-
 const NEXT_PUBLIC_AEM_HOST = process.env.NEXT_PUBLIC_AEM_HOST;
 const NEXT_PUBLIC_USE_PROXY = process.env.NEXT_PUBLIC_USE_PROXY;
 const NEXT_PUBLIC_AEM_AUTH_USER = process.env.NEXT_PUBLIC_AEM_AUTH_USER;
@@ -38,13 +35,13 @@ const nextConfig = {
         source: '/content/:path*',
         headers: NEXT_PUBLIC_USE_PROXY === 'true'
           ? [{ key: 'Authorization', value: getAEMBasicAuth() }]
-          : [],
+          : [{key: 'content-type', value: 'application/json'}],
       },
       {
         source: '/adobe/:path*',
         headers: NEXT_PUBLIC_USE_PROXY === 'true'
           ? [{ key: 'Authorization', value: getAEMBasicAuth() }]
-          : [],
+          : [{key: 'content-type', value: 'application/json'}],
       },
     ];
   },

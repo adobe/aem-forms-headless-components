@@ -1,25 +1,22 @@
-import { useState, useEffect } from 'react';
-const {NEXT_PUBLIC_USE_PROXY, NEXT_PUBLIC_AEM_FORM_PATH } = process.env;
-
-const getURL = () =>{
-  if(NEXT_PUBLIC_USE_PROXY === 'true'){
-    return `/content/forms/af/${NEXT_PUBLIC_AEM_FORM_PATH}/jcr:content/guideContainer.model.json`;
-  }else {
-    return `https://www.aemcomponents.dev/content/core-components-examples/library/adaptive-form/verticaltabs/jcr:content/root/responsivegrid/demo/component/guideContainer.model.json`
-  }
-}
+import { useState, useEffect } from "react";
 
 const useFetch = () => {
   const [data, setData] = useState(null);
+  let url = "";
+  if (process.env.NEXT_PUBLIC_FETCH_FROM_AEM === "true") {
+    url = `/content/forms/af/${process.env.NEXT_PUBLIC_AEM_FORM_PATH}/jcr:content/guideContainer.model.json`;
+  } else {
+    url = `${process.env.NEXT_PUBLIC_AEM_HOST}content/core-components-examples/library/adaptive-form/${process.env.NEXT_PUBLIC_AEM_FORM_PATH}/jcr:content/root/responsivegrid/demo/component/guideContainer.model.json`;
+  }
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(getURL());
+        const response = await fetch(url);
         const result = await response.json();
         setData(result);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error("Error fetching data:", error);
       } finally {
       }
     };
@@ -27,7 +24,7 @@ const useFetch = () => {
     fetchData();
   }, []);
 
-  return data
+  return data;
 };
 
 export default useFetch;

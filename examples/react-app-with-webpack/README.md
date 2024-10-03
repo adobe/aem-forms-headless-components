@@ -36,6 +36,23 @@ After running npm start, your app will be automatically opened in your browser (
 
 Builds the app for production to the `build` folder. It bundles React in production mode and optimizes the build for the best performance.
 
+## Using external api to fetch form model json
+By default, this project is configured to pick the form model json from the internal AEM server. For scenarios where the model needs to be served from an external API, we will need to update the below environment variables in [.env](./.env) file.
+* `REACT_APP_AEM_HOST` : Set the value to the HTTP endpoint
+* `REACT_APP_AEM_FORM_PATH` : Set the name of the form.
+* `REACT_APP_FETCH_FROM_AEM` : Set value true, if fetch model json from AEM.
+* `REACT_APP_USE_PROXY` : Dev modes, use proxy during development (helps avoids potential CORS issues).
+* `REACT_APP_AEM_AUTH_TOKEN` : For Bearer auth, use DEV token (dev-token) from Cloud console.
+* `REACT_APP_AEM_AUTH_USER` :  For Basic auth, use AEM ['user','password'] pair (eg for Local AEM Author instance).
+* `REACT_APP_AEM_AUTH_PASS` : For Basic auth, use AEM ['user','password'] pair (eg for Local AEM Author instance).
+
+If you have a publish instance of AEM, use the following environment configuration and whitelist the `csb.app` hostname in your server
+```
+REACT_APP_AEM_HOST=https://publish-p1-e1.adobeaemcloud.com
+REACT_APP_AEM_FORM_PATH=demo-form
+REACT_APP_FETCH_FROM_AEM=true
+```
+
 ## Mappings Object
 
 A Mappings Object is a JavaScript map that maps the field types defined in the Specification to its respective React Component. The Adaptive Form Super Component uses this map to render the different components defined in the Form JSON.

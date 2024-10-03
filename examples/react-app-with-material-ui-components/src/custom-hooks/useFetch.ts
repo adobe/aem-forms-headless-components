@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
-const {REACT_APP_AEM_HOST, REACT_APP_USE_PROXY, REACT_APP_AEM_FORM_PATH } = process.env;
+const {REACT_APP_AEM_HOST, REACT_APP_FETCH_FROM_AEM, REACT_APP_AEM_FORM_PATH } = process.env;
 
 const getURL = () =>{
-  if(REACT_APP_USE_PROXY === 'true'){
+  if(REACT_APP_FETCH_FROM_AEM === 'true'){
     return `/content/forms/af/${REACT_APP_AEM_FORM_PATH}/jcr:content/guideContainer.model.json`;
   }else {
     return `${REACT_APP_AEM_HOST}content/core-components-examples/library/adaptive-form/${REACT_APP_AEM_FORM_PATH}/jcr:content/root/responsivegrid/demo/component/guideContainer.model.json`
