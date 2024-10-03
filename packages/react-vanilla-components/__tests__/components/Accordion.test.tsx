@@ -157,7 +157,12 @@ const AccordionWithData = {
     const f = {
       ...AccordionWithData,
       tooltip: 'Short Description',
-      description: 'Mandatory'
+      description: 'Mandatory',
+      properties: {
+        "afs:layout": {
+            tooltipVisible: true
+        },
+      }
     };
     const helper = renderComponent(Accordion);
      const { renderResponse } = await helper(f);

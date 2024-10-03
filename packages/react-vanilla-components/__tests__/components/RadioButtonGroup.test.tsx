@@ -122,7 +122,12 @@ describe('radio Group', () => {
     const f = {
       ...field,
       tooltip: 'Short Description',
-      description: 'Mandatory'
+      description: 'Mandatory',
+      properties: {
+        "afs:layout": {
+            tooltipVisible: true
+        },
+      }
     };
     const helper = renderComponent(RadioButtonGroup);
     const { renderResponse } = await helper(f);
@@ -176,7 +181,12 @@ describe('radio Group', () => {
       ...field,
       id: 'radio-123',
       tooltip: "short description",
-      description: "long description"
+      description: "long description",
+      properties: {
+        "afs:layout": {
+            tooltipVisible: true
+        },
+      }
     };
     const { renderResponse } = await helper(f);
     const input = renderResponse.container.getElementsByClassName("cmp-adaptiveform-radiobutton__widget");

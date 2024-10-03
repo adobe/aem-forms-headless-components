@@ -71,7 +71,12 @@ describe('Telephone-input', () => {
     const f = {
       ...field,
       tooltip: 'Short Description',
-      description: 'Mandatory'
+      description: 'Mandatory',
+      properties: {
+        "afs:layout": {
+            tooltipVisible: true
+        },
+      }
     };
     const { renderResponse } = await helper(f);
     expect(renderResponse.getByText('Short Description')).not.toBeNull();
@@ -96,7 +101,12 @@ describe('Telephone-input', () => {
     const f= {
       ...field,
       tooltip: "short description",
-      description: "long description"
+      description: "long description",
+      properties: {
+        "afs:layout": {
+            tooltipVisible: true
+        },
+      }
     };
     const { renderResponse } = await helper(f);
     const input = renderResponse.container.getElementsByClassName("cmp-adaptiveform-telephoneinput__widget");

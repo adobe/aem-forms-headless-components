@@ -26,7 +26,7 @@ import LabelWithDescription from './common/LabelWithDescription';
 
 const Wizard = (props: PROPS_PANEL) => {
   // @ts-ignore
-  const { mappings } = useContext(FormContext);
+  const { mappings, form } = useContext(FormContext);
   const { items, label, id, visible, enabled, appliedCssClassNames } = props;
   const [activeTab, setActiveTab] = useState(0);
 
@@ -44,8 +44,23 @@ const Wizard = (props: PROPS_PANEL) => {
   }, [activeTab]);
 
   const nextHandler = useCallback(() => {
-    setActiveTab(activeTab + 1);
-  }, [activeTab]);
+    // Get the ID of the current active child
+    const activeChildId = visibleItems[activeTab]?.id; 
+   
+    // Retrieve the active child model directly
+    const activeChildModel = form.getElement(activeChildId);
+  
+    // Validate the current child
+    const validationErrorList = activeChildModel?.validate() || [];
+
+    // Proceed if there are no validation errors
+    if (validationErrorList.length === 0) {
+        setActiveTab(activeTab + 1); // Move to the next tab
+    } else {
+        // Handle validation errors
+        console.log('Validation failed', validationErrorList); // Log errors for debugging
+    }
+  }, [activeTab, visibleItems, form]);
 
   const getChild = useCallback((child: any, index: number) => {
     const Comp = getRenderer(child, mappings);

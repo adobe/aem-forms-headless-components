@@ -125,6 +125,11 @@ describe("Drop Down", () => {
       ...field,
       tooltip: "Short Description",
       description: "Mandatory",
+      properties: {
+        "afs:layout": {
+            tooltipVisible: true
+        },
+      }
     };
     const helper = renderComponent(DropDown);
     const { renderResponse } = await helper(f);
@@ -154,7 +159,12 @@ describe("Drop Down", () => {
       ...field,
       id: 'dropdown-123',
       tooltip: "short description",
-      description: "long description"
+      description: "long description",
+      properties: {
+        "afs:layout": {
+            tooltipVisible: true
+        },
+      }
     };
     const { renderResponse } = await helper(f);
     const input = renderResponse.container.getElementsByClassName("cmp-adaptiveform-dropdown__widget");

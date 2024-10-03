@@ -61,7 +61,8 @@ const getLocalizeEnumNames = (i18n: any, state: FieldViewState) => {
 };
 
 const getToolTip = (state: FieldViewState) => {
-  return state.tooltip ? richTextString(state.tooltip) : null;
+  const tooltipVisible = state.properties?.['afs:layout']?.tooltipVisible;
+  return tooltipVisible && state.tooltip ? richTextString(state.tooltip) : null;
 };
 export function withRuleEngine(Component: JSXElementConstructor<any>) {
   return function WrappedComponent(fieldset: State<FieldJson>) {
