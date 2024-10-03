@@ -1,0 +1,7 @@
+<svg id="Decorative_icon" data-name="Decorative icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+  <rect id="Placement_Area" data-name="Placement Area" width="16" height="16" fill="red" opacity="0"/>
+  <g id="Icon">
+    <rect id="Canvas" width="16" height="16" fill="#464646" opacity="0"/>
+    <path id="Path_9" data-name="Path 9" d="M8,1a7,7,0,1,0,7,7A7,7,0,0,0,8,1ZM7.869,2.881A1.189,1.189,0,0,1,9.121,4q0,.056,0,.113A1.166,1.166,0,0,1,7.869,5.369,1.183,1.183,0,0,1,6.616,4.116,1.189,1.189,0,0,1,7.755,2.88Q7.812,2.878,7.869,2.881ZM9.75,11.938a.437.437,0,0,1-.437.438H6.688a.437.437,0,0,1-.437-.437v-.875a.437.437,0,0,1,.438-.437h.438V8H6.688a.438.438,0,0,1-.437-.437V6.688a.437.437,0,0,1,.438-.437h1.75a.437.437,0,0,1,.438.438v3.938h.438a.437.437,0,0,1,.438.438Z" fill="#161616"/>
+  </g>
+</svg>
