@@ -6,7 +6,7 @@
     "@aemforms/af-core": "^0.22.94",
     "@aemforms/af-react-renderer": "^0.22.94",
     "@aemforms/af-react-vanilla-components": "^1.0.20",
-    "@aemforms/af-wknd-theme": "^1.0.10",
+    "@aemforms/af-wknd-theme": "1.0.7",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-scripts": "5.0.1",
