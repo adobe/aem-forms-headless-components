@@ -14,16 +14,16 @@
 //  * limitations under the License.
 //  ******************************************************************************
 
-import { useState, useEffect } from 'react';
-const {REACT_APP_AEM_HOST, REACT_APP_FETCH_FROM_AEM, REACT_APP_AEM_FORM_PATH } = process.env;
+import { useState, useEffect } from "react";
+const { REACT_APP_AEM_HOST, REACT_APP_AEM_FORM_PATH } = process.env;
 
-const getURL = () =>{
-  if(REACT_APP_FETCH_FROM_AEM === 'true'){
-    return `/content/forms/af/${REACT_APP_AEM_FORM_PATH}/jcr:content/guideContainer.model.json`;
-  }else {
-    return `${REACT_APP_AEM_HOST}content/core-components-examples/library/adaptive-form/${REACT_APP_AEM_FORM_PATH}/jcr:content/root/responsivegrid/demo/component/guideContainer.model.json`
+const getURL = () => {
+  let url = `${REACT_APP_AEM_HOST}${REACT_APP_AEM_FORM_PATH}`;
+  if (REACT_APP_AEM_FORM_PATH?.includes("jcr:content")) {
+    return `${url}/guideContainer.model.json`;
   }
-}
+  return `${url}/jcr:content/guideContainer.model.json`;
+};
 
 const useFetch = () => {
   const [data, setData] = useState(null);
@@ -35,7 +35,7 @@ const useFetch = () => {
         const result = await response.json();
         setData(result);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error("Error fetching data:", error);
       } finally {
       }
     };
@@ -43,7 +43,7 @@ const useFetch = () => {
     fetchData();
   }, []);
 
-  return data
+  return data;
 };
 
 export default useFetch;

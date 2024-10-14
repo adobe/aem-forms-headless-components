@@ -9,11 +9,15 @@ const NEXT_PUBLIC_AEM_HOST = process.env.NEXT_PUBLIC_AEM_HOST;
 const NEXT_PUBLIC_USE_PROXY = process.env.NEXT_PUBLIC_USE_PROXY;
 const NEXT_PUBLIC_AEM_AUTH_USER = process.env.NEXT_PUBLIC_AEM_AUTH_USER;
 const NEXT_PUBLIC_AEM_AUTH_PASS = process.env.NEXT_PUBLIC_AEM_AUTH_PASS;
+const NEXT_PUBLIC_AEM_AUTH_TOKEN = process.env.NEXT_PUBLIC_AEM_AUTH_TOKEN;
 
 const getAEMBasicAuth = () => {
+  if(NEXT_PUBLIC_AEM_AUTH_TOKEN){
+    return NEXT_PUBLIC_AEM_AUTH_TOKEN;
+  }
   const credentialsString =
-    NEXT_PUBLIC_AEM_AUTH_USER + ':' + NEXT_PUBLIC_AEM_AUTH_PASS;
-  return 'Basic ' + Buffer.from(credentialsString).toString('base64');
+  NEXT_PUBLIC_AEM_AUTH_USER + ":" + NEXT_PUBLIC_AEM_AUTH_PASS;
+  return "Basic " + Buffer.from(credentialsString).toString("base64");
 };
 
 const nextConfig = {

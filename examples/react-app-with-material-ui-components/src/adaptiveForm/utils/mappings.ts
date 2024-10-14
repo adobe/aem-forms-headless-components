@@ -26,13 +26,13 @@ export default {
   'drop-down': DropDown,
   'radio-group': Radiobutton,
   'checkbox-group': CheckboxGroup,
-   checkbox: Checkbox,
-  'core/fd/components/form/accordion/v1/accordion': Accordion,
+  checkbox: Checkbox,
   'password-input': TextField,
   'multiline-input': TextField,
   email:TextField,
+  'core/fd/components/form/accordion/v1/accordion': Accordion,
   'forms-components-examples/components/demo/component':Panel,
   'forms-components-examples/components/form/panelcontainer': Panel,
   'forms-components-examples/components/form/verticaltabs': VerticalTab,
-  'forms-components-examples/components/form/horizontaltabs': HorizontalTab
+  'forms-components-examples/components/form/horizontaltabs': HorizontalTab,
 };

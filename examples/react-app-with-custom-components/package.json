@@ -8,6 +8,7 @@
     "@aemforms/af-custom-functions": "^1.0.9",
     "@aemforms/af-react-renderer": "^0.22.94",
     "@aemforms/af-react-vanilla-components": "^1.0.19",
+    "@aemforms/af-wknd-theme": "^1.0.10",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
