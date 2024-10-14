@@ -54,7 +54,7 @@ By default, this project is configured to pick the form model json from the inte
 If you have a publish instance of AEM, use the following environment configuration and whitelist the `csb.app` hostname in your server
 ```
 REACT_APP_AEM_HOST=https://publish-p1-e1.adobeaemcloud.com
-REACT_APP_AEM_FORM_PATH=demo-form
+REACT_APP_AEM_FORM_PATH=content/forms/af/demo-form
 ```
 
 ## Create Components using Material UI
