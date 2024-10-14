@@ -17,7 +17,7 @@
 import React, { useEffect } from "react";
 import { AdaptiveForm } from "@aemforms/af-react-renderer";
 import { Action, FunctionRuntime } from "@aemforms/af-core";
-import "@aemforms/af-canvas-theme/dist/theme.css";
+import '@aemforms/af-wknd-theme/dist/theme.css';
 import * as defauleCustomFunction from '@aemforms/af-custom-functions';
 
 import { conactWithSpace } from "../utils/customFunction";

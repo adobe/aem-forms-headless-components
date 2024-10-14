@@ -7,19 +7,20 @@ require('dotenv').config({ path: './.env' });
 
 const {
   REACT_APP_AEM_HOST, REACT_APP_USE_PROXY,
-  REACT_APP_AEM_AUTH_USER, REACT_APP_AEM_AUTH_PASS
+  REACT_APP_AEM_AUTH_USER, REACT_APP_AEM_AUTH_PASS, REACT_APP_AEM_AUTH_TOKEN
 } = process.env;
 
-
 const getAEMBasicAuth = () => {
-  const credentialsString = REACT_APP_AEM_AUTH_USER + ":" + REACT_APP_AEM_AUTH_PASS;
+  if(REACT_APP_AEM_AUTH_TOKEN){
+    return REACT_APP_AEM_AUTH_TOKEN;
+  }
+  const credentialsString =
+    REACT_APP_AEM_AUTH_USER + ":" + REACT_APP_AEM_AUTH_PASS;
   return "Basic " + Buffer.from(credentialsString).toString("base64");
 };
-
 const aemProxyReq = (proxyReq) => {
   if (REACT_APP_USE_PROXY === "true") {
-    const authValue = getAEMBasicAuth();
-    proxyReq.setHeader("authorization", authValue);
+    proxyReq.setHeader("authorization", getAEMBasicAuth());
   }
 };
 

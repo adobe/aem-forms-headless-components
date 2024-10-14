@@ -32,12 +32,10 @@ Install dependencies.
 
 Run the development server and ppen [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-
 ## Using external api to fetch form model json
 By default, this project is configured to pick the form model json from the internal AEM server. For scenarios where the model needs to be served from an external API, we will need to update the below environment variables in [.env](./.env) file.
 * `NEXT_PUBLIC_AEM_HOST` : Set the value to the HTTP endpoint
 * `NEXT_PUBLIC_AEM_FORM_PATH` : Set the name of the form.
-* `NEXT_PUBLIC_FETCH_FROM_AEM` : Set value true, if fetch model json from AEM.
 * `NEXT_PUBLIC_USE_PROXY` : Dev modes, use proxy during development (helps avoids potential CORS issues).
 * `NEXT_PUBLIC_AEM_AUTH_TOKEN` : For Bearer auth, use DEV token (dev-token) from Cloud console.
 * `NEXT_PUBLIC_AEM_AUTH_USER` :  For Basic auth, use AEM ['user','password'] pair (eg for Local AEM Author instance).
@@ -47,7 +45,6 @@ If you have a publish instance of AEM, use the following environment configurati
 ```
 NEXT_PUBLIC_AEM_HOST=https://publish-p1-e1.adobeaemcloud.com
 NEXT_PUBLIC_AEM_FORM_PATH=demo-form
-NEXT_PUBLIC_FETCH_FROM_AEM=true
 ```
 
 ## Mappings Object
