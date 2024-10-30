@@ -17,11 +17,7 @@
 import { useState, useEffect } from "react";
 
 const getURL = () => {
-  let url = `${process.env.NEXT_PUBLIC_AEM_HOST}${process.env.NEXT_PUBLIC_AEM_FORM_PATH}`;
-  if (process.env.NEXT_PUBLIC_AEM_FORM_PATH?.includes("jcr:content")) {
-    return `${url}/guideContainer.model.json`;
-  }
-  return `${url}/jcr:content/guideContainer.model.json`;
+  return `${process.env.NEXT_PUBLIC_AEM_HOST}${process.env.NEXT_PUBLIC_AEM_FORM_PATH}/jcr:content/guideContainer.model.json`;
 };
 
 const useFetch = () => {
