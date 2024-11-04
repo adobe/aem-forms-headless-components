@@ -3,7 +3,7 @@
   "setupTasks": [
     {
       "name": "Install Dependencies",
-      "command": "npm install --force"
+      "command": "npm install"
     }
   ],
 
