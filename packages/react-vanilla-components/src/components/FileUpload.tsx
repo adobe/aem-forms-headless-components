@@ -17,7 +17,7 @@
 //  * LINK- https://github.com/adobe/aem-core-forms-components/blob/master/ui.af.apps/src/main/content/jcr_root/apps/core/fd/components/form/fileinput/v1/fileinput/fileinput.html
 //  ******************************************************************************
 
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useRef, useState, useEffect } from 'react';
 import { FileObject } from '@aemforms/af-core';
 import { getFileSizeInBytes } from '@aemforms/af-core';
 import { withRuleEngine } from '../utils/withRuleEngine';
@@ -45,9 +45,16 @@ const FileUpload = (props: PROPS) => {
   const [files, setFiles] = useState<FileObject[]>(val || []);
   const [ dragOver, setDragOver ] = useState(false);
 
+  // Sync internal state with external value prop
+  useEffect(() => {
+    const newVal = value && (value instanceof Array ? value : [value]);
+    setFiles(newVal || []);
+  }, [value]);
+
   const maxFileSizeInBytes = getFileSizeInBytes(maxFileSize);
   let multiple = props.type?.endsWith('[]') ? { multiple: true } : {};
 
+  // Dispatch value to the model. When field supports multiple values, send array; otherwise a single item
   const fileChangeHandler = useCallback(
     (files: Array<File | FileObject>) => {
       if (multiple) {
@@ -69,30 +76,44 @@ const FileUpload = (props: PROPS) => {
     setDragOver(false);
   };
 
+  // Handles file selection via input, drag/drop, or paste
   const fileUploadHandler = useCallback((e) => {
     e.preventDefault();
     const newFiles = Array.from<File>(e.dataTransfer?.files || e?.target?.files || e.clipboardData?.files || []);
+    
+    // Clear the input value to allow re-uploading the same file again
+    if (e.target && e.target.type === 'file') {
+      e.target.value = '';
+    }
+    
     if (newFiles?.length) {
       const validFiles = newFiles.filter((file: File) => file.size <= maxFileSizeInBytes);
       if (validFiles.length < newFiles.length) {
         // Show constraint message for files with size exceeding the limit
         alert(`${props.constraintMessages?.maxFileSize}`);
       }
+      
       const updatedFiles = [...files, ...validFiles];
       setFiles(updatedFiles as FileObject[]);
       fileChangeHandler(updatedFiles);
     }
+    
     setDragOver(false);
   },
   [files, fileChangeHandler, maxFileSizeInBytes, props?.constraintMessages]
 );
 
+  // Removes one file at the specified index and clears the input to allow re-uploading the same file
   const removeFile = useCallback(
     (index: number) => {
       const fileList = [...files];
-      fileList.splice(index,1);
+      fileList.splice(index, 1);
       setFiles(fileList);
       fileChangeHandler(fileList);
+      // Clear the input value so the same file can be selected again
+      if (fileInputField.current) {
+        (fileInputField.current as HTMLInputElement).value = '';
+      }
     },
     [files, fileChangeHandler]
   );
@@ -172,9 +193,15 @@ const FileUpload = (props: PROPS) => {
                       {formatBytes(item?.size)}
                     </span>
                     <button
-                      onClick={() => removeFile(index)}
+                      type="button"
+                      onClick={(e) => {
+                        // Prevent form submit bubbling when used inside a <form>
+                        e.preventDefault();
+                        e.stopPropagation();
+                        removeFile(index);
+                      }}
                       className="cmp-adaptiveform-fileinput__filedelete"
-                      role="button"
+                      aria-label="Remove file"
                     >
                       x
                     </button>
