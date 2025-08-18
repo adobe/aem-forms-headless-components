@@ -311,4 +311,36 @@ describe("File Upload", () => {
     expect(input).toHaveLength(1);
     expect(input[0]).toHaveAttribute('aria-describedby', `${f.id}__longdescription ${f.id}__shortdescription`)
   })
+
+  test("should allow re-uploading same file after removal", async () => {
+    const f = {
+      ...field,
+      type: "file",
+    };
+    const { renderResponse } = await helper(f);
+    
+    // Get the file input element directly (like other tests do)
+    const input = renderResponse.container.getElementsByClassName("cmp-adaptiveform-fileinput__widget");
+    
+    // 1. Upload initial file
+    const file = new File(["(⌐□_□)"], "test-document.pdf", { type: "application/pdf" });
+    userEvent.upload(input[0] as HTMLInputElement, file);
+    
+    // Verify file was uploaded
+    expect(renderResponse.queryByText("test-document.pdf")).toBeTruthy();
+    
+    // 2. Remove the file using the remove button
+    const removeButton = renderResponse.getByLabelText("Remove file");
+    userEvent.click(removeButton);
+    
+    // Verify file was removed
+    expect(renderResponse.queryByText("test-document.pdf")).toBeFalsy();
+    
+    // 3. Re-upload the same file (this tests the bug fix)
+    const newFile = new File(["(⌐□_□)"], "test-document.pdf", { type: "application/pdf" });
+    userEvent.upload(input[0] as HTMLInputElement, newFile);
+    
+    // 4. Verify the same file appears correctly after re-upload
+    expect(renderResponse.queryByText("test-document.pdf")).toBeTruthy();
+  });
 });
