@@ -17,7 +17,7 @@
 //  * LINK- https://github.com/adobe/aem-core-forms-components/blob/master/ui.af.apps/src/main/content/jcr_root/apps/core/fd/components/form/fileinput/v1/fileinput/fileinput.html
 //  ******************************************************************************
 
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useRef, useState, useEffect } from 'react';
 import { FileObject } from '@aemforms/af-core';
 import { getFileSizeInBytes } from '@aemforms/af-core';
 import { withRuleEngine } from '../utils/withRuleEngine';
@@ -41,19 +41,52 @@ const FileUpload = (props: PROPS) => {
     properties,
     valid
   } = props;
+  type LocalFile = { uid: string, file: File | FileObject };
+
+  const generateUid = (seed?: string) => `${Date.now()}-${Math.random().toString(36).slice(2)}${seed ? `-${seed}` : ''}`;
+
+  const getIdentity = (f: any) => `${f?.name || ''}|${f?.size || ''}|${f?.lastModified || ''}|${f?.type || ''}`;
+
+  const uidMapRef = React.useRef<Map<string, string>>(new Map());
+
+  const wrapWithUid = (items: Array<File | FileObject> | null | undefined): LocalFile[] => {
+    const list = items && (items instanceof Array ? items : [items]);
+    return (list || []).map((f) => {
+      const identity = getIdentity(f as any);
+      let uid = uidMapRef.current.get(identity);
+      if (!uid) {
+        uid = generateUid(identity);
+        uidMapRef.current.set(identity, uid);
+      }
+      return { uid, file: f };
+    });
+  };
+
   let val = value && (value instanceof Array ? value : [value]);
-  const [files, setFiles] = useState<FileObject[]>(val || []);
+  const [files, setFiles] = useState<LocalFile[]>(wrapWithUid(val as Array<File | FileObject>) || []);
   const [ dragOver, setDragOver ] = useState(false);
+
+  // Sync internal state with external value prop only once (initial mount)
+  const didInitFromPropsRef = useRef(false);
+  useEffect(() => {
+    if (!didInitFromPropsRef.current) {
+      const newVal = value && (value instanceof Array ? value : [value]);
+      setFiles(wrapWithUid(newVal as Array<File | FileObject>));
+      didInitFromPropsRef.current = true;
+    }
+  }, [value]);
 
   const maxFileSizeInBytes = getFileSizeInBytes(maxFileSize);
   let multiple = props.type?.endsWith('[]') ? { multiple: true } : {};
 
+  // Dispatch value to the model. When field supports multiple values, send array; otherwise a single item
   const fileChangeHandler = useCallback(
-    (files: Array<File | FileObject>) => {
+    (localFiles: Array<LocalFile>) => {
+      const plainFiles = localFiles.map(({ file }) => file);
       if (multiple) {
-        props.dispatchChange(files);
+        props.dispatchChange(plainFiles);
       } else {
-        props.dispatchChange(files.length > 0 ? files[0] : null);
+        props.dispatchChange(plainFiles.length > 0 ? plainFiles[0] : null);
       }
     },
     [multiple, props.dispatchChange]
@@ -69,30 +102,54 @@ const FileUpload = (props: PROPS) => {
     setDragOver(false);
   };
 
+  // Handles file selection via input, drag/drop, or paste
   const fileUploadHandler = useCallback((e) => {
     e.preventDefault();
     const newFiles = Array.from<File>(e.dataTransfer?.files || e?.target?.files || e.clipboardData?.files || []);
+    
+    // Clear the input value to allow re-uploading the same file again
+    if (e.target && e.target.type === 'file') {
+      e.target.value = '';
+    }
+    
     if (newFiles?.length) {
       const validFiles = newFiles.filter((file: File) => file.size <= maxFileSizeInBytes);
       if (validFiles.length < newFiles.length) {
         // Show constraint message for files with size exceeding the limit
         alert(`${props.constraintMessages?.maxFileSize}`);
       }
-      const updatedFiles = [...files, ...validFiles];
-      setFiles(updatedFiles as FileObject[]);
+
+      // Avoid collapsing same-named files: append new entries without deduping
+      const wrappedNew = validFiles.map((f) => ({ uid: generateUid(`${f.name}-${f.size}-${f.lastModified}`), file: f }));
+      const updatedFiles: LocalFile[] = [...files, ...wrappedNew];
+      setFiles(updatedFiles);
       fileChangeHandler(updatedFiles);
     }
+    
     setDragOver(false);
   },
   [files, fileChangeHandler, maxFileSizeInBytes, props?.constraintMessages]
 );
 
+  // Removes one file by its unique id and clears the input to allow re-uploading the same file
   const removeFile = useCallback(
-    (index: number) => {
+    (uid: string) => {
+      const index = files.findIndex((f) => f.uid === uid);
+      if (index === -1) {return;}
+      // remove identity mapping as well to avoid leaks
+      const toRemove = files[index];
+      const identity = getIdentity((toRemove?.file as any));
+      if (identity) {
+        uidMapRef.current.delete(identity);
+      }
       const fileList = [...files];
-      fileList.splice(index,1);
+      fileList.splice(index, 1);
       setFiles(fileList);
       fileChangeHandler(fileList);
+      // Clear the input value so the same file can be selected again
+      if (fileInputField.current) {
+        (fileInputField.current as HTMLInputElement).value = '';
+      }
     },
     [files, fileChangeHandler]
   );
@@ -156,25 +213,31 @@ const FileUpload = (props: PROPS) => {
           </div>
           <ul className="cmp-adaptiveform-fileinput__filelist">
             {files &&
-              files?.map((item: FileObject, index) => (
+              files?.map(({ file, uid }) => (
                 <li
                   className="cmp-adaptiveform-fileinput__fileitem"
-                  key={item?.name}
+                  key={uid}
                 >
                   <span
                     className="cmp-adaptiveform-fileinput__filename"
-                    aria-label={item?.name}
+                    aria-label={(file as any)?.name}
                   >
-                    {item?.name}
+                    {(file as any)?.name}
                   </span>
                   <span className="cmp-adaptiveform-fileinput__fileendcontainer">
                     <span className="cmp-adaptiveform-fileinput__filesize">
-                      {formatBytes(item?.size)}
+                      {formatBytes((file as any)?.size)}
                     </span>
                     <button
-                      onClick={() => removeFile(index)}
+                      type="button"
+                      onClick={(e) => {
+                        // Prevent form submit bubbling when used inside a <form>
+                        e.preventDefault();
+                        e.stopPropagation();
+                        removeFile(uid);
+                      }}
                       className="cmp-adaptiveform-fileinput__filedelete"
-                      role="button"
+                      aria-label="Remove file"
                     >
                       x
                     </button>
