@@ -41,14 +41,39 @@ const FileUpload = (props: PROPS) => {
     properties,
     valid
   } = props;
+  type LocalFile = { uid: string, file: File | FileObject };
+
+  const generateUid = (seed?: string) => `${Date.now()}-${Math.random().toString(36).slice(2)}${seed ? `-${seed}` : ''}`;
+
+  const getIdentity = (f: any) => `${f?.name || ''}|${f?.size || ''}|${f?.lastModified || ''}|${f?.type || ''}`;
+
+  const uidMapRef = React.useRef<Map<string, string>>(new Map());
+
+  const wrapWithUid = (items: Array<File | FileObject> | null | undefined): LocalFile[] => {
+    const list = items && (items instanceof Array ? items : [items]);
+    return (list || []).map((f) => {
+      const identity = getIdentity(f as any);
+      let uid = uidMapRef.current.get(identity);
+      if (!uid) {
+        uid = generateUid(identity);
+        uidMapRef.current.set(identity, uid);
+      }
+      return { uid, file: f };
+    });
+  };
+
   let val = value && (value instanceof Array ? value : [value]);
-  const [files, setFiles] = useState<FileObject[]>(val || []);
+  const [files, setFiles] = useState<LocalFile[]>(wrapWithUid(val as Array<File | FileObject>) || []);
   const [ dragOver, setDragOver ] = useState(false);
 
-  // Sync internal state with external value prop
+  // Sync internal state with external value prop only once (initial mount)
+  const didInitFromPropsRef = useRef(false);
   useEffect(() => {
-    const newVal = value && (value instanceof Array ? value : [value]);
-    setFiles(newVal || []);
+    if (!didInitFromPropsRef.current) {
+      const newVal = value && (value instanceof Array ? value : [value]);
+      setFiles(wrapWithUid(newVal as Array<File | FileObject>));
+      didInitFromPropsRef.current = true;
+    }
   }, [value]);
 
   const maxFileSizeInBytes = getFileSizeInBytes(maxFileSize);
@@ -56,11 +81,12 @@ const FileUpload = (props: PROPS) => {
 
   // Dispatch value to the model. When field supports multiple values, send array; otherwise a single item
   const fileChangeHandler = useCallback(
-    (files: Array<File | FileObject>) => {
+    (localFiles: Array<LocalFile>) => {
+      const plainFiles = localFiles.map(({ file }) => file);
       if (multiple) {
-        props.dispatchChange(files);
+        props.dispatchChange(plainFiles);
       } else {
-        props.dispatchChange(files.length > 0 ? files[0] : null);
+        props.dispatchChange(plainFiles.length > 0 ? plainFiles[0] : null);
       }
     },
     [multiple, props.dispatchChange]
@@ -92,9 +118,11 @@ const FileUpload = (props: PROPS) => {
         // Show constraint message for files with size exceeding the limit
         alert(`${props.constraintMessages?.maxFileSize}`);
       }
-      
-      const updatedFiles = [...files, ...validFiles];
-      setFiles(updatedFiles as FileObject[]);
+
+      // Avoid collapsing same-named files: append new entries without deduping
+      const wrappedNew = validFiles.map((f) => ({ uid: generateUid(`${f.name}-${f.size}-${f.lastModified}`), file: f }));
+      const updatedFiles: LocalFile[] = [...files, ...wrappedNew];
+      setFiles(updatedFiles);
       fileChangeHandler(updatedFiles);
     }
     
@@ -103,9 +131,17 @@ const FileUpload = (props: PROPS) => {
   [files, fileChangeHandler, maxFileSizeInBytes, props?.constraintMessages]
 );
 
-  // Removes one file at the specified index and clears the input to allow re-uploading the same file
+  // Removes one file by its unique id and clears the input to allow re-uploading the same file
   const removeFile = useCallback(
-    (index: number) => {
+    (uid: string) => {
+      const index = files.findIndex((f) => f.uid === uid);
+      if (index === -1) {return;}
+      // remove identity mapping as well to avoid leaks
+      const toRemove = files[index];
+      const identity = getIdentity((toRemove?.file as any));
+      if (identity) {
+        uidMapRef.current.delete(identity);
+      }
       const fileList = [...files];
       fileList.splice(index, 1);
       setFiles(fileList);
@@ -177,20 +213,20 @@ const FileUpload = (props: PROPS) => {
           </div>
           <ul className="cmp-adaptiveform-fileinput__filelist">
             {files &&
-              files?.map((item: FileObject, index) => (
+              files?.map(({ file, uid }) => (
                 <li
                   className="cmp-adaptiveform-fileinput__fileitem"
-                  key={item?.name}
+                  key={uid}
                 >
                   <span
                     className="cmp-adaptiveform-fileinput__filename"
-                    aria-label={item?.name}
+                    aria-label={(file as any)?.name}
                   >
-                    {item?.name}
+                    {(file as any)?.name}
                   </span>
                   <span className="cmp-adaptiveform-fileinput__fileendcontainer">
                     <span className="cmp-adaptiveform-fileinput__filesize">
-                      {formatBytes(item?.size)}
+                      {formatBytes((file as any)?.size)}
                     </span>
                     <button
                       type="button"
@@ -198,7 +234,7 @@ const FileUpload = (props: PROPS) => {
                         // Prevent form submit bubbling when used inside a <form>
                         e.preventDefault();
                         e.stopPropagation();
-                        removeFile(index);
+                        removeFile(uid);
                       }}
                       className="cmp-adaptiveform-fileinput__filedelete"
                       aria-label="Remove file"

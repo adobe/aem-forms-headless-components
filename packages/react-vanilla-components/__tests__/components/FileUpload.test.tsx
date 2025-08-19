@@ -343,4 +343,75 @@ describe("File Upload", () => {
     // 4. Verify the same file appears correctly after re-upload
     expect(renderResponse.queryByText("test-document.pdf")).toBeTruthy();
   });
+
+  test("should handle duplicate filenames correctly without removing wrong file", async () => {
+    const f = {
+      ...field,
+      type: "file[]",
+    };
+    const { renderResponse } = await helper(f);
+
+    const input = renderResponse.container.getElementsByClassName("cmp-adaptiveform-fileinput__widget");
+    
+    // Upload first document
+    const largerContent = Array(100).fill('(⌐□_□)').join('');
+    const document1 = new File([largerContent], "document.pdf", { type: "application/pdf" });
+    userEvent.upload(input[0] as HTMLInputElement, document1);
+    
+    // Upload image file to create separation between duplicate names
+    const imageFile = new File(["image data"], "image.jpg", { type: "image/jpeg" });
+    userEvent.upload(input[0] as HTMLInputElement, imageFile);
+    
+    // Upload second document with same filename but different content
+    const smallerContent = '(⌐□_□)';
+    const document2 = new File([smallerContent], "document.pdf", { type: "application/pdf" });
+    userEvent.upload(input[0] as HTMLInputElement, document2);
+    
+    // Verify all files are present
+    const fileItems = renderResponse.container.getElementsByClassName("cmp-adaptiveform-fileinput__fileitem");
+    expect(fileItems).toHaveLength(3);
+    
+    const fileSizes = renderResponse.container.getElementsByClassName("cmp-adaptiveform-fileinput__filesize");
+    expect(fileSizes).toHaveLength(3);
+    const sizeTexts = Array.from(fileSizes).map(el => el.textContent);
+    expect(sizeTexts.filter(size => size !== sizeTexts[0])).toHaveLength(2);
+    
+    expect(renderResponse.queryByText("image.jpg")).toBeTruthy();
+    
+    const removeButtons = renderResponse.container.getElementsByClassName("cmp-adaptiveform-fileinput__filedelete");
+    expect(removeButtons).toHaveLength(3);
+    
+    // Remove the first uploaded document
+    userEvent.click(removeButtons[0] as HTMLButtonElement);
+    
+    // Verify exactly 2 files remain
+    const remainingFileItems = renderResponse.container.getElementsByClassName("cmp-adaptiveform-fileinput__fileitem");
+    expect(remainingFileItems).toHaveLength(2);
+    
+    const remainingFileSizes = renderResponse.container.getElementsByClassName("cmp-adaptiveform-fileinput__filesize");
+    const remainingSizeTexts = Array.from(remainingFileSizes).map(el => el.textContent);
+    expect(remainingSizeTexts).toHaveLength(2);
+    
+    expect(renderResponse.queryByText("image.jpg")).toBeTruthy();
+    expect(renderResponse.queryByText("document.pdf")).toBeTruthy();
+    
+    // Remove the image file to verify the second document remains
+    const updatedRemoveButtons = renderResponse.container.getElementsByClassName("cmp-adaptiveform-fileinput__filedelete");
+    expect(updatedRemoveButtons).toHaveLength(2);
+    
+    const imageRemoveButton = Array.from(updatedRemoveButtons).find((button) => {
+      const fileItem = button.closest('.cmp-adaptiveform-fileinput__fileitem');
+      const fileName = fileItem?.querySelector('.cmp-adaptiveform-fileinput__filename')?.textContent;
+      return fileName === 'image.jpg';
+    });
+    userEvent.click(imageRemoveButton as HTMLButtonElement);
+    
+    // Verify only the second document remains
+    const finalFileItems = renderResponse.container.getElementsByClassName("cmp-adaptiveform-fileinput__fileitem");
+    expect(finalFileItems).toHaveLength(1);
+    
+    const finalFileSizes = renderResponse.container.getElementsByClassName("cmp-adaptiveform-fileinput__filesize");
+    expect(finalFileSizes).toHaveLength(1);
+    expect(renderResponse.queryByText("image.jpg")).toBeFalsy();
+  });
 });
