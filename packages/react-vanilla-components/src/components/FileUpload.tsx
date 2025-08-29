@@ -41,15 +41,29 @@ const FileUpload = (props: PROPS) => {
     properties,
     valid
   } = props;
+  type LocalFile = { uid: string, file: File | FileObject };
+  // Generate a simple unique id for each file instance
+  const generateUid = () => `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+
+  const wrapWithUid = (items: Array<File | FileObject> | null | undefined): LocalFile[] => {
+    const list = items && (items instanceof Array ? items : [items]);
+    return (list || []).map((f) => ({
+      uid: generateUid(),
+      file: f
+    }));
+  };
+
   let val = value && (value instanceof Array ? value : [value]);
-  const [files, setFiles] = useState<FileObject[]>(val || []);
+  const [files, setFiles] = useState<LocalFile[]>(wrapWithUid(val as Array<File | FileObject>) || []);
   const [ dragOver, setDragOver ] = useState(false);
 
   const maxFileSizeInBytes = getFileSizeInBytes(maxFileSize);
   let multiple = props.type?.endsWith('[]') ? { multiple: true } : {};
 
+  // Dispatch value to the model. When field supports multiple values, send array; otherwise a single item
   const fileChangeHandler = useCallback(
-    (files: Array<File | FileObject>) => {
+    (localFiles: Array<LocalFile>) => {
+      const files = localFiles.map(({ file }) => file);
       if (multiple) {
         props.dispatchChange(files);
       } else {
@@ -69,17 +83,24 @@ const FileUpload = (props: PROPS) => {
     setDragOver(false);
   };
 
+  // Handles file selection via input, drag/drop, or paste
   const fileUploadHandler = useCallback((e) => {
     e.preventDefault();
     const newFiles = Array.from<File>(e.dataTransfer?.files || e?.target?.files || e.clipboardData?.files || []);
+    // Clear the input value to allow re-uploading the same file again
+    if (e.target && e.target.type === 'file') {
+      e.target.value = '';
+    }
     if (newFiles?.length) {
       const validFiles = newFiles.filter((file: File) => file.size <= maxFileSizeInBytes);
       if (validFiles.length < newFiles.length) {
         // Show constraint message for files with size exceeding the limit
         alert(`${props.constraintMessages?.maxFileSize}`);
       }
-      const updatedFiles = [...files, ...validFiles];
-      setFiles(updatedFiles as FileObject[]);
+      // Create new file entries with unique UIDs
+      const wrappedNew = validFiles.map((f) => ({ uid: generateUid(), file: f }));
+      const updatedFiles: LocalFile[] = [...files, ...wrappedNew];
+      setFiles(updatedFiles);
       fileChangeHandler(updatedFiles);
     }
     setDragOver(false);
@@ -87,12 +108,19 @@ const FileUpload = (props: PROPS) => {
   [files, fileChangeHandler, maxFileSizeInBytes, props?.constraintMessages]
 );
 
+  // Removes one file by its unique id and clears the input to allow re-uploading the same file
   const removeFile = useCallback(
-    (index: number) => {
-      const fileList = [...files];
+    (uid: string) => {
+      const fileList = [...files]; 
+      const index = files.findIndex((f) => f.uid === uid);
+      if (index === -1) {return;} 
       fileList.splice(index,1);
       setFiles(fileList);
       fileChangeHandler(fileList);
+      // Clear the input value so the same file can be selected again
+      if (fileInputField.current) {
+        (fileInputField.current as HTMLInputElement).value = '';
+      }
     },
     [files, fileChangeHandler]
   );
@@ -156,25 +184,26 @@ const FileUpload = (props: PROPS) => {
           </div>
           <ul className="cmp-adaptiveform-fileinput__filelist">
             {files &&
-              files?.map((item: FileObject, index) => (
+              files?.map(({ file, uid }) => (
                 <li
                   className="cmp-adaptiveform-fileinput__fileitem"
-                  key={item?.name}
+                  key={uid}
                 >
                   <span
                     className="cmp-adaptiveform-fileinput__filename"
-                    aria-label={item?.name}
+                    aria-label={(file)?.name}
                   >
-                    {item?.name}
+                    {(file)?.name}
                   </span>
                   <span className="cmp-adaptiveform-fileinput__fileendcontainer">
                     <span className="cmp-adaptiveform-fileinput__filesize">
-                      {formatBytes(item?.size)}
+                      {formatBytes((file)?.size)}
                     </span>
                     <button
-                      onClick={() => removeFile(index)}
+                      type="button"
+                      onClick={() => removeFile(uid)}
                       className="cmp-adaptiveform-fileinput__filedelete"
-                      role="button"
+                      aria-label="Remove file"
                     >
                       x
                     </button>
