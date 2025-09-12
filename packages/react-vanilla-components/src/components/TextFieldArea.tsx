@@ -43,6 +43,7 @@ const TextFieldArea = (props: PROPS) => {
   return (
     <div
       className={`cmp-adaptiveform-textinput cmp-adaptiveform-textinput--${value ? 'filled' : 'empty'} ${appliedCssClassNames || ''}`}
+      id={id}
       data-cmp-is="adaptiveFormTextInput"
       data-cmp-visible={visible}
       data-cmp-enabled={enabled}

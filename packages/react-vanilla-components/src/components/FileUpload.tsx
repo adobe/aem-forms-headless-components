@@ -132,6 +132,7 @@ const FileUpload = (props: PROPS) => {
       className={`cmp-adaptiveform-fileinput cmp-adaptiveform-fileinput--${
         isFilled ? 'filled' : 'empty'
       } ${appliedCssClassNames || ''}`}
+      id={id}
       data-cmp-is="adaptiveFormFileInput"
       data-cmp-visible={visible}
       data-cmp-enabled={enabled}
@@ -161,7 +162,7 @@ const FileUpload = (props: PROPS) => {
               {properties?.dragDropText}
             </div>
             <label
-              htmlFor={id}
+              htmlFor={`${id}_widget`}
               className="cmp-adaptiveform-fileinput__widgetlabel"
             >
               Attach
@@ -169,7 +170,7 @@ const FileUpload = (props: PROPS) => {
             <input
               ref={fileInputField}
               className="cmp-adaptiveform-fileinput__widget"
-              id={id}
+              id={`${id}_widget`}
               type="file"
               name={name}
               onChange={fileUploadHandler}

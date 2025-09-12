@@ -51,6 +51,7 @@ const Accordion = (props: PROPS_PANEL) => {
     <div
       className={`cmp-accordion ${appliedCssClassNames || ''}`}
       data-cmp-is="adaptiveFormAccordion"
+      id={id}
       data-cmp-single-expansion="true"
       data-placeholder-text="false"
       data-cmp-visible={visible}

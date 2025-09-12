@@ -42,6 +42,7 @@ const NumberField = (props: PROPS) => {
     <div
       className={`cmp-adaptiveform-numberinput cmp-adaptiveform-numberinput--${value ? 'filled' : 'empty'} ${appliedCssClassNames || ''}`}
       data-cmp-is="adaptiveFormNumberInput"
+      id={id}
       data-cmp-visible={visible}
       data-cmp-enabled={enabled}
       data-cmp-required={required}
