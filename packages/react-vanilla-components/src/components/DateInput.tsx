@@ -22,9 +22,10 @@ import { withRuleEngine } from '../utils/withRuleEngine';
 import { PROPS } from '../utils/type';
 import FieldWrapper from './common/FieldWrapper';
 import { syncAriaDescribedBy } from '../utils/utils';
+import { formatDate } from '@aemforms/af-formatters';
 
 const DateInput = (props: PROPS) => {
-  const { id, label, value, required, name, readOnly, placeholder, visible, enabled, appliedCssClassNames, valid } = props;
+  const { id, label, value, required, name, readOnly, placeholder, visible, enabled, appliedCssClassNames, valid, editFormat } = props;
   const finalValue = value === undefined ? '' : value;
 
   const changeHandler = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
@@ -40,6 +41,10 @@ const DateInput = (props: PROPS) => {
     props.dispatchBlur();
   }, [props.dispatchBlur]);
 
+  const locale = new Intl.DateTimeFormat().resolvedOptions().locale;
+
+  const defaultDescription = `To enter today's date use ${formatDate(new Date(), locale, editFormat)}`;
+
   return (
     <div
       className={`cmp-adaptiveform-datepicker cmp-adaptiveform-datepicker--${value ? 'filled' : 'empty'} ${appliedCssClassNames || ''}`}
@@ -54,7 +59,7 @@ const DateInput = (props: PROPS) => {
         label={label}
         id={id}
         tooltip={props.tooltip}
-        description={props.description}
+        description=  {props.description ? props.description : defaultDescription} 
         isError={props.isError}
         errorMessage={props.errorMessage}
       >
