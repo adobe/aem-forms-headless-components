@@ -6,8 +6,11 @@
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL ADOBE NOR ITS THIRD PARTY PROVIDERS AND PARTNERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+import React from "react";
 import DropDown from "../../src/components/DropDown";
-import { renderComponent } from "../utils";
+import { renderComponent, Provider } from "../utils";
+import { render } from "@testing-library/react";
+import { createFormInstance } from "@aemforms/af-core";
 import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom/extend-expect";
 
@@ -42,6 +45,88 @@ const fieldTwo = {
   enum: [1, 2, 3],
   enumNames: ["option 1", "option 2", "option 3"],
 };
+
+const fieldThree = {
+  "id": "dropdown-9c692ef3f0",
+  "fieldType": "drop-down",
+  "name": "dropdown1760437590201",
+  "visible": true,
+  "type": "string",
+  "enabled": true,
+  "readOnly": false,
+  "enforceEnum": true,
+  "enumNames": [
+      "set value",
+      "clear value"
+  ],
+  "label": {
+      "value": "set and clear dropdown below",
+      "visible": true
+  },
+  "properties": {
+      "typeIndex": "0",
+      "fd:dor": {
+          "dorExclusion": false
+      },
+      "fd:path": "/content/forms/af/test-rule-editor-dropdown/jcr:content/guideContainer/dropdown",
+      "fd:rules": {
+          "validationStatus": "valid"
+      }
+  },
+  "events": {
+      "change": [
+          "if(contains($event.payload.changes[].propertyName, 'value'), if($field.$value == '1', dispatchEvent(dropdown_5080086641760437592391, 'custom:setProperty', {value : '1'}), {}), {})",
+          "if(contains($event.payload.changes[].propertyName, 'value'), if(!($field.$value == '1'), dispatchEvent(dropdown_5080086641760437592391, 'reset'), {}), {})",
+          "if(contains($event.payload.changes[].propertyName, 'value'), if(!($field.$value == '1'), dispatchEvent(dropdown_5080086641760437592391, 'custom:setProperty', {value : `null`}), {}), {})"
+      ],
+      "custom:setProperty": [
+          "$event.payload"
+      ]
+  },
+  "enum": [
+      "1",
+      "2"
+  ],
+  "placeholder": "choose the option",
+  ":type": "forms-components-examples/components/form/dropdown"
+}
+
+const fieldFour = {
+  "id": "dropdown-739587fe17",
+  "fieldType": "drop-down",
+  "name": "dropdown_5080086641760437592391",
+  "visible": true,
+  "type": "string",
+  "enabled": true,
+  "readOnly": false,
+  "enforceEnum": true,
+  "enumNames": [
+      "option 1",
+      "option 2"
+  ],
+  "label": {
+      "value": "should clear when above changed",
+      "visible": true
+  },
+  "properties": {
+      "typeIndex": "0",
+      "fd:dor": {
+          "dorExclusion": false
+      },
+      "fd:path": "/content/forms/af/test-rule-editor-dropdown/jcr:content/guideContainer/dropdown_508008664"
+  },
+  "events": {
+      "custom:setProperty": [
+          "$event.payload"
+      ]
+  },
+  "enum": [
+      "1",
+      "2"
+  ],
+  "placeholder": "choose the option",
+  ":type": "forms-components-examples/components/form/dropdown"
+}
 const helper = renderComponent(DropDown);
 
 describe("Drop Down", () => {
@@ -170,5 +255,40 @@ describe("Drop Down", () => {
     const input = renderResponse.container.getElementsByClassName("cmp-adaptiveform-dropdown__widget");
     expect(input).toHaveLength(1);
     expect(input[0]).toHaveAttribute('aria-describedby', `${f.id}__longdescription ${f.id}__shortdescription`)
+  });
+
+  test("rule: selecting 'set value' sets target to '1' and selecting 'clear value' resets target", async () => {
+    // Build a form with source and target dropdowns so rules can propagate
+    const formJson = {
+      items: [fieldThree, fieldFour]
+    } as any;
+    const form = createFormInstance(formJson);
+
+    // Get initial states to render both components
+    const sourceState = form.items[0].getState();
+    const targetState = form.items[1].getState();
+
+    const wrapper = Provider(form);
+    const { getAllByRole } = render(
+      <>
+        {/* source dropdown with change rules */}
+        {/* @ts-ignore */}
+        <DropDown {...sourceState} />
+        {/* target dropdown that receives set/reset via rules */}
+        {/* @ts-ignore */}
+        <DropDown {...targetState} />
+      </>,
+      { wrapper }
+    );
+
+    const [sourceSelect, targetSelect] = getAllByRole("combobox");
+
+    // 1) Select 'set value' (enum '1') on source -> target should become '1'
+    await userEvent.selectOptions(sourceSelect, "1");
+    expect((targetSelect as HTMLSelectElement).value).toBe("1");
+
+    // 2) Select 'clear value' (enum '2') on source -> target should reset to empty
+    await userEvent.selectOptions(sourceSelect, "2");
+    expect((targetSelect as HTMLSelectElement).value).toBe("");
   });
 });
