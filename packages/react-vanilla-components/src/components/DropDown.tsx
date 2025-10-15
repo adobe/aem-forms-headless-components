@@ -26,7 +26,8 @@ import { syncAriaDescribedBy } from '../utils/utils';
 const DropDown = (props: PROPS) => {
   const { id, enum: enums, enumNames, label, value, placeholder, name, required, enabled, visible, appliedCssClassNames, valid } = props;
   const dropValue = enumNames && enumNames.length ? enumNames : enums || [];
-
+  let selectedValue = value ?? '';
+// comment by armaan gupta
   const changeHandler = useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
     const val = event.target.value;
     props.dispatchChange(val);
@@ -57,14 +58,13 @@ const DropDown = (props: PROPS) => {
           title={label?.value}
           className={'cmp-adaptiveform-dropdown__widget'}
           onChange={changeHandler}
-          value={value}
+          value={selectedValue}
           required={required}
           disabled={!enabled}
-          defaultValue={'DEFAULT'}
           aria-invalid={!valid}
           aria-describedby={syncAriaDescribedBy(id, props.tooltip, props.description, props.errorMessage)}
         >
-          <option value="DEFAULT" disabled>{placeholder}</option>
+          <option value="" disabled>{placeholder}</option>
           {
             dropValue?.map((item, index: number) => {
               return <option className="cmp-adaptiveform-dropdown__option" key={enums![index]} value={enums![index]}>{item}</option>;
