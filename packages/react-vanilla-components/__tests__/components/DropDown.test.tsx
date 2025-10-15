@@ -47,33 +47,15 @@ const fieldTwo = {
 };
 
 const fieldThree = {
-  "id": "dropdown-9c692ef3f0",
-  "fieldType": "drop-down",
-  "name": "dropdown1760437590201",
-  "visible": true,
-  "type": "string",
-  "enabled": true,
-  "readOnly": false,
-  "enforceEnum": true,
-  "enumNames": [
-      "set value",
-      "clear value"
-  ],
-  "label": {
+  fieldType: "drop-down",
+  name: "dropdown1760437590201",
+  visible: true,
+  enabled: true,
+  enumNames: ["set value", "clear value"],
+  label: {
       "value": "set and clear dropdown below",
-      "visible": true
   },
-  "properties": {
-      "typeIndex": "0",
-      "fd:dor": {
-          "dorExclusion": false
-      },
-      "fd:path": "/content/forms/af/test-rule-editor-dropdown/jcr:content/guideContainer/dropdown",
-      "fd:rules": {
-          "validationStatus": "valid"
-      }
-  },
-  "events": {
+  events: {
       "change": [
           "if(contains($event.payload.changes[].propertyName, 'value'), if($field.$value == '1', dispatchEvent(dropdown_5080086641760437592391, 'custom:setProperty', {value : '1'}), {}), {})",
           "if(contains($event.payload.changes[].propertyName, 'value'), if(!($field.$value == '1'), dispatchEvent(dropdown_5080086641760437592391, 'reset'), {}), {})",
@@ -83,49 +65,26 @@ const fieldThree = {
           "$event.payload"
       ]
   },
-  "enum": [
-      "1",
-      "2"
-  ],
-  "placeholder": "choose the option",
-  ":type": "forms-components-examples/components/form/dropdown"
+  enum: ["1","2"],
+  placeholder: "choose the option"
 }
 
 const fieldFour = {
-  "id": "dropdown-739587fe17",
-  "fieldType": "drop-down",
-  "name": "dropdown_5080086641760437592391",
-  "visible": true,
-  "type": "string",
-  "enabled": true,
-  "readOnly": false,
-  "enforceEnum": true,
-  "enumNames": [
-      "option 1",
-      "option 2"
-  ],
-  "label": {
-      "value": "should clear when above changed",
-      "visible": true
+  fieldType: "drop-down",
+  name: "dropdown_5080086641760437592391",
+  visible: true,
+  enabled: true,
+  enumNames: ["option 1", "option 2"],
+  label: {
+      "value": "should clear when above changed"
   },
-  "properties": {
-      "typeIndex": "0",
-      "fd:dor": {
-          "dorExclusion": false
-      },
-      "fd:path": "/content/forms/af/test-rule-editor-dropdown/jcr:content/guideContainer/dropdown_508008664"
-  },
-  "events": {
+  events: {
       "custom:setProperty": [
           "$event.payload"
       ]
   },
-  "enum": [
-      "1",
-      "2"
-  ],
-  "placeholder": "choose the option",
-  ":type": "forms-components-examples/components/form/dropdown"
+  enum: ["1","2"],
+  placeholder: "choose the option"
 }
 const helper = renderComponent(DropDown);
 
