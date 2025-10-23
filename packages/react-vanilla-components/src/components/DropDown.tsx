@@ -27,7 +27,6 @@ const DropDown = (props: PROPS) => {
   const { id, enum: enums, enumNames, label, value, placeholder, name, required, enabled, visible, appliedCssClassNames, valid } = props;
   const dropValue = enumNames && enumNames.length ? enumNames : enums || [];
   let selectedValue = value ?? '';
-// comment by armaan gupta
   const changeHandler = useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
     const val = event.target.value;
     props.dispatchChange(val);
