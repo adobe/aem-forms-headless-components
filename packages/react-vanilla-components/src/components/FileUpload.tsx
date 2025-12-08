@@ -169,6 +169,7 @@ const FileUpload = (props: PROPS) => {
             <input
               ref={fileInputField}
               className="cmp-adaptiveform-fileinput__widget"
+              title={props.tooltip || ''}
               id={id}
               type="file"
               name={name}

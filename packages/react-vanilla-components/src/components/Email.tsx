@@ -62,6 +62,7 @@ const Email = (props: PROPS) => {
           type="email"
           id={`${id}-widget`}
           className={'cmp-adaptiveform-emailinput__widget'}
+          title={props.tooltip || ''}
           value={value}
           onChange={handleChange}
           onBlur={handleBlur}
