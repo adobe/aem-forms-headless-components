@@ -56,6 +56,7 @@ const RadioButtonGroup = (props: PROPS) => {
           id={`${id}-widget`}
           role="radiogroup"
           aria-describedby={syncAriaDescribedBy(id, props.tooltip, props.description, props.errorMessage)}
+          title={props.tooltip || ''}
         >
           {options?.map((item, index: number) => (
             <div className="cmp-adaptiveform-radiobutton__option" key={enums![index]}>

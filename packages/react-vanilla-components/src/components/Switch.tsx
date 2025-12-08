@@ -77,6 +77,7 @@ const Switch = (props: PROPS) => {
               <input
                 className="cmp-adaptiveform-switch__widget"
                 type="checkbox"
+                title={props.tooltip || ''}
                 name={name}
                 role="switch"
                 disabled={!enabled}

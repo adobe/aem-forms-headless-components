@@ -61,6 +61,7 @@ const TextFieldArea = (props: PROPS) => {
         <textarea
           id={`${id}-widget`}
           className={'cmp-adaptiveform-textinput__widget'}
+          title={props.tooltip || ''}
           name={name}
           onChange={handleChange}
           value={value}

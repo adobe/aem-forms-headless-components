@@ -66,6 +66,7 @@ const DateInput = (props: PROPS) => {
           required={required}
           onChange={changeHandler}
           className={'cmp-adaptiveform-datepicker__widget'}
+          title={props.tooltip || ''}
           aria-label={label?.value}
           readOnly={readOnly}
           placeholder={placeholder}
