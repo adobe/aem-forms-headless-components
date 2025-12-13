@@ -54,7 +54,7 @@ const DropDown = (props: PROPS) => {
           id={`${id}-widget`}
           data-testid='select'
           name={name}
-          title={props.tooltip || ''}
+          title={props.tooltipText || ''}
           className={'cmp-adaptiveform-dropdown__widget'}
           onChange={changeHandler}
           value={selectedValue}

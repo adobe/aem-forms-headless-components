@@ -62,7 +62,7 @@ const TextField = (props: PROPS) => {
           type="text"
           id={`${id}-widget`}
           className={'cmp-adaptiveform-textinput__widget'}
-          title={props.tooltip || ''}
+          title={props.tooltipText || ''}
           value={value || ''}
           onChange={handleChange}
           onBlur={handleBlur}
