@@ -75,7 +75,7 @@ const CheckBoxGroup = (props: PROPS) => {
           className={`cmp-adaptiveform-checkboxgroup__widget ${orientation}`}
           id={`${id}-widget`}
           aria-describedby={syncAriaDescribedBy(id, props.tooltip, props.description, props.errorMessage)}
-          title={props.tooltip || ''}
+          title={props.tooltipText || ''}
         >
           {options?.map((item, index: number) => (
             <div className={`cmp-adaptiveform-checkboxgroup-item ${name}`} key={enums![index]}>

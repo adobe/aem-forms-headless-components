@@ -60,7 +60,7 @@ const NumberField = (props: PROPS) => {
           id={`${id}-widget`}
           type='number'
           className={'cmp-adaptiveform-numberinput__widget'}
-          title={props.tooltip || ''}
+          title={props.tooltipText || ''}
           value={value}
           onChange={changeHandler}
           required={required}
