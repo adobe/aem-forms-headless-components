@@ -23,9 +23,23 @@ import { PROPS } from '../utils/type';
 import FieldWrapper from './common/FieldWrapper';
 import { syncAriaDescribedBy } from '../utils/utils';
 
+// Helper function to convert date to ISO format (YYYY-MM-DD)
+const toISODateString = (dateValue: string | number | undefined): string | undefined => {
+  if (dateValue === undefined || dateValue === null) {return undefined;}
+  try {
+    const date = new Date(dateValue);
+    if (isNaN(date.getTime())) {return undefined;}
+    return date.toISOString().split('T')[0];
+  } catch {
+    return undefined;
+  }
+};
+
 const DateInput = (props: PROPS) => {
-  const { id, label, value, required, name, readOnly, placeholder, visible, enabled, appliedCssClassNames, valid } = props;
+  const { id, label, value, required, name, readOnly, placeholder, visible, enabled, appliedCssClassNames, valid, minimum, maximum } = props;
   const finalValue = value === undefined ? '' : value;
+  const minDate = toISODateString(minimum);
+  const maxDate = toISODateString(maximum);
 
   const changeHandler = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;
@@ -64,6 +78,8 @@ const DateInput = (props: PROPS) => {
           value={finalValue}
           name={name}
           required={required}
+          min={minDate}
+          max={maxDate}
           onChange={changeHandler}
           className={'cmp-adaptiveform-datepicker__widget'}
           title={props.tooltipText || ''}
