@@ -111,3 +111,4 @@ export function withRuleEnginePanel(Component: JSXElementConstructor<any>) {
     return visible ? <Component {...localizeState} handlers={handlers} /> : null;
   };
 }
+
