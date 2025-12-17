@@ -42,7 +42,7 @@ const TelephoneInput = (props: PROPS) => {
           type="tel"
           id={`${id}-widget`}
           className={'cmp-adaptiveform-telephoneinput__widget'}
-          title={props.tooltip || ''}
+          title={props.tooltipText || ''}
           value={value || ''}
           onChange={handleChange}
           onBlur={handleBlur}

@@ -54,7 +54,7 @@ const CheckBox = (props: PROPS) => {
             id={`${id}-widget`}
             type='checkbox'
             className={'cmp-adaptiveform-checkbox__widget'}
-            title={props.tooltip || ''}
+            title={props.tooltipText || ''}
             onChange={handleChange}
             value={value}
             checked={selectedValue === value ? true : false}

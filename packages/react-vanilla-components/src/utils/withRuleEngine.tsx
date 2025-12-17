@@ -25,6 +25,10 @@ export const richTextString = (stringMsg = '') => {
   const htmlProp = { __html: sanitizeHTML(stringMsg) };
   return (<span dangerouslySetInnerHTML={htmlProp} />);
 };
+const getPlainTextFromHtml = (html: string = ''): string => {
+  const strippedText = sanitizeHTML(html, { allowedTags: [], allowedAttributes: {} });
+  return strippedText.trim(); 
+};
 const formateErrorMessage = (state: FieldViewState) => {
   const errorMessage = state.errorMessage === '' && state.valid === false ? DEFAULT_ERROR_MESSAGE : state.errorMessage;
   return errorMessage;
@@ -73,6 +77,7 @@ export function withRuleEngine(Component: JSXElementConstructor<any>) {
       description: getLocalizeDescription(i18n, state),
       placeholder: getLocalizePlaceholder(i18n, state),
       tooltip: getToolTip(state),
+      tooltipText: getPlainTextFromHtml(state.tooltip || ''),
       label: {
         ...state?.label,
         value: getLocalizeLabel(i18n, state, state?.label?.richText),
@@ -104,7 +109,8 @@ export function withRuleEnginePanel(Component: JSXElementConstructor<any>) {
         visible: state.label?.visible !== false
       },
       description: getLocalizeDescription(i18n, state),
-      tooltip: getToolTip(state)
+      tooltip: getToolTip(state),
+      tooltipText: getPlainTextFromHtml(state.tooltip || '')
     };
     const visible = typeof state.visible === 'undefined' || state.visible;
     // @ts-ignore
