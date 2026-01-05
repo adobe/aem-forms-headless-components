@@ -24,7 +24,7 @@ import FieldWrapper from './common/FieldWrapper';
 import { syncAriaDescribedBy } from '../utils/utils';
 
 const DateInput = (props: PROPS) => {
-  const { id, label, value, required, name, readOnly, placeholder, visible, enabled, appliedCssClassNames, valid } = props;
+  const { id, label, value, required, name, readOnly, placeholder, visible, enabled, appliedCssClassNames, valid, minimum, maximum } = props;
   const finalValue = value === undefined ? '' : value;
 
   const changeHandler = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
@@ -64,6 +64,8 @@ const DateInput = (props: PROPS) => {
           value={finalValue}
           name={name}
           required={required}
+          min={minimum}
+          max={maximum}
           onChange={changeHandler}
           className={'cmp-adaptiveform-datepicker__widget'}
           title={props.tooltipText || ''}
