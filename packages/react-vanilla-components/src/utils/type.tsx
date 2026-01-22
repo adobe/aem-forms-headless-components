@@ -26,7 +26,8 @@ export type PROPS = State<FieldJson & Handlers & {
     [key: string]: any;
   },
   richText?: boolean,
-  tooltipText?: string
+  tooltipText?: string,
+  multiple?: boolean
 }>;
 
 export type PROPS_PANEL = State<FieldsetJson> & {
