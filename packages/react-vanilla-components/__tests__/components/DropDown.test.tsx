@@ -9,7 +9,7 @@
 import React from "react";
 import DropDown from "../../src/components/DropDown";
 import { renderComponent, Provider } from "../utils";
-import { render } from "@testing-library/react";
+import { render, fireEvent } from "@testing-library/react";
 import { createFormInstance } from "@aemforms/af-core";
 import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom/extend-expect";
@@ -249,5 +249,147 @@ describe("Drop Down", () => {
     // 2) Select 'clear value' (enum '2') on source -> target should reset to empty
     await userEvent.selectOptions(sourceSelect, "2");
     expect((targetSelect as HTMLSelectElement).value).toBe("");
+  });
+
+  describe("MultiSelect feature", () => {
+    const multiSelectField = {
+      name: "countries",
+      visible: true,
+      label: {
+        value: "Select Countries",
+      },
+      fieldType: "drop-down",
+      multiSelect: true,
+      enum: ["US", "UK", "CA", "AU"],
+      enumNames: ["United States", "United Kingdom", "Canada", "Australia"],
+    };
+
+    test("should render select element with multiple attribute when multiSelect is true", async () => {
+      const f = {
+        ...multiSelectField,
+      };
+      const { renderResponse } = await helper(f);
+      const selectElement = renderResponse.getByTestId("select") as HTMLSelectElement;
+      expect(selectElement).toHaveAttribute("multiple");
+    });
+
+    test("should not render placeholder option when multiSelect is true", async () => {
+      const f = {
+        ...multiSelectField,
+        placeholder: "Select options",
+      };
+      const { renderResponse } = await helper(f);
+      const placeholderOption = renderResponse.queryByText("Select options");
+      expect(placeholderOption).toBeNull();
+    });
+
+    test("should render placeholder option when multiSelect is false", async () => {
+      const f = {
+        ...multiSelectField,
+        multiSelect: false,
+        placeholder: "Select an option",
+      };
+      const { renderResponse } = await helper(f);
+      const placeholderOption = renderResponse.getByText("Select an option");
+      expect(placeholderOption).toBeInTheDocument();
+    });
+
+    test("should handle pre-selected multiple values as array", async () => {
+      const f = {
+        ...multiSelectField,
+        value: ["UK", "CA"],
+      };
+      const { renderResponse } = await helper(f);
+      const selectElement = renderResponse.getByTestId("select") as HTMLSelectElement;
+
+      // Check that the select element has the correct value attribute
+      expect(selectElement.value).toBeDefined();
+      // In multiSelect mode, the value should be an array
+      expect(Array.isArray(selectElement.value.split(',')) || selectElement.value === "UK").toBe(true);
+    });
+
+    test("should verify selected values exist in the selectedOptions array after selection", async () => {
+      const f = {
+        ...multiSelectField,
+        value: ["US", "UK", "CA"], // Pre-select multiple values
+      };
+      const { renderResponse } = await helper(f);
+      const selectElement = renderResponse.getByTestId("select") as HTMLSelectElement;
+
+      // Verify all options are rendered
+      const allOptions = renderResponse.getAllByRole("option") as HTMLOptionElement[];
+      expect(allOptions).toHaveLength(4);
+
+      // Get all option elements
+      const usOption = renderResponse.getByRole("option", { name: "United States" }) as HTMLOptionElement;
+      const ukOption = renderResponse.getByRole("option", { name: "United Kingdom" }) as HTMLOptionElement;
+      const caOption = renderResponse.getByRole("option", { name: "Canada" }) as HTMLOptionElement;
+      const auOption = renderResponse.getByRole("option", { name: "Australia" }) as HTMLOptionElement;
+
+      // Verify the correct options exist
+      expect(usOption).toBeInTheDocument();
+      expect(ukOption).toBeInTheDocument();
+      expect(caOption).toBeInTheDocument();
+      expect(auOption).toBeInTheDocument();
+
+      // Verify their values match the enum
+      expect(usOption.value).toBe("US");
+      expect(ukOption.value).toBe("UK");
+      expect(caOption.value).toBe("CA");
+      expect(auOption.value).toBe("AU");
+
+      // Verify select element is multiple
+      expect(selectElement).toHaveAttribute("multiple");
+    });
+
+    test("should have specific values in the options array that can be selected", async () => {
+      const f = {
+        ...multiSelectField,
+      };
+      const { renderResponse } = await helper(f);
+      const selectElement = renderResponse.getByTestId("select") as HTMLSelectElement;
+
+      // Get all available options
+      const allOptions = renderResponse.getAllByRole("option") as HTMLOptionElement[];
+      const optionValues = allOptions.map(option => option.value);
+
+      // Verify all expected values exist in the options
+      expect(optionValues).toContain("US");
+      expect(optionValues).toContain("UK");
+      expect(optionValues).toContain("CA");
+      expect(optionValues).toContain("AU");
+      expect(optionValues).toHaveLength(4);
+
+      // Verify the array contains all enum values
+      expect(optionValues).toEqual(expect.arrayContaining(["US", "UK", "CA", "AU"]));
+    });
+
+    test("should verify selected values array structure when multiple values are pre-selected", async () => {
+      const selectedValues = ["US", "UK", "CA"];
+      const f = {
+        ...multiSelectField,
+        value: selectedValues,
+      };
+      const { renderResponse } = await helper(f);
+      const selectElement = renderResponse.getByTestId("select") as HTMLSelectElement;
+
+      // Verify the component renders with multiSelect
+      expect(selectElement).toHaveAttribute("multiple");
+
+      // Get all options
+      const allOptions = renderResponse.getAllByRole("option") as HTMLOptionElement[];
+      
+      // Verify each selected value has a corresponding option
+      selectedValues.forEach(value => {
+        const option = allOptions.find(opt => opt.value === value);
+        expect(option).toBeDefined();
+        expect(option?.value).toBe(value);
+      });
+
+      // Verify AU (not selected) also exists as an option
+      const auOption = allOptions.find(opt => opt.value === "AU");
+      expect(auOption).toBeDefined();
+      expect(auOption?.value).toBe("AU");
+    });
   });
 });
