@@ -9,7 +9,7 @@
 import React from "react";
 import DropDown from "../../src/components/DropDown";
 import { renderComponent, Provider } from "../utils";
-import { render, fireEvent } from "@testing-library/react";
+import { render } from "@testing-library/react";
 import { createFormInstance } from "@aemforms/af-core";
 import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom/extend-expect";
