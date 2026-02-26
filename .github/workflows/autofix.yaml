@@ -16,16 +16,13 @@ on:
   # schedule:
   #   - cron: '0 12 * * 1'
 
-env:
-  AUTOFIX_LABEL: 'autofix'
-
 jobs:
   autofix:
     runs-on: ubuntu-latest
     # Only run when we have a concrete issue (manual input, or label event, or from schedule)
     if: |
       github.event_name == 'workflow_dispatch' ||
-      (github.event_name == 'issues' && github.event.label.name == env.AUTOFIX_LABEL) ||
+      (github.event_name == 'issues' && github.event.label.name == 'autofix') ||
       github.event_name == 'schedule'
     permissions:
       contents: write
@@ -44,7 +41,7 @@ jobs:
             echo "number=${{ github.event.issue.number }}" >> $GITHUB_OUTPUT
           else
             # Schedule: fetch one open issue with label autofix (oldest first)
-            NUM=$(gh issue list --label "${{ env.AUTOFIX_LABEL }}" --state open --limit 1 --json number -q '.[0].number')
+            NUM=$(gh issue list --label "autofix" --state open --limit 1 --json number -q '.[0].number')
             echo "number=${NUM}" >> $GITHUB_OUTPUT
           fi
 
