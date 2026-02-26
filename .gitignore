@@ -154,3 +154,5 @@ target
 !.vscode/extensions.json
 *.code-workspace
 .lighthouseci
+
+.env

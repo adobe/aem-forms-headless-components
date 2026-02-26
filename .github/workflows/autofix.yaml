@@ -1,0 +1,182 @@
+# Autofix: Pick an issue → Agent fixes it → Open PR (end-to-end automated)
+# See docs/AUTOFIX-PLAN.md for full design and phases.
+
+name: Autofix
+
+on:
+  workflow_dispatch:
+    inputs:
+      issue_number:
+        description: 'GitHub issue number to fix (required for manual run)'
+        required: true
+        type: number
+  issues:
+    types: [labeled]
+  # Optional: uncomment to run weekly and pick one open issue with label "autofix"
+  # schedule:
+  #   - cron: '0 12 * * 1'
+
+env:
+  AUTOFIX_LABEL: 'autofix'
+
+jobs:
+  autofix:
+    runs-on: ubuntu-latest
+    # Only run when we have a concrete issue (manual input, or label event, or from schedule)
+    if: |
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'issues' && github.event.label.name == env.AUTOFIX_LABEL) ||
+      github.event_name == 'schedule'
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: read
+
+    steps:
+      - name: Resolve issue number
+        id: issue
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "number=${{ github.event.inputs.issue_number }}" >> $GITHUB_OUTPUT
+          elif [ "${{ github.event_name }}" = "issues" ]; then
+            echo "number=${{ github.event.issue.number }}" >> $GITHUB_OUTPUT
+          else
+            # Schedule: fetch one open issue with label autofix (oldest first)
+            NUM=$(gh issue list --label "${{ env.AUTOFIX_LABEL }}" --state open --limit 1 --json number -q '.[0].number')
+            echo "number=${NUM}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Check if issue exists
+        id: check
+        run: |
+          if [ -z "${{ steps.issue.outputs.number }}" ] || [ "${{ steps.issue.outputs.number }}" = "null" ]; then
+            echo "skip=true" >> $GITHUB_OUTPUT
+            echo "No issue to process."
+            exit 0
+          fi
+          echo "skip=false" >> $GITHUB_OUTPUT
+
+      - name: Fetch issue details
+        if: steps.check.outputs.skip != 'true'
+        id: fetch
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          ISSUE_NUM="${{ steps.issue.outputs.number }}"
+          gh issue view "$ISSUE_NUM" --json title,body --jq '.title' > issue_title.txt
+          gh issue view "$ISSUE_NUM" --json title,body --jq '.body' > issue_body.txt
+          echo "title=$(cat issue_title.txt)" >> $GITHUB_OUTPUT
+          # Slug for branch name (replace spaces and special chars)
+          SLUG=$(cat issue_title.txt | head -1 | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9]/-/g' | sed 's/--*/-/g' | sed 's/^-//;s/-$//' | cut -c1-50)
+          echo "slug=$SLUG" >> $GITHUB_OUTPUT
+
+      - name: Checkout and create branch
+        if: steps.check.outputs.skip != 'true'
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.AUTOFIX_GH_TOKEN || secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+          ref: main
+
+      - name: Create autofix branch
+        id: create_branch
+        if: steps.check.outputs.skip != 'true'
+        run: |
+          ISSUE_NUM="${{ steps.issue.outputs.number }}"
+          SLUG="${{ steps.fetch.outputs.slug }}"
+          BRANCH="autofix/issue-${ISSUE_NUM}-${SLUG}"
+          git config user.email "autofix@aemforms"
+          git config user.name "autofix-bot"
+          git checkout -b "$BRANCH"
+          echo "branch=$BRANCH" >> $GITHUB_OUTPUT
+
+      - name: Build agent prompt
+        if: steps.check.outputs.skip != 'true'
+        run: |
+          ISSUE_NUM="${{ steps.issue.outputs.number }}"
+          TITLE="${{ steps.fetch.outputs.title }}"
+          BODY=$(cat issue_body.txt)
+          mkdir -p .github/autofix
+          cat << 'PROMPT_EOF' > .github/autofix/current-prompt.md
+          You are fixing a GitHub issue in the repository aem-forms-headless-components.
+
+          Repository context:
+          - Monorepo with Lerna; packages under packages/*, examples under examples/*
+          - Node 16+, npm, npx lerna bootstrap && npx lerna run build && npx lerna run test
+          - Follow existing code style and patterns.
+
+          Issue number: ISSUE_NUM_PLACEHOLDER
+          Issue title: TITLE_PLACEHOLDER
+
+          Issue body:
+          BODY_PLACEHOLDER
+
+          Tasks:
+          1. Understand the issue and implement a minimal, correct fix.
+          2. Update or add documentation as needed (e.g. CHANGELOG, JSDoc, README).
+          3. Do not run destructive or non-deterministic commands.
+
+          Produce the code and doc changes; do not explain only in text.
+          PROMPT_EOF
+          # Replace placeholders (simplified; for multi-line body use a script)
+          sed -i "s/ISSUE_NUM_PLACEHOLDER/$ISSUE_NUM/g" .github/autofix/current-prompt.md
+          sed -i "s/TITLE_PLACEHOLDER/$TITLE/g" .github/autofix/current-prompt.md
+          # Body: escape for sed or use a file
+          echo "$BODY" > .github/autofix/issue-body.txt
+          # Append body section to prompt
+          echo "" >> .github/autofix/current-prompt.md
+          cat .github/autofix/issue-body.txt >> .github/autofix/current-prompt.md
+
+      - name: Setup Node.js
+        if: steps.check.outputs.skip != 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Run autofix agent
+        if: steps.check.outputs.skip != 'true'
+        env:
+          # Azure OpenAI (preferred if all 3 are set)
+          AZURE_OPENAI_API_KEY: ${{ secrets.AZURE_OPENAI_API_KEY }}
+          AZURE_OPENAI_ENDPOINT: ${{ secrets.AZURE_OPENAI_ENDPOINT }}
+          AZURE_OPENAI_DEPLOYMENT: ${{ secrets.AZURE_OPENAI_DEPLOYMENT }}
+          # Anthropic (fallback)
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          echo "Running autofix agent..."
+          node scripts/autofix-agent.js
+
+      - name: Commit and push
+        id: commit
+        if: steps.check.outputs.skip != 'true'
+        run: |
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "No changes to commit; skipping push."
+            echo "pr_created=false" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+          ISSUE_NUM="${{ steps.issue.outputs.number }}"
+          TITLE="${{ steps.fetch.outputs.title }}"
+          git add -A
+          git commit -m "fix: resolve issue #${ISSUE_NUM} - ${TITLE}"
+          git push -u origin "${{ steps.create_branch.outputs.branch }}"
+          echo "pr_created=true" >> $GITHUB_OUTPUT
+
+      - name: Create Pull Request
+        if: steps.check.outputs.skip != 'true' && steps.commit.outputs.pr_created == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.AUTOFIX_GH_TOKEN || secrets.GITHUB_TOKEN }}
+        run: |
+          ISSUE_NUM="${{ steps.issue.outputs.number }}"
+          TITLE="${{ steps.fetch.outputs.title }}"
+          BRANCH="${{ steps.create_branch.outputs.branch }}"
+          BODY="Fixes #${ISSUE_NUM}
+
+          ## Summary
+          Automated fix for issue #${ISSUE_NUM}: ${TITLE}
+
+          ## Changes
+          See diff; review before merging."
+          gh pr create --base main --head "$BRANCH" --title "Fix: ${TITLE} (fixes #${ISSUE_NUM})" --body "$BODY"

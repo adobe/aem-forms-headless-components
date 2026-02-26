@@ -1,0 +1,11 @@
+---
+description: Project context and autofix conventions for aem-forms-headless-components
+alwaysApply: true
+---
+
+# Project and autofix context
+
+- **Repo:** Lerna monorepo. `packages/*` = libraries, `examples/*` = apps. Root: `npm install` → `npx lerna bootstrap` → `npx lerna run build` → `npx lerna run test`. Node > 16.
+- **Canonical agent briefing:** Read **AGENTS.md** at repo root for build/test, conventions, and PR/docs expectations.
+- **Autofix:** Automated issue → fix → PR. See **docs/AUTOFIX-PLAN.md** and **.github/autofix/README.md**. When fixing issues (manually or via autofix), follow AGENTS.md: minimal changes, reuse existing patterns, update docs, conventional commits, `Fixes #N` in PR body.
+- **AI-native inference:** **docs/AI-NATIVE-KNOWLEDGE-INFERENCE.md** describes practices inferred from an AI-native reference repo and how they are applied here.
