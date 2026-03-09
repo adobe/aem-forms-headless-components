@@ -54,7 +54,6 @@ const Scribble = (props: PROPS) => {
   const [brushSize, setBrushSize] = useState(3);
   const [showBrushList, setShowBrushList] = useState(false);
   const [textMode, setTextMode] = useState(false);
-  const [showClearConfirm, setShowClearConfirm] = useState(false);
   const [message, setMessage] = useState('');
   const [hasContent, setHasContent] = useState(false);
 
@@ -260,7 +259,6 @@ const Scribble = (props: PROPS) => {
   const handleClearSignature = useCallback(() => {
     setSignatureDataUrl(null);
     props.dispatchChange(undefined);
-    setShowClearConfirm(false);
     eraseCanvas();
   }, [eraseCanvas, props.dispatchChange]);
 
@@ -356,40 +354,57 @@ const Scribble = (props: PROPS) => {
         isError={props.isError}
         errorMessage={props.errorMessage}
       >
-        <button
-          type="button"
-          className={`${BEM}__canvas-signed-container`}
-          title="Signature Canvas"
-          onClick={openModal}
-          disabled={!enabled}
-          aria-label={label?.visible === false ? label?.value : 'Open signature pad'}
-          aria-describedby={syncAriaDescribedBy(id, props.tooltip, props.description, props.errorMessage)}
-        >
-          {signatureDataUrl ? (
-            <img
-              className={`${BEM}__canvas-signed-image`}
-              src={signatureDataUrl}
-              alt="Signature"
-              style={{ width: '100%', height: '150px' }}
-            />
-          ) : null}
-        </button>
+        <div style={{ position: 'relative', display: 'inline-block', width: '100%' }}>
+          <button
+            type="button"
+            className={`${BEM}__canvas-signed-container`}
+            title="Signature Canvas"
+            onClick={openModal}
+            disabled={!enabled}
+            aria-label={label?.visible === false ? label?.value : 'Open signature pad'}
+            aria-describedby={syncAriaDescribedBy(id, props.tooltip, props.description, props.errorMessage)}
+            style={{ width: '100%' }}
+          >
+            {signatureDataUrl ? (
+              <img
+                className={`${BEM}__canvas-signed-image`}
+                src={signatureDataUrl}
+                alt="Signature"
+                style={{ width: '100%', height: '150px' }}
+              />
+            ) : null}
+          </button>
 
-        {signatureDataUrl && enabled && (
-          <div
-            className={`${BEM}__clear-sign`}
-            role="button"
-            tabIndex={0}
-            aria-label="Clear Signature"
-            onClick={(e) => { e.stopPropagation(); setShowClearConfirm(true); }}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                setShowClearConfirm(true);
-              }
-            }}
-          />
-        )}
+          {signatureDataUrl && enabled && (
+            <button
+              type="button"
+              className={`${BEM}__clear-sign`}
+              aria-label="Clear Signature"
+              style={{
+                position: 'absolute',
+                top: '4px',
+                right: '4px',
+                background: 'rgba(0, 0, 0, 0.6)',
+                color: '#fff',
+                border: 'none',
+                borderRadius: '50%',
+                width: '24px',
+                height: '24px',
+                cursor: 'pointer',
+                fontSize: '14px',
+                lineHeight: '24px',
+                textAlign: 'center',
+                padding: 0
+              }}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleClearSignature();
+              }}
+            >
+              &times;
+            </button>
+          )}
+        </div>
       </FieldWrapper>
 
       {/* Signature modal dialog */}
@@ -542,33 +557,6 @@ const Scribble = (props: PROPS) => {
         </div>
       )}
 
-      {/* Clear signature confirmation dialog */}
-      {showClearConfirm && (
-        <div className={`${BEM}__clearsign-container`}>
-          <h2 className={`${BEM}__clearsign-title`}>Erase Current Signature?</h2>
-          <div className={`${BEM}__clearsign-content`}>
-            <div className={`${BEM}__clearsign-message`}>
-              This will permanently remove the signature you&apos;ve drawn. Do you wish to proceed and begin again?
-            </div>
-            <div className={`${BEM}__clearsign-panel`}>
-              <button
-                type="button"
-                className={`${BEM}__button--secondary`}
-                onClick={() => setShowClearConfirm(false)}
-              >
-                Cancel
-              </button>
-              <button
-                type="button"
-                className={`${BEM}__button--primary`}
-                onClick={handleClearSignature}
-              >
-                Clear
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
