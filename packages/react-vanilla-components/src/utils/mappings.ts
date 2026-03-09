@@ -37,6 +37,7 @@ import Switch from '../components/Switch';
 import ReCaptcha from '../components/ReCaptcha';
 import HCaptcha from '../components/HCaptcha';
 import Image from '../components/Image';
+import Scribble from '../components/Scribble';
 
 const mappings = {
   'text-input': TextField,
@@ -62,6 +63,7 @@ const mappings = {
   'core/fd/components/form/hcaptcha/v1/hcaptcha': HCaptcha,
   captcha: ReCaptcha,
   image: Image,
+  signature: Scribble,
   form: Form
 };
 
