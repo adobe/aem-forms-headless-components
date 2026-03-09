@@ -51,7 +51,6 @@ const Scribble = (props: PROPS) => {
   const [signatureDataUrl, setSignatureDataUrl] = useState<string | null>(
     typeof value === 'string' ? value : null
   );
-  const [isDrawing, setIsDrawing] = useState(false);
   const [brushSize, setBrushSize] = useState(3);
   const [showBrushList, setShowBrushList] = useState(false);
   const [textMode, setTextMode] = useState(false);
@@ -80,7 +79,7 @@ const Scribble = (props: PROPS) => {
 
   const initCanvas = useCallback(() => {
     const canvas = canvasRef.current;
-    if (!canvas) return;
+    if (!canvas) {return;}
     const dpr = window.devicePixelRatio || 1;
     const rect = canvas.getBoundingClientRect();
     canvas.width = rect.width * dpr;
@@ -111,7 +110,7 @@ const Scribble = (props: PROPS) => {
 
   const getCoordinates = (e: React.MouseEvent | React.TouchEvent): { x: number; y: number } | null => {
     const canvas = canvasRef.current;
-    if (!canvas) return null;
+    if (!canvas) {return null;}
     const rect = canvas.getBoundingClientRect();
     if ('touches' in e && e.touches.length > 0) {
       const touch = e.touches[0];
@@ -125,48 +124,46 @@ const Scribble = (props: PROPS) => {
   const startDrawing = useCallback((e: React.MouseEvent | React.TouchEvent) => {
     e.preventDefault();
     const coords = getCoordinates(e);
-    if (!coords) return;
+    if (!coords) {return;}
     const canvas = canvasRef.current;
     const ctx = canvas?.getContext('2d', { willReadFrequently: true });
-    if (!ctx) return;
+    if (!ctx) {return;}
     ctx.lineWidth = brushSizeRef.current;
     ctx.beginPath();
     ctx.moveTo(coords.x, coords.y);
     drawingRef.current = true;
-    setIsDrawing(true);
   }, []);
 
   const draw = useCallback((e: React.MouseEvent | React.TouchEvent) => {
     e.preventDefault();
-    if (!drawingRef.current) return;
+    if (!drawingRef.current) {return;}
     const coords = getCoordinates(e);
-    if (!coords) return;
+    if (!coords) {return;}
     const canvas = canvasRef.current;
     const ctx = canvas?.getContext('2d', { willReadFrequently: true });
-    if (!ctx) return;
+    if (!ctx) {return;}
     ctx.lineTo(coords.x, coords.y);
     ctx.stroke();
     setHasContent(true);
   }, []);
 
   const stopDrawing = useCallback(() => {
-    if (!drawingRef.current) return;
+    if (!drawingRef.current) {return;}
     const ctx = canvasRef.current?.getContext('2d', { willReadFrequently: true });
-    if (ctx) ctx.closePath();
+    if (ctx) {ctx.closePath();}
     drawingRef.current = false;
-    setIsDrawing(false);
   }, []);
 
   const eraseCanvas = useCallback(() => {
     const canvas = canvasRef.current;
     if (canvas) {
       const ctx = canvas.getContext('2d', { willReadFrequently: true });
-      if (ctx) ctx.clearRect(0, 0, canvas.width, canvas.height);
+      if (ctx) {ctx.clearRect(0, 0, canvas.width, canvas.height);}
     }
     const geoCanvas = geoCanvasRef.current;
     if (geoCanvas) {
       const geoCtx = geoCanvas.getContext('2d');
-      if (geoCtx) geoCtx.clearRect(0, 0, geoCanvas.width, geoCanvas.height);
+      if (geoCtx) {geoCtx.clearRect(0, 0, geoCanvas.width, geoCanvas.height);}
       geoCanvas.width = 0;
       geoCanvas.height = 0;
     }
@@ -179,7 +176,7 @@ const Scribble = (props: PROPS) => {
 
   const buildDataUrl = useCallback((): string | null => {
     const sigCanvas = canvasRef.current;
-    if (!sigCanvas) return null;
+    if (!sigCanvas) {return null;}
 
     const geoCanvas = geoCanvasRef.current;
     const hasGeo = geoCanvas && geoCanvas.width > 0 && geoCanvas.height > 0;
@@ -189,7 +186,7 @@ const Scribble = (props: PROPS) => {
       merged.width = Math.max(sigCanvas.width, geoCanvas!.width);
       merged.height = sigCanvas.height + geoCanvas!.height;
       const ctx = merged.getContext('2d');
-      if (!ctx) return null;
+      if (!ctx) {return null;}
       ctx.drawImage(sigCanvas, 0, 0);
       ctx.drawImage(geoCanvas!, 0, sigCanvas.height);
       return merged.toDataURL('image/png').replace(
@@ -206,12 +203,12 @@ const Scribble = (props: PROPS) => {
 
   const isCanvasEmpty = useCallback((): boolean => {
     const canvas = canvasRef.current;
-    if (!canvas) return true;
+    if (!canvas) {return true;}
     const ctx = canvas.getContext('2d', { willReadFrequently: true });
-    if (!ctx) return true;
+    if (!ctx) {return true;}
     const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
     for (let i = 0; i < imageData.data.length; i += 4) {
-      if (imageData.data[i + 3] > 0) return false;
+      if (imageData.data[i + 3] > 0) {return false;}
     }
     return true;
   }, []);
@@ -219,12 +216,12 @@ const Scribble = (props: PROPS) => {
   const handleSave = useCallback(() => {
     if (textMode) {
       const textVal = keyboardInputRef.current?.value;
-      if (!textVal) return;
+      if (!textVal) {return;}
       const canvas = canvasRef.current;
-      if (!canvas) return;
+      if (!canvas) {return;}
       initCanvas();
       const ctx = canvas.getContext('2d', { willReadFrequently: true });
-      if (!ctx) return;
+      if (!ctx) {return;}
       const rect = canvas.getBoundingClientRect();
       const fontFamily = 'sans-serif, Georgia';
       const fontStyle = 'italic';
@@ -239,7 +236,7 @@ const Scribble = (props: PROPS) => {
       ctx.fillText(textVal, 0, rect.height / 2);
     }
 
-    if (isCanvasEmpty()) return;
+    if (isCanvasEmpty()) {return;}
 
     const dataUrl = buildDataUrl();
     if (dataUrl) {
@@ -331,7 +328,7 @@ const Scribble = (props: PROPS) => {
   }, []);
 
   const openModal = useCallback(() => {
-    if (!enabled) return;
+    if (!enabled) {return;}
     setModalOpen(true);
     setHasContent(false);
     setTextMode(false);
