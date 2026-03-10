@@ -393,6 +393,7 @@ const Scribble = (props: PROPS) => {
               className={`${BEM}__canvas-signed-image`}
               src={signatureDataUrl}
               alt="Signature"
+              style={{ width: '100%', height: '100%', objectFit: 'contain' }}
             />
           ) : null}
 
