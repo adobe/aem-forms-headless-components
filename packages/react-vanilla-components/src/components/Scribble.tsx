@@ -213,7 +213,7 @@ const Scribble = (props: PROPS) => {
 
   const isCanvasEmpty = useCallback((): boolean => {
     const canvas = canvasRef.current;
-    if (!canvas) {return true;}
+    if (!canvas || canvas.width === 0 || canvas.height === 0) {return true;}
     const ctx = canvas.getContext('2d', { willReadFrequently: true });
     if (!ctx) {return true;}
     const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
@@ -229,6 +229,7 @@ const Scribble = (props: PROPS) => {
       if (!textVal) {return;}
       const canvas = canvasRef.current;
       if (!canvas) {return;}
+      canvas.style.display = '';
       initCanvas();
       const ctx = canvas.getContext('2d', { willReadFrequently: true });
       if (!ctx) {return;}
@@ -459,21 +460,21 @@ const Scribble = (props: PROPS) => {
           <div className={`${BEM}__content`}>
             <div className={`${BEM}__canvases`}>
               <div className={`${BEM}__signcanvases`}>
-                {!textMode ? (
-                  <canvas
-                    ref={canvasRef}
-                    className={`${BEM}__canvas`}
-                    aria-label="Signature canvas"
-                    onMouseDown={startDrawing}
-                    onMouseMove={draw}
-                    onMouseUp={stopDrawing}
-                    onMouseLeave={stopDrawing}
-                    onTouchStart={startDrawing}
-                    onTouchMove={draw}
-                    onTouchEnd={stopDrawing}
-                    onTouchCancel={stopDrawing}
-                  />
-                ) : (
+                <canvas
+                  ref={canvasRef}
+                  className={`${BEM}__canvas`}
+                  aria-label="Signature canvas"
+                  style={textMode ? { display: 'none' } : undefined}
+                  onMouseDown={startDrawing}
+                  onMouseMove={draw}
+                  onMouseUp={stopDrawing}
+                  onMouseLeave={stopDrawing}
+                  onTouchStart={startDrawing}
+                  onTouchMove={draw}
+                  onTouchEnd={stopDrawing}
+                  onTouchCancel={stopDrawing}
+                />
+                {textMode && (
                   <input
                     ref={keyboardInputRef}
                     type="text"
