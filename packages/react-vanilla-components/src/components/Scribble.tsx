@@ -20,7 +20,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { withRuleEngine } from '../utils/withRuleEngine';
 import { PROPS } from '../utils/type';
-import { syncAriaDescribedBy } from '../utils/utils';
+
 import FieldWrapper from './common/FieldWrapper';
 
 const BRUSH_SIZES = [2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -56,6 +56,7 @@ const Scribble = (props: PROPS) => {
   const [textMode, setTextMode] = useState(false);
   const [message, setMessage] = useState('');
   const [hasContent, setHasContent] = useState(false);
+  const [showClearConfirm, setShowClearConfirm] = useState(false);
 
   const drawingRef = useRef(false);
   const brushSizeRef = useRef(brushSize);
@@ -104,6 +105,16 @@ const Scribble = (props: PROPS) => {
   useEffect(() => {
     if (modalOpen && modalRef.current) {
       modalRef.current.focus();
+    }
+  }, [modalOpen]);
+
+  useEffect(() => {
+    if (modalOpen) {
+      const originalOverflow = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+      return () => {
+        document.body.style.overflow = originalOverflow;
+      };
     }
   }, [modalOpen]);
 
@@ -256,11 +267,32 @@ const Scribble = (props: PROPS) => {
     setMessage('');
   }, [eraseCanvas]);
 
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && modalOpen) {
+        handleClose();
+      }
+    };
+    if (modalOpen) {
+      document.addEventListener('keydown', handleEscape);
+      return () => document.removeEventListener('keydown', handleEscape);
+    }
+  }, [modalOpen, handleClose]);
+
   const handleClearSignature = useCallback(() => {
+    setShowClearConfirm(true);
+  }, []);
+
+  const handleConfirmClear = useCallback(() => {
     setSignatureDataUrl(null);
     props.dispatchChange(undefined);
     eraseCanvas();
+    setShowClearConfirm(false);
   }, [eraseCanvas, props.dispatchChange]);
+
+  const handleCancelClear = useCallback(() => {
+    setShowClearConfirm(false);
+  }, []);
 
   const handleTextSign = useCallback(() => {
     eraseCanvas();
@@ -354,60 +386,63 @@ const Scribble = (props: PROPS) => {
         isError={props.isError}
         errorMessage={props.errorMessage}
       >
-        <div style={{ position: 'relative', display: 'inline-block', width: '100%' }}>
-          <button
-            type="button"
-            className={`${BEM}__canvas-signed-container`}
-            title="Signature Canvas"
-            onClick={openModal}
-            disabled={!enabled}
-            aria-label={label?.visible === false ? label?.value : 'Open signature pad'}
-            aria-describedby={syncAriaDescribedBy(id, props.tooltip, props.description, props.errorMessage)}
-            style={{ width: '100%' }}
-          >
-            {signatureDataUrl ? (
-              <img
-                className={`${BEM}__canvas-signed-image`}
-                src={signatureDataUrl}
-                alt="Signature"
-                style={{ width: '100%', height: '150px' }}
-              />
-            ) : null}
-          </button>
+        <div className={`${BEM}__canvas-signed-container`} onClick={openModal}>
+          {signatureDataUrl ? (
+            <img
+              className={`${BEM}__canvas-signed-image`}
+              src={signatureDataUrl}
+              alt="Signature"
+            />
+          ) : null}
 
           {signatureDataUrl && enabled && (
             <button
               type="button"
               className={`${BEM}__clear-sign`}
               aria-label="Clear Signature"
-              style={{
-                position: 'absolute',
-                top: '4px',
-                right: '4px',
-                background: 'rgba(0, 0, 0, 0.6)',
-                color: '#fff',
-                border: 'none',
-                borderRadius: '50%',
-                width: '24px',
-                height: '24px',
-                cursor: 'pointer',
-                fontSize: '14px',
-                lineHeight: '24px',
-                textAlign: 'center',
-                padding: 0
-              }}
               onClick={(e) => {
                 e.stopPropagation();
                 handleClearSignature();
               }}
-            >
-              &times;
-            </button>
+            />
           )}
         </div>
+
+        {showClearConfirm && (
+          <div
+            className={`${BEM}__clearsign-container`}
+            role="alertdialog"
+            aria-label="Erase Current Signature?"
+            style={{ display: 'block' }}
+          >
+            <div className={`${BEM}__clearsign-title`}>
+              Erase Current Signature?
+            </div>
+            <div className={`${BEM}__clearsign-content`}>
+              <div className={`${BEM}__clearsign-message`}>
+                This will permanently remove the signature you've drawn. Do you wish to proceed and begin again?
+              </div>
+            </div>
+            <div className={`${BEM}__clearsign-panel`}>
+              <button
+                type="button"
+                className={`${BEM}__button--secondary`}
+                onClick={handleCancelClear}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                className={`${BEM}__button--primary`}
+                onClick={handleConfirmClear}
+              >
+                Clear
+              </button>
+            </div>
+          </div>
+        )}
       </FieldWrapper>
 
-      {/* Signature modal dialog */}
       {modalOpen && (
         <div
           className={`${BEM}__container`}
@@ -416,19 +451,19 @@ const Scribble = (props: PROPS) => {
           aria-modal="true"
           tabIndex={-1}
           ref={modalRef}
+          style={{ display: 'block' }}
         >
           <div className={`${BEM}__header`} aria-live="polite" role="heading">
             {dialogLabel}
           </div>
           <div className={`${BEM}__content`}>
             <div className={`${BEM}__canvases`}>
-              <div className={`${BEM}__signcanvases`} style={{ display: 'inline-block', verticalAlign: 'top', width: '100%' }}>
+              <div className={`${BEM}__signcanvases`}>
                 {!textMode ? (
                   <canvas
                     ref={canvasRef}
                     className={`${BEM}__canvas`}
                     aria-label="Signature canvas"
-                    style={{ width: '100%', height: '200px', border: '1px dashed #AAAAAA', touchAction: 'none' }}
                     onMouseDown={startDrawing}
                     onMouseMove={draw}
                     onMouseUp={stopDrawing}
@@ -445,7 +480,7 @@ const Scribble = (props: PROPS) => {
                     className={`${BEM}__keyboard-sign-box`}
                     placeholder={placeholder}
                     aria-label="Signature text"
-                    style={{ display: 'block', width: '100%', font: 'italic 2rem sans-serif, Georgia', padding: '8px', boxSizing: 'border-box' }}
+                    style={{ display: 'block' }}
                     onInput={handleKeyboardInput}
                     autoFocus
                   />
@@ -468,19 +503,21 @@ const Scribble = (props: PROPS) => {
                   className={`${BEM}__control-brush ${BEM}__button`}
                   aria-label="Brushes"
                   onClick={handleBrushMode}
-                >
-                  Brush
-                </button>
+                />
 
                 {showBrushList && (
-                  <div className={`${BEM}__brushlist`} aria-label="Brush size selection">
+                  <div
+                    className={`${BEM}__brushlist`}
+                    aria-label="Brush size selection"
+                    style={{ display: 'block' }}
+                  >
                     {BRUSH_SIZES.map((size) => (
-                      <div key={size} onClick={() => handleSelectBrush(size)} style={{ cursor: 'pointer', padding: '2px 0' }}>
+                      <div key={size} onClick={() => handleSelectBrush(size)} style={{ cursor: 'pointer' }}>
                         <canvas
                           aria-label={`Brush size ${size}`}
                           width={100}
                           height={20}
-                          style={{ border: '1px solid #AAAAAA', backgroundColor: brushSize === size ? '#e0e0e0' : 'white' }}
+                          style={{ backgroundColor: brushSize === size ? '#e0e0e0' : 'white' }}
                           ref={(el) => {
                             if (el) {
                               const ctx = el.getContext('2d');
@@ -502,34 +539,28 @@ const Scribble = (props: PROPS) => {
 
                 <button
                   type="button"
-                  className={`${BEM}__control-clear ${BEM}__button`}
+                  className={`${BEM}__control-clear ${BEM}__button ${!hasContent ? 'disable_button' : ''}`}
                   aria-label="Clear"
                   disabled={!hasContent}
                   onClick={eraseCanvas}
-                >
-                  Clear
-                </button>
+                />
 
                 <button
                   type="button"
                   className={`${BEM}__control-geo ${BEM}__button`}
                   aria-label="Geolocation"
                   onClick={handleGeolocation}
-                >
-                  Geo
-                </button>
+                />
 
                 <button
                   type="button"
                   className={`${BEM}__control-text ${BEM}__button`}
                   aria-label="Text sign"
                   onClick={handleTextSign}
-                >
-                  Text
-                </button>
+                />
 
                 {message && (
-                  <div className={`${BEM}__control-message`}>{message}</div>
+                  <div className={`${BEM}__control-message`} style={{ display: 'block' }}>{message}</div>
                 )}
               </div>
 
@@ -543,7 +574,7 @@ const Scribble = (props: PROPS) => {
                   Close
                 </button>
                 <button
-                  className={`${BEM}__save-button`}
+                  className={`${BEM}__save-button ${!hasContent ? 'disable_button' : ''}`}
                   type="button"
                   aria-label="Save"
                   disabled={!hasContent}
