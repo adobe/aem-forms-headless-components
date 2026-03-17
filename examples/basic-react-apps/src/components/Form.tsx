@@ -17,7 +17,7 @@
 import { AdaptiveForm } from "@aemforms/af-react-renderer";
 import customMappings from "../utils/mappings";
 import { Action } from "@aemforms/af-core";
-import '@aemforms/af-wknd-theme/dist/theme.css';
+import '@aemforms/af-canvas-theme/dist/theme.css';
 import useFetch from "../custom-hooks/useFetch";
 
 const Form = () => {
