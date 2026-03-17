@@ -346,10 +346,26 @@ const Scribble = (props: PROPS) => {
           }
         }
       },
-      () => {
-        showTemporaryMessage('Error fetching geolocation.');
+      (error) => {
+        let errorMsg = 'Error fetching geolocation.';
+        switch (error.code) {
+          case error.PERMISSION_DENIED:
+            errorMsg = 'Location permission denied. Please allow location access.';
+            break;
+          case error.POSITION_UNAVAILABLE:
+            errorMsg = 'Location unavailable. Please check GPS/network.';
+            break;
+          case error.TIMEOUT:
+            errorMsg = 'Location request timed out. Please try again.';
+            break;
+        }
+        showTemporaryMessage(errorMsg);
       },
-      { timeout: 10000 }
+      {
+        enableHighAccuracy: false,
+        timeout: 150000,
+        maximumAge: 300000
+      }
     );
   }, [showTemporaryMessage]);
 
