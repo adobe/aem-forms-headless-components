@@ -361,11 +361,7 @@ const Scribble = (props: PROPS) => {
         }
         showTemporaryMessage(errorMsg);
       },
-      {
-        enableHighAccuracy: false,
-        timeout: 150000,
-        maximumAge: 300000
-      }
+      { timeout: 10000 }
     );
   }, [showTemporaryMessage]);
 
