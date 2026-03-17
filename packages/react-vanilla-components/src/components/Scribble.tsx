@@ -401,6 +401,7 @@ const Scribble = (props: PROPS) => {
             <button
               type="button"
               className={`${BEM}__clear-sign`}
+              style={{ border: 'none' }}
               aria-label="Clear Signature"
               onClick={(e) => {
                 e.stopPropagation();
