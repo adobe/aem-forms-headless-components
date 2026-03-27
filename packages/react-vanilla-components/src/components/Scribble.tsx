@@ -38,7 +38,7 @@ const Scribble = (props: PROPS) => {
     appliedCssClassNames,
     properties,
     placeholder: placeholderProp,
-    dispatchChange,
+    dispatchChange
   } = props;
 
   const dialogLabel = properties?.['fd:dialogLabel'] || 'Please sign here';
