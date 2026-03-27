@@ -27,15 +27,29 @@ const BRUSH_SIZES = [2, 3, 4, 5, 6, 7, 8, 9, 10];
 const BEM = 'cmp-adaptiveform-scribble';
 
 const Scribble = (props: PROPS) => {
-  const { id, label, value, enabled, visible, required, valid, appliedCssClassNames, properties } = props;
+  const {
+    id,
+    label,
+    value,
+    enabled,
+    visible,
+    required,
+    valid,
+    appliedCssClassNames,
+    properties,
+    placeholder: placeholderProp,
+    dispatchChange,
+  } = props;
 
   const dialogLabel = properties?.['fd:dialogLabel'] || 'Please sign here';
-  const placeholder = (props as any).placeholder || 'Type Your Signature Here';
+  const placeholder = placeholderProp || 'Type Your Signature Here';
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const geoCanvasRef = useRef<HTMLCanvasElement>(null);
   const keyboardInputRef = useRef<HTMLInputElement>(null);
   const modalRef = useRef<HTMLDivElement>(null);
+  const messageTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const canvasDrawnRef = useRef(false);
 
   const [modalOpen, setModalOpen] = useState(false);
   const [signatureDataUrl, setSignatureDataUrl] = useState<string | null>(
@@ -56,15 +70,28 @@ const Scribble = (props: PROPS) => {
   }, [brushSize]);
 
   useEffect(() => {
-    if (typeof value === 'string' && value !== signatureDataUrl) {
-      setSignatureDataUrl(value || null);
+    if (typeof value === 'string') {
+      const next = value || null;
+      setSignatureDataUrl((prev) => (prev === next ? prev : next));
     }
   }, [value]);
 
+  const clearMessageTimer = () => {
+    if (messageTimerRef.current != null) {
+      clearTimeout(messageTimerRef.current);
+      messageTimerRef.current = null;
+    }
+  };
+
+  useEffect(() => () => clearMessageTimer(), []);
+
   const showTemporaryMessage = useCallback((msg: string) => {
+    clearMessageTimer();
     setMessage(msg);
-    const timer = setTimeout(() => setMessage(''), 15000);
-    return () => clearTimeout(timer);
+    messageTimerRef.current = setTimeout(() => {
+      messageTimerRef.current = null;
+      setMessage('');
+    }, 15000);
   }, []);
 
   const initCanvas = useCallback(() => {
@@ -144,6 +171,7 @@ const Scribble = (props: PROPS) => {
     if (!ctx) {return;}
     ctx.lineTo(coords.x, coords.y);
     ctx.stroke();
+    canvasDrawnRef.current = true;
     setHasContent(true);
   }, []);
 
@@ -172,6 +200,7 @@ const Scribble = (props: PROPS) => {
     }
     setHasContent(false);
     setTextMode(false);
+    canvasDrawnRef.current = false;
   }, []);
 
   const buildDataUrl = useCallback((): string | null => {
@@ -202,6 +231,7 @@ const Scribble = (props: PROPS) => {
   }, []);
 
   const isCanvasEmpty = useCallback((): boolean => {
+    if (canvasDrawnRef.current) {return false;}
     const canvas = canvasRef.current;
     if (!canvas || canvas.width === 0 || canvas.height === 0) {return true;}
     const ctx = canvas.getContext('2d', { willReadFrequently: true });
@@ -235,6 +265,7 @@ const Scribble = (props: PROPS) => {
         textWidth = ctx.measureText(textVal).width;
       }
       ctx.fillText(textVal, 0, rect.height / 2);
+      canvasDrawnRef.current = true;
     }
 
     if (isCanvasEmpty()) {return;}
@@ -242,19 +273,21 @@ const Scribble = (props: PROPS) => {
     const dataUrl = buildDataUrl();
     if (dataUrl) {
       setSignatureDataUrl(dataUrl);
-      props.dispatchChange(dataUrl);
+      dispatchChange(dataUrl);
     }
     setModalOpen(false);
     setTextMode(false);
     setShowBrushList(false);
+    clearMessageTimer();
     setMessage('');
-  }, [textMode, isCanvasEmpty, buildDataUrl, initCanvas, props.dispatchChange]);
+  }, [textMode, isCanvasEmpty, buildDataUrl, initCanvas, dispatchChange]);
 
   const handleClose = useCallback(() => {
     eraseCanvas();
     setModalOpen(false);
     setTextMode(false);
     setShowBrushList(false);
+    clearMessageTimer();
     setMessage('');
   }, [eraseCanvas]);
 
@@ -276,10 +309,10 @@ const Scribble = (props: PROPS) => {
 
   const handleConfirmClear = useCallback(() => {
     setSignatureDataUrl(null);
-    props.dispatchChange(undefined);
+    dispatchChange(undefined);
     eraseCanvas();
     setShowClearConfirm(false);
-  }, [eraseCanvas, props.dispatchChange]);
+  }, [eraseCanvas, dispatchChange]);
 
   const handleCancelClear = useCallback(() => {
     setShowClearConfirm(false);
@@ -313,6 +346,7 @@ const Scribble = (props: PROPS) => {
     showTemporaryMessage('Fetching geolocation...');
     navigator.geolocation.getCurrentPosition(
       (position) => {
+        clearMessageTimer();
         setMessage('');
         const { latitude, longitude } = position.coords;
         const dateObj = new Date();
@@ -366,6 +400,8 @@ const Scribble = (props: PROPS) => {
     setHasContent(false);
     setTextMode(false);
     setShowBrushList(false);
+    canvasDrawnRef.current = false;
+    clearMessageTimer();
     setMessage('');
   }, [enabled]);
 
@@ -389,7 +425,26 @@ const Scribble = (props: PROPS) => {
         isError={props.isError}
         errorMessage={props.errorMessage}
       >
-        <div className={`${BEM}__canvas-signed-container`} onClick={openModal}>
+        <div
+          className={`${BEM}__canvas-signed-container`}
+          id={`${id}-widget`}
+          role="button"
+          tabIndex={enabled ? 0 : -1}
+          aria-disabled={!enabled}
+          aria-label={
+            typeof label === 'object' && label?.value
+              ? `${label.value}, open signature dialog`
+              : 'Open signature dialog'
+          }
+          onClick={() => enabled && openModal()}
+          onKeyDown={(e) => {
+            if (!enabled) {return;}
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              openModal();
+            }
+          }}
+        >
           {signatureDataUrl ? (
             <img
               className={`${BEM}__canvas-signed-image`}
@@ -458,7 +513,7 @@ const Scribble = (props: PROPS) => {
           ref={modalRef}
           style={{ display: 'block' }}
         >
-          <div className={`${BEM}__header`} aria-live="polite" role="heading">
+          <div className={`${BEM}__header`} aria-live="polite" role="heading" aria-level={2}>
             {dialogLabel}
           </div>
           <div className={`${BEM}__content`}>
