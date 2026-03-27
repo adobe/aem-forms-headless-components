@@ -351,9 +351,10 @@ const Scribble = (props: PROPS) => {
         const { latitude, longitude } = position.coords;
         const dateObj = new Date();
         const tZone = (dateObj.getTimezoneOffset() / 60) * -1;
+        const pad2 = (n: number) => String(n).padStart(2, '0');
         const latStr = `Latitude: ${latitude}`;
         const longStr = `Longitude: ${longitude}`;
-        const timeStr = `${dateObj.getTime()}: ${dateObj.getMonth() + 1}/${dateObj.getDate()}/${dateObj.getFullYear()} ${dateObj.getHours()}:${dateObj.getMinutes()}:${dateObj.getSeconds()}${tZone > 0 ? ' +' : ' '}${tZone}`;
+        const timeStr = `${dateObj.getTime()}: ${pad2(dateObj.getMonth() + 1)}/${pad2(dateObj.getDate())}/${dateObj.getFullYear()} ${pad2(dateObj.getHours())}:${pad2(dateObj.getMinutes())}:${pad2(dateObj.getSeconds())}${tZone > 0 ? ' +' : ' '}${tZone}`;
 
         const geoCanvas = geoCanvasRef.current;
         if (geoCanvas) {
