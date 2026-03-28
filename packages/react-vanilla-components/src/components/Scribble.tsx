@@ -27,19 +27,7 @@ const BRUSH_SIZES = [2, 3, 4, 5, 6, 7, 8, 9, 10];
 const BEM = 'cmp-adaptiveform-scribble';
 
 const Scribble = (props: PROPS) => {
-  const {
-    id,
-    label,
-    value,
-    enabled,
-    visible,
-    required,
-    valid,
-    appliedCssClassNames,
-    properties,
-    placeholder: placeholderProp,
-    dispatchChange
-  } = props;
+  const { id, label, value, enabled, visible, required, valid, appliedCssClassNames, properties, placeholder: placeholderProp, dispatchChange } = props;
 
   const dialogLabel = properties?.['fd:dialogLabel'] || 'Please sign here';
   const placeholder = placeholderProp || 'Type Your Signature Here';
