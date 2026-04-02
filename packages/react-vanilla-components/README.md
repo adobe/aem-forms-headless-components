@@ -9,24 +9,29 @@ The document provides detailed information on React Vanilla Components(HTML5 bas
 ## Table of Contents
 
 - List of Components
+  - Accordion
   - Button
   - Checkbox
   - Checkbox Group
-  - Drop Down
   - Date Picker
+  - Drop Down
+  - Email
   - File Upload
+  - Form
+  - Horizontal Tab
+  - Image
   - Number Field
   - Panel
-  - Email
-  - Wizard
+  - Plain Text
   - Radio Group
-  - Accordion
+  - ReCAPTCHA
+  - Scribble (Signature)
+  - Switch
+  - Telephone Input
   - Text Area Field
   - Text Field
   - Vertical Tab
-  - Horizontal Tab
-  - Plain Text
-  - ReCAPTCHA
+  - Wizard
 - Mappings
 
 ## Before you start {#pre-requisites}
