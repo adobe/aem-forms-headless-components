@@ -29,6 +29,7 @@ import Form from './components/Form';
 import mappings from './utils/mappings';
 import ReCaptcha from './components/ReCaptcha';
 import Image from './components/Image';
+import Scribble from './components/Scribble';
 
 export * from './utils/withRuleEngine';
 export * from './utils/type';
@@ -56,5 +57,6 @@ export {
   TelephoneInput,
   ReCaptcha,
   Image,
+  Scribble,
   Form
 };
