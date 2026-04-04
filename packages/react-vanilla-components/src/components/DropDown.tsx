@@ -24,13 +24,17 @@ import FieldWrapper from './common/FieldWrapper';
 import { syncAriaDescribedBy } from '../utils/utils';
 
 const DropDown = (props: PROPS) => {
-  const { id, enum: enums, enumNames, label, value, placeholder, name, required, enabled, visible, appliedCssClassNames, valid } = props;
+  const { id, enum: enums, enumNames, label, value, placeholder, name, required, enabled, visible, appliedCssClassNames, valid, multiSelect } = props;
   const dropValue = enumNames && enumNames.length ? enumNames : enums || [];
-  let selectedValue = value ?? '';
+  let selectedValue = multiSelect ? (Array.isArray(value) ? value : []) : (value ?? '');
   const changeHandler = useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
-    const val = event.target.value;
-    props.dispatchChange(val);
-  }, [props.dispatchChange]);
+    if (multiSelect) {
+      const selectedOptions = Array.from(event.target.selectedOptions).map(option => option.value);
+      props.dispatchChange(selectedOptions);
+    } else {
+      props.dispatchChange(event.target.value);
+    }
+  }, [props.dispatchChange, multiSelect]);
 
   return (
     <div
@@ -60,10 +64,11 @@ const DropDown = (props: PROPS) => {
           value={selectedValue}
           required={required}
           disabled={!enabled}
+          multiple={multiSelect}
           aria-invalid={!valid}
           aria-describedby={syncAriaDescribedBy(id, props.tooltip, props.description, props.errorMessage)}
         >
-          <option value="" disabled>{placeholder}</option>
+          {!multiSelect && <option value="" disabled>{placeholder}</option>}
           {
             dropValue?.map((item, index: number) => {
               return <option className="cmp-adaptiveform-dropdown__option" key={enums![index]} value={enums![index]}>{item}</option>;
