@@ -22,6 +22,7 @@ export type FieldViewState = WithViewState<FieldJson>;
 export type PROPS = State<FieldJson & Handlers & {
   isError?: boolean,
   isInFocus?: boolean,
+  isMultiSelect?: boolean,
   layout?: {
     [key: string]: any;
   },

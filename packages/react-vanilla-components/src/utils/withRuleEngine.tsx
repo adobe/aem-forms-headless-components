@@ -84,6 +84,7 @@ export function withRuleEngine(Component: JSXElementConstructor<any>) {
         visible: state.label?.visible !== false
       },
       isError: getValidationState(state) === 'invalid',
+      isMultiSelect: state.type === 'string[]',
       errorMessage: formateErrorMessage(state),
       layout: {
         orientation: 'horizontal',
