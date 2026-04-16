@@ -24,17 +24,25 @@ import FieldWrapper from './common/FieldWrapper';
 import { syncAriaDescribedBy } from '../utils/utils';
 
 const DropDown = (props: PROPS) => {
-  const { id, enum: enums, enumNames, label, value, placeholder, name, required, enabled, visible, appliedCssClassNames, valid } = props;
+  const { id, enum: enums, enumNames, label, value, placeholder, name, required, enabled, visible, appliedCssClassNames, valid, isMultiSelect } = props;
   const dropValue = enumNames && enumNames.length ? enumNames : enums || [];
-  let selectedValue = value ?? '';
+  const selectedValue = isMultiSelect
+    ? (Array.isArray(value) ? value : (value !== null && value !== undefined ? [value] : []))
+    : (value ?? '');
+  const isFilled = isMultiSelect ? (Array.isArray(value) && value.length > 0) : !!value;
   const changeHandler = useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
-    const val = event.target.value;
-    props.dispatchChange(val);
-  }, [props.dispatchChange]);
+    if (isMultiSelect) {
+      const selected = Array.from(event.target.selectedOptions).map(o => o.value);
+      props.dispatchChange(selected);
+    } else {
+      const val = event.target.value;
+      props.dispatchChange(val);
+    }
+  }, [props.dispatchChange, isMultiSelect]);
 
   return (
     <div
-      className={`cmp-adaptiveform-dropdown cmp-adaptiveform-dropdown--${value ? 'filled' : 'empty'} ${appliedCssClassNames || ''}`}
+      className={`cmp-adaptiveform-dropdown cmp-adaptiveform-dropdown--${isFilled ? 'filled' : 'empty'} ${appliedCssClassNames || ''}`}
       data-cmp-is="adaptiveFormDropDown"
       data-cmp-visible={visible}
       data-cmp-enabled={enabled}
@@ -57,7 +65,8 @@ const DropDown = (props: PROPS) => {
           title={props.tooltipText || ''}
           className={'cmp-adaptiveform-dropdown__widget'}
           onChange={changeHandler}
-          value={selectedValue}
+          multiple={isMultiSelect || false}
+          value={selectedValue as any}
           required={required}
           disabled={!enabled}
           aria-invalid={!valid}

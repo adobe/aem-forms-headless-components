@@ -86,6 +86,20 @@ const fieldFour = {
   enum: ["1","2"],
   placeholder: "choose the option"
 }
+
+const fieldMultiSelect = {
+  name: "dropdown",
+  visible: true,
+  type: "string[]",
+  label: {
+    value: "Drop Down Multi",
+  },
+  fieldType: "drop-down",
+  placeholder: "select",
+  enum: [1, 2, 3],
+  enumNames: ["option 1", "option 2", "option 3"],
+};
+
 const helper = renderComponent(DropDown);
 
 describe("Drop Down", () => {
@@ -249,5 +263,32 @@ describe("Drop Down", () => {
     // 2) Select 'clear value' (enum '2') on source -> target should reset to empty
     await userEvent.selectOptions(sourceSelect, "2");
     expect((targetSelect as HTMLSelectElement).value).toBe("");
+  });
+
+  test("multiselect: multiple attribute is set when type is string[]", async () => {
+    const { renderResponse } = await helper(fieldMultiSelect);
+    const select = renderResponse.getByTestId("select");
+    expect(select).toHaveAttribute("multiple");
+  });
+
+  test("multiselect: selecting multiple options dispatches an array value", async () => {
+    const { renderResponse, element } = await helper(fieldMultiSelect);
+    const select = renderResponse.getByTestId("select") as HTMLSelectElement;
+    await userEvent.selectOptions(select, ["1", "2"]);
+    expect(Array.isArray(element?.value)).toBe(true);
+    const selectedOptions = Array.from(select.selectedOptions).map(o => o.value);
+    expect(selectedOptions).toEqual(["1", "2"]);
+  });
+
+  test("multiselect: all selected options reflect in widget while unselected ones do not", async () => {
+    const { renderResponse } = await helper(fieldMultiSelect);
+    const select = renderResponse.getByTestId("select") as HTMLSelectElement;
+    await userEvent.selectOptions(select, ["1", "2"]);
+    const opt1 = renderResponse.getByRole("option", { name: "option 1" }) as HTMLOptionElement;
+    const opt2 = renderResponse.getByRole("option", { name: "option 2" }) as HTMLOptionElement;
+    const opt3 = renderResponse.getByRole("option", { name: "option 3" }) as HTMLOptionElement;
+    expect(opt1.selected).toBe(true);
+    expect(opt2.selected).toBe(true);
+    expect(opt3.selected).toBe(false);
   });
 });
