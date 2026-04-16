@@ -27,7 +27,7 @@ const DropDown = (props: PROPS) => {
   const { id, enum: enums, enumNames, label, value, placeholder, name, required, enabled, visible, appliedCssClassNames, valid, isMultiSelect } = props;
   const dropValue = enumNames && enumNames.length ? enumNames : enums || [];
   const selectedValue = isMultiSelect
-    ? (Array.isArray(value) ? (value as any[]).map(String) : (value !== null && value !== undefined ? [String(value)] : []))
+    ? (Array.isArray(value) ? value : (value !== null && value !== undefined ? [value] : []))
     : (value ?? '');
   const isFilled = isMultiSelect ? (Array.isArray(value) && value.length > 0) : !!value;
   const changeHandler = useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
