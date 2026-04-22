@@ -66,6 +66,8 @@ const DropDown = (props: PROPS) => {
           className={'cmp-adaptiveform-dropdown__widget'}
           onChange={changeHandler}
           multiple={isMultiSelect || false}
+          size={isMultiSelect ? Math.min(dropValue.length + 1, 6) : undefined}
+          style={isMultiSelect ? { height: 'auto' } : undefined}
           value={selectedValue as any}
           required={required}
           disabled={!enabled}
