@@ -12,7 +12,7 @@
     "@aemforms/af-core": "^0.22.109",
     "@aemforms/af-react-renderer": "^0.22.109",
     "@aemforms/af-react-vanilla-components": "^1.0.22",
-    "@aemforms/af-wknd-theme": "^1.0.10",
+    "@aemforms/af-wknd-theme": "^1.0.18",
     "dotenv": "^16.4.5",
     "next": "14.2.5",
     "next-http-proxy-middleware": "^1.2.6",
