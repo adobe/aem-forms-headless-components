@@ -82,3 +82,24 @@ Strict mode. All components and utilities are typed. Output compiled to `lib/` (
 
 - PRs to `main`/`dev` → `.github/workflows/checks.yaml` (build + test on Node 16)
 - Merges to `main` → `.github/workflows/publish.yaml` (Lerna patch version bump, npm publish, pushes version tag)
+
+## Claude Code Skills
+
+### `/create-component`
+
+Scaffolds a complete new headless form component for `react-vanilla-components`. Invoke with:
+
+```
+/create-component
+
+I want to add a RatingInput component. Here is the CRISP JSON:
+{ ... }
+```
+
+The skill generates:
+- `src/components/{ComponentName}.tsx` — component following BEM + `withRuleEngine` patterns
+- `__tests__/components/{ComponentName}.test.tsx` — test suite covering value binding, visibility, errors, a11y
+- Updates `src/utils/mappings.ts` to register the field type / resource type
+- Updates `src/index.ts` to export the component
+
+If you do not have a CRISP JSON, describe the component's properties and the skill will infer a reasonable implementation.
