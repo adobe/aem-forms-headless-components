@@ -12,6 +12,7 @@ import RadioGroup from './components/RadioButtonGroup';
 import DropDown from './components/DropDown';
 import NumberField from './components/NumberField';
 import DateInput from './components/DateInput';
+import DateTimeInput from './components/DateTimeInput';
 import CheckBox from './components/CheckBox';
 import Button from './components/Button';
 import TextFieldArea from './components/TextFieldArea';
@@ -42,6 +43,7 @@ export {
   DropDown,
   NumberField,
   DateInput,
+  DateTimeInput,
   Button,
   CheckBox,
   FileUpload,
