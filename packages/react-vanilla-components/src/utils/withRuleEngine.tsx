@@ -15,10 +15,15 @@
 //  ******************************************************************************
 
 import React, { JSXElementConstructor } from 'react';
-import { State, FieldJson, FieldsetJson, getOrElse, isEmpty, checkIfConstraintsArePresent, EnumName } from '@aemforms/af-core';
+import { State, FieldJson, FieldsetJson, getOrElse, isEmpty, checkIfConstraintsArePresent } from '@aemforms/af-core';
 import { useRuleEngine, useFormIntl } from '@aemforms/af-react-renderer';
 import sanitizeHTML from 'sanitize-html';
 import { FieldViewState } from './type';
+
+/** Legacy rich-text enum option shape; af-core 0.22.175+ types enumNames as string[] only. */
+type EnumNameOption = { value: string; richText?: boolean };
+type EnumNameItem = EnumNameOption | string;
+
 const DEFAULT_ERROR_MESSAGE = 'There is an error in the field';
 
 export const richTextString = (stringMsg = '') => {
@@ -56,10 +61,10 @@ const getLocalizePlaceholder = (i18n: any, state: FieldViewState) => {
 
 const getLocalizeEnumNames = (i18n: any, state: FieldViewState) => {
     const enumNames = state?.enumNames || [];
-    return enumNames.map((item: EnumName | string, index: number) => {
-    const EnumName = typeof item === 'object' ? item.value : item;
+    return enumNames.map((item: EnumNameItem, index: number) => {
+    const displayName = typeof item === 'object' ? item.value : item;
     const localizeEnumId = getOrElse(state, ['properties', 'afs:translationIds', 'enumNames']);
-    const localizeEnumName = localizeEnumId ? i18n.formatMessage({ id: `localizeEnumId##${index}`, defaultMessage: EnumName }) : EnumName;
+    const localizeEnumName = localizeEnumId ? i18n.formatMessage({ id: `localizeEnumId##${index}`, defaultMessage: displayName }) : displayName;
     return typeof item === 'object' && item?.richText ? richTextString(localizeEnumName) : localizeEnumName;
   });
 };
