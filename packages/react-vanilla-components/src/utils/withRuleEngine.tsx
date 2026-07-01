@@ -20,9 +20,7 @@ import { useRuleEngine, useFormIntl } from '@aemforms/af-react-renderer';
 import sanitizeHTML from 'sanitize-html';
 import { FieldViewState } from './type';
 
-/** Legacy rich-text enum option shape; af-core 0.22.175+ types enumNames as string[] only. */
-type EnumNameOption = { value: string; richText?: boolean };
-type EnumNameItem = EnumNameOption | string;
+type EnumNameItem = { value: string; richText?: boolean } | string;
 
 const DEFAULT_ERROR_MESSAGE = 'There is an error in the field';
 

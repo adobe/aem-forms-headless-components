@@ -4,7 +4,6 @@
   "private": true,
   "dependencies": {
     "@aemforms/af-core": "^0.22.176",
-    "@aemforms/af-formatters": "^0.22.176",
     "@aemforms/af-react-renderer": "^0.22.176",
     "@aemforms/af-react-vanilla-components": "^1.0.31",
     "@aemforms/af-wknd-theme": "^1.0.10",
