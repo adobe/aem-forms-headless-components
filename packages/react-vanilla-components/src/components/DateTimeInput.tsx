@@ -55,7 +55,7 @@ const datetime = (props: PROPS) => {
   return (
     <div
       className={`cmp-adaptiveform-datetime cmp-adaptiveform-datetime--${value ? 'filled' : 'empty'} ${appliedCssClassNames || ''}`}
-      data-cmp-is="adaptiveFormdatetime"
+      data-cmp-is="adaptiveFormDatetime"
       data-cmp-visible={visible}
       data-cmp-enabled={enabled}
       data-cmp-required={required}
@@ -70,26 +70,28 @@ const datetime = (props: PROPS) => {
         isError={props.isError}
         errorMessage={props.errorMessage}
       >
-        <input
-          type='datetime-local'
-          id={`${id}-widget`}
-          className='cmp-adaptiveform-datetime__widget'
-          title={props.tooltipText || ''}
-          value={finalValue}
-          name={name}
-          required={required}
-          min={minimum}
-          max={maximum}
-          readOnly={readOnly}
-          placeholder={placeholder}
-          disabled={!enabled}
-          onChange={handleChange}
-          onFocus={handleFocus}
-          onBlur={handleBlur}
-          aria-label={label?.value}
-          aria-invalid={!valid}
-          aria-describedby={syncAriaDescribedBy(id, props.tooltip, props.description, props.errorMessage)}
-        />
+        <div className='cmp-adaptiveform-datetime__input-wrapper'>
+          <input
+            type='datetime-local'
+            id={`${id}-widget`}
+            className='cmp-adaptiveform-datetime__widget'
+            title={props.tooltipText || ''}
+            value={finalValue}
+            name={name}
+            required={required}
+            min={minimum}
+            max={maximum}
+            readOnly={readOnly}
+            placeholder={placeholder}
+            disabled={!enabled}
+            onChange={handleChange}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
+            aria-label={label?.value}
+            aria-invalid={!valid}
+            aria-describedby={syncAriaDescribedBy(id, props.tooltip, props.description, props.errorMessage)}
+          />
+        </div>
       </FieldWrapper>
     </div>
   );

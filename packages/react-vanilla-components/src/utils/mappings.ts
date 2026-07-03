@@ -48,7 +48,7 @@ const mappings = {
   'number-input': NumberField,
   'date-input': DateInput,
   'datetime-input': DateTimeInput,
-  'forms-components-examples/components/form/datetime': DateTimeInput,
+  'core/fd/components/form/datetime/v1/datetime': DateTimeInput,
   button: Button,
   checkbox: CheckBox,
   'file-input': FileUpload,

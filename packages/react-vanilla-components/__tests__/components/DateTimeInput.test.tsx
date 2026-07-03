@@ -154,7 +154,7 @@ describe('DateTimeInput', () => {
     };
     const { renderResponse } = await helper(f);
     expect(renderResponse.getByText('Short Description')).not.toBeNull();
-    const button = renderResponse.container.getElementsByClassName('cmp-adaptiveform-datetimeinput__questionmark');
+    const button = renderResponse.container.getElementsByClassName('cmp-adaptiveform-datetime__questionmark');
     userEvent.click(button[0]);
     expect(renderResponse.getByText('Long Description')).not.toBeNull();
   });
