@@ -20,8 +20,6 @@ import { useRuleEngine, useFormIntl } from '@aemforms/af-react-renderer';
 import sanitizeHTML from 'sanitize-html';
 import { FieldViewState } from './type';
 
-type EnumNameItem = { value: string; richText?: boolean } | string;
-
 const DEFAULT_ERROR_MESSAGE = 'There is an error in the field';
 
 export const richTextString = (stringMsg = '') => {
@@ -58,12 +56,10 @@ const getLocalizePlaceholder = (i18n: any, state: FieldViewState) => {
 };
 
 const getLocalizeEnumNames = (i18n: any, state: FieldViewState) => {
-    const enumNames = state?.enumNames || [];
-    return enumNames.map((item: EnumNameItem, index: number) => {
-    const displayName = typeof item === 'object' ? item.value : item;
+  const enumNames = state?.enumNames || [];
+  return enumNames.map((displayName: string, index: number) => {
     const localizeEnumId = getOrElse(state, ['properties', 'afs:translationIds', 'enumNames']);
-    const localizeEnumName = localizeEnumId ? i18n.formatMessage({ id: `localizeEnumId##${index}`, defaultMessage: displayName }) : displayName;
-    return typeof item === 'object' && item?.richText ? richTextString(localizeEnumName) : localizeEnumName;
+    return localizeEnumId ? i18n.formatMessage({ id: `localizeEnumId##${index}`, defaultMessage: displayName }) : displayName;
   });
 };
 

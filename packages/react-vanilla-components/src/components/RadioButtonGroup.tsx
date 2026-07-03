@@ -18,7 +18,7 @@
 //  ******************************************************************************
 
 import React, { useCallback } from 'react';
-import { withRuleEngine } from '../utils/withRuleEngine';
+import { withRuleEngine, richTextString } from '../utils/withRuleEngine';
 import { PROPS } from '../utils/type';
 import FieldWrapper from './common/FieldWrapper';
 import { syncAriaDescribedBy } from '../utils/utils';
@@ -73,7 +73,7 @@ const RadioButtonGroup = (props: PROPS) => {
                   checked={value?.length ? value?.includes(enums?.[index]) : null}
                   aria-invalid={!valid}
                 />
-                {item}
+                {richTextString(item)}
               </label>
             </div>
           ))}
