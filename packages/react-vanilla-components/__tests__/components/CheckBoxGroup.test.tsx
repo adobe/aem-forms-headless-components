@@ -6,8 +6,10 @@
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL ADOBE NOR ITS THIRD PARTY PROVIDERS AND PARTNERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+import React from 'react';
+import { render } from '@testing-library/react';
 import CheckBoxGroup from '../../src/components/CheckBoxGroup';
-import { renderComponent } from '../utils';
+import { createForm, Provider, renderComponent } from '../utils';
 import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom/extend-expect"
 
@@ -128,5 +130,20 @@ describe('Checkbox Group', () => {
     const input = renderResponse.container.getElementsByClassName("cmp-adaptiveform-checkboxgroup__widget");
     expect(input).toHaveLength(1);
     expect(input[0]).toHaveAttribute('aria-describedby', `${f.id}__longdescription ${f.id}__shortdescription`)
+  });
+
+  test('enum names should render correctly under a non-default locale', async () => {
+    const f = {
+      ...field,
+      enumNames: ['case à cocher 1', 'case à cocher 2', 'case à cocher 3'],
+    };
+    const form = createForm(f);
+    const component = <CheckBoxGroup {...form.items[0].getState()} />;
+    const wrapper = Provider(form, {}, 'fr-FR');
+    const { getByText } = render(component, { wrapper });
+
+    expect(getByText('case à cocher 1')).not.toBeNull();
+    expect(getByText('case à cocher 2')).not.toBeNull();
+    expect(getByText('case à cocher 3')).not.toBeNull();
   });
 });
