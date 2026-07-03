@@ -1,5 +1,5 @@
-/*
- * Copyright 2023 Adobe, Inc.
+/* ************************************************************************
+ * Copyright 2026 Adobe, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,7 +12,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ *************************************************************************/
 
 import DateTimeInput from '../../src/components/DateTimeInput';
 import userEvent from '@testing-library/user-event';
@@ -32,7 +32,6 @@ const field = {
   readOnly: false,
 };
 
-// Full CRISP JSON with top-level minimum/maximum (af-core 0.22.94+ preserves and validates these).
 const fullField = {
   id: 'datetime-6a4986a577',
   fieldType: 'datetime-input',
