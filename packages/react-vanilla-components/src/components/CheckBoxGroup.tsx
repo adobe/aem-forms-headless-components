@@ -18,7 +18,7 @@
 //  ******************************************************************************
 
 import React, { useCallback } from 'react';
-import { withRuleEngine } from '../utils/withRuleEngine';
+import { withRuleEngine, richTextString } from '../utils/withRuleEngine';
 import { PROPS } from '../utils/type';
 import FieldWrapper from './common/FieldWrapper';
 import { syncAriaDescribedBy } from '../utils/utils';
@@ -91,7 +91,7 @@ const CheckBoxGroup = (props: PROPS) => {
                   checked={value?.includes(enums?.[index])}
                   aria-invalid={!valid}
                 />
-                {item}
+                {richTextString(item)}
               </label>
             </div>
           ))}

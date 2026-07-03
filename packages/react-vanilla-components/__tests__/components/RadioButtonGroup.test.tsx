@@ -19,16 +19,7 @@ const field = {
   },
   fieldType: 'radio-group',
   enum: [1, 2, 3],
-  enumNames: [{
-    value: "radio 1"
-  },
-  {
-    value: "radio 2"
-  },
-  {
-    value: "radio 3"
-  }
-]
+  enumNames: ["radio 1", "radio 2", "radio 3"]
 };
 
 const  fieldTwo = {
@@ -53,10 +44,10 @@ describe('radio Group', () => {
 
     expect(element?.getState().value).toBeUndefined();
 
-    userEvent.click(renderResponse.getByText(f.enumNames[0].value));
+    userEvent.click(renderResponse.getByText(f.enumNames[0]));
     expect(element?.value).toEqual(1);
 
-    userEvent.click(renderResponse.getByText(f.enumNames[2].value));
+    userEvent.click(renderResponse.getByText(f.enumNames[2]));
     expect(element?.value).toEqual(3);
   });
 
@@ -81,13 +72,13 @@ describe('radio Group', () => {
     };
     const { renderResponse, element } = await helper(f);
 
-    userEvent.click(renderResponse.getByText(f.enumNames[0].value));
+    userEvent.click(renderResponse.getByText(f.enumNames[0]));
     expect(element.value).toEqual(1);
 
-    userEvent.click(renderResponse.getByText(f.enumNames[1].value));
+    userEvent.click(renderResponse.getByText(f.enumNames[1]));
     expect(element.value).toEqual(2);
 
-    userEvent.click(renderResponse.getByText(f.enumNames[0].value));
+    userEvent.click(renderResponse.getByText(f.enumNames[0]));
     expect(element.value).toEqual(1);
   });
 
@@ -113,9 +104,9 @@ describe('radio Group', () => {
       visible: false,
     };
     const { renderResponse } = await helper(f);
-    expect(renderResponse.queryByText(f.enumNames[0].value)).toBeNull();
-    expect(renderResponse.queryByText(f.enumNames[1].value)).toBeNull();
-    expect(renderResponse.queryByText(f.enumNames[2].value)).toBeNull();
+    expect(renderResponse.queryByText(f.enumNames[0])).toBeNull();
+    expect(renderResponse.queryByText(f.enumNames[1])).toBeNull();
+    expect(renderResponse.queryByText(f.enumNames[2])).toBeNull();
   });
 
   test('In case of both tooltip and description, tooltip should be visible and onclick of toggle button, description should be visible', async () => {
@@ -150,30 +141,13 @@ describe('radio Group', () => {
     expect(renderResponse.container.innerHTML).toContain('<p>title inside p tags</p>');
   });
 
-  test('Enumnames should be handled for non rich text', async () => {
+  test('enum names containing html should be rendered as rich text', async () => {
     const f = {
       ...field,
-      enumNames: field.enumNames.map((x) => ({
-        ...x,
-        value:'<i>radio 1</i>',
-        richText: true
-      })),
+      enumNames: ['<b>radio 1</b>', 'radio 2', 'radio 3'],
     }
     let { renderResponse } = await helper(f);
-    expect(renderResponse.container.innerHTML).toContain('<i>radio 1</i>');
-  });
-  
-  test('Enumnames should be handled for non rich text', async () => {
-    const f = {
-      ...field,
-      enumNames: field.enumNames.map((x) => ({
-        ...x,
-        value:'<i>radio 1</i>',
-        richText: false
-      })),
-    }
-    let { renderResponse } = await helper(f);
-    expect(renderResponse.container.innerHTML).toContain('radio 1');
+    expect(renderResponse.container.innerHTML).toContain('<b>radio 1</b>');
   });
 
   test('Aria-describedby should contain long des short desc if present otherwise it should be empty', async () => {

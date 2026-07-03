@@ -23,15 +23,7 @@ const field = {
   fieldType: "drop-down",
   placeholder: "select",
   enum: [1, 2, 3],
-  enumNames: [{
-    value: "option 1"
-  },
-  {
-    value: "option 2"
-  },
-  {
-    value: "option 3"
-  }],
+  enumNames: ["option 1", "option 2", "option 3"],
 };
 
 const fieldTwo = {
