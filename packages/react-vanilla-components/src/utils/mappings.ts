@@ -18,6 +18,7 @@ import Button from '../components/Button';
 import CheckBox from '../components/CheckBox';
 import CheckBoxGroup from '../components/CheckBoxGroup';
 import DateInput from '../components/DateInput';
+import DateTimeInput from '../components/DateTimeInput';
 import DropDown from '../components/DropDown';
 import NumberField from '../components/NumberField';
 import RadioGroup from '../components/RadioButtonGroup';
@@ -46,6 +47,8 @@ const mappings = {
   'drop-down': DropDown,
   'number-input': NumberField,
   'date-input': DateInput,
+  'datetime-input': DateTimeInput,
+  'core/fd/components/form/datetime/v1/datetime': DateTimeInput,
   button: Button,
   checkbox: CheckBox,
   'file-input': FileUpload,
