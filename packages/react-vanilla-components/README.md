@@ -14,6 +14,7 @@ The document provides detailed information on React Vanilla Components(HTML5 bas
   - Checkbox
   - Checkbox Group
   - Date Picker
+  - DateTime Input
   - Drop Down
   - Email
   - File Upload
