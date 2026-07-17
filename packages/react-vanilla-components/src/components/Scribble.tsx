@@ -252,6 +252,7 @@ const Scribble = (props: PROPS) => {
         ctx.font = `${fontStyle} ${fontSize}rem ${fontFamily}`;
         textWidth = ctx.measureText(textVal).width;
       }
+      ctx.textBaseline = 'middle';
       ctx.fillText(textVal, 0, rect.height / 2);
       canvasDrawnRef.current = true;
     }
