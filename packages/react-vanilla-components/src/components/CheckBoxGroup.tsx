@@ -97,7 +97,7 @@ const CheckBoxGroup = (props: PROPS) => {
                   value={enums![index]}
                   onChange={changeHandler}
                   readOnly={readOnly}
-                  checked={value?.includes(enums?.[index])}
+                  checked={!!value?.includes(enums?.[index])}
                   aria-invalid={!valid}
                   disabled={!enabled}
                   style={isToggleableLink ? {display: 'none'}: undefined}

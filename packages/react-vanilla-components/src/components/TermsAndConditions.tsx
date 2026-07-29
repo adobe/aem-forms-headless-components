@@ -25,7 +25,7 @@ const TermsAndConditions = (props: PROPS_PANEL) => {
 
   const { mappings, form } = useContext(FormContext);
   const i18n = useFormIntl();
-  const { id, label, enabled, visible, required, appliedCssClassNames, properties, items } = props;
+  const { id, label, enabled, visible, required, appliedCssClassNames, properties, items, readOnly } = props;
   const hasModal = properties?.['fd:showAsPopup'] ?? false;
   const [open, setOpen] = useState(false);
   const textIntersectId = `${props.id}-text-intersect`;
@@ -39,23 +39,27 @@ const TermsAndConditions = (props: PROPS_PANEL) => {
     if (!node) { return; }
 
     const observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) {
-        const item: any = getElementByFieldType('checkbox');
-        if(item) {
-          const itemInForm = form.getElement(item.id);
-          if(itemInForm) {
-            form.getElement(item.id).enabled = true;
-          }          
-          observer.unobserve(node);
-        }
+      if (entry.isIntersecting && enabled && !readOnly) {
+        // keeping same behavior as core components, although we have only 1 approval checkbox to enable
+        const checkboxList: Array<any> = getElementsByFieldType('checkbox');
+        checkboxList.forEach((checkbox: any)=> {
+          if(checkbox) {
+            const itemInForm = form.getElement(checkbox.id);
+            if(itemInForm) {
+              form.getElement(checkbox.id).enabled = true;
+            }          
+            observer.unobserve(node);
+          }
+        });
       }
     }, { threshold: 1 });
 
     observer.observe(node);
     return () => observer.disconnect();
-  }, [items, textIntersectId]);
+  }, [items, textIntersectId, enabled, readOnly]);
 
   const getElementByFieldType = (fieldType: string) => items.find(item => item.fieldType === fieldType);
+  const getElementsByFieldType = (fieldType: string) => items.filter(item => item.fieldType === fieldType);
   const approvalCheckboxItem = getElementByFieldType('checkbox');
 
   const showModal = useCallback((show: boolean) => {
@@ -70,7 +74,7 @@ const TermsAndConditions = (props: PROPS_PANEL) => {
       }
       
     }
-  }, [hasModal]);
+  }, [hasModal, items]);
 
   return (<div
     id={id}
