@@ -99,7 +99,7 @@ const CheckBoxGroup = (props: PROPS) => {
                   readOnly={readOnly}
                   checked={!!value?.includes(enums?.[index])}
                   aria-invalid={!valid}
-                  disabled={!enabled}
+                  disabled={!enabled || readOnly}
                   style={isToggleableLink ? {display: 'none'}: undefined}
                 />
                 {isToggleableLink ? 

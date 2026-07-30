@@ -26,9 +26,10 @@ const CheckBox = (props: PROPS) => {
   const unSelectedValue = (enums?.length || 0) < 2 ? null : enums?.[1];
 
   const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    if(readOnly) { return; }
     const val = e.target.checked ? selectedValue : unSelectedValue;
     props.dispatchChange(val);
-  }, [props.dispatchChange]);
+  }, [props.dispatchChange, readOnly]);
 
   return (
     <div
@@ -56,12 +57,12 @@ const CheckBox = (props: PROPS) => {
             className={'cmp-adaptiveform-checkbox__widget'}
             title={props.tooltipText || ''}
             onChange={handleChange}
-            value={value}
+            value={value || ''}
             checked={selectedValue === value ? true : false}
             name={name}
             required={required}
             readOnly={readOnly}
-            disabled={!enabled}
+            disabled={!enabled || readOnly}
             aria-checked={selectedValue === value ? 'true' : 'false'} aria-invalid={!valid}
             aria-describedby={syncAriaDescribedBy(id, props.tooltip, props.description, props.errorMessage)}
           />

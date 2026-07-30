@@ -29,9 +29,10 @@ const RadioButtonGroup = (props: PROPS) => {
   const orientation = props.layout?.orientation.toUpperCase();
 
   const changeHandler = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+    if(readOnly) { return; }
     const val = event.target.value;
     props.dispatchChange(val);
-  }, [props.dispatchChange]);
+  }, [props.dispatchChange, readOnly]);
 
   return (
     <div
@@ -72,6 +73,7 @@ const RadioButtonGroup = (props: PROPS) => {
                   aria-checked={value === enums![index] ? 'true' : 'false'}
                   checked={value?.length ? value?.includes(enums?.[index]) : null}
                   aria-invalid={!valid}
+                  disabled={!enabled || readOnly}
                 />
                 {richTextString(item)}
               </label>

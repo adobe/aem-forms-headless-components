@@ -62,19 +62,23 @@ const TermsAndConditions = (props: PROPS_PANEL) => {
   const getElementsByFieldType = (fieldType: string) => items.filter(item => item.fieldType === fieldType);
   const approvalCheckboxItem = getElementByFieldType('checkbox');
 
-  const showModal = useCallback((show: boolean) => {
+  const toggleModal = useCallback((show: boolean) => {
     if (hasModal) {
       const item: any = getElementByFieldType('checkbox');
       if(item) {
-        const itemInForm = form.getElement(item.id);
-        // do not show if approval checkbox enabled
-        if(itemInForm && !itemInForm.enabled || !show) {
           setOpen(show);
-        }
       }
       
     }
   }, [hasModal, items]);
+
+  const handleApprovalCheckboxClick = useCallback((event: React.MouseEvent<HTMLDivElement>)=> {
+    // below check is to keep behavior same as core components
+    // label click toggles popup, input won't
+    if((event.target as HTMLElement).tagName !== 'INPUT') {
+      toggleModal(true);
+    }
+  },[toggleModal]);
 
   return (<div
     id={id}
@@ -101,7 +105,7 @@ const TermsAndConditions = (props: PROPS_PANEL) => {
 
           <button type="button" className='cmp-adaptiveform-termsandcondition__close-button'
             aria-label={closeIconLabel}
-            onClick={()=>showModal(false)}>X</button>
+            onClick={()=>toggleModal(false)}>X</button>
 
           <h3>{i18n.formatMessage({ id: 'termsAndConditions.header.label', defaultMessage: 'Please review the terms and conditions' })}</h3>
         </div>)
@@ -127,7 +131,7 @@ const TermsAndConditions = (props: PROPS_PANEL) => {
 
     <div
       className='cmp-adaptiveform-termsandcondition__approvalcheckbox'
-      onClick={()=>showModal(true)}>
+      onClick={handleApprovalCheckboxClick}>
       {approvalCheckboxItem && getChild(approvalCheckboxItem, 1, mappings)}
     </div>
   </div>);
