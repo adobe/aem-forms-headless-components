@@ -12,6 +12,9 @@
 //  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  * See the License for the specific language governing permissions and
 //  * limitations under the License.
+
+//  * The BEM markup is as per the AEM core form components guidelines.
+//  * LINK- https://github.com/adobe/aem-core-forms-components/blob/master/ui.af.apps/src/main/content/jcr_root/apps/core/fd/components/form/termsandconditions/v1/termsandconditions/termsandconditions.html
 //  ******************************************************************************
 
 import React, { useCallback, useContext, useState, useEffect } from 'react';
