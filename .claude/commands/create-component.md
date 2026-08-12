@@ -1,3 +1,8 @@
+---
+description: Scaffold a complete new headless form component for react-vanilla-components — interactive, reads HTL from aem-core-forms-components for exact BEM markup, runs af-core state check, generates component + tests + mappings registration.
+allowed-tools: Read, Edit, Write, Bash
+---
+
 # Skill: create-component
 
 ## Trigger
