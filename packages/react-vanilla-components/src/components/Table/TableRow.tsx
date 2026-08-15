@@ -18,6 +18,7 @@
 //  ******************************************************************************
 
 import React, { useContext } from 'react';
+import { AddItem, RemoveItem } from '@aemforms/af-core';
 import { FormContext, getRenderer } from '@aemforms/af-react-renderer';
 
 type TableRowProps = {
@@ -26,13 +27,23 @@ type TableRowProps = {
   enabled?: boolean;
   readOnly?: boolean;
   repeatable?: boolean;
+  minItems?: number;
+  maxItems?: number;
   items?: any[];
 };
 
 const TableRow = (props: TableRowProps) => {
-  const { id, visible, enabled, readOnly, repeatable, items = [] } = props;
+  const { id, visible, enabled, readOnly, repeatable, minItems, maxItems, items = [] } = props;
   // @ts-ignore
-  const { mappings } = useContext(FormContext);
+  const { mappings, form } = useContext(FormContext);
+
+  const element = repeatable ? form?.getElement(id) : null;
+  const instanceCount = element ? element.getState().items?.length ?? 1 : 1;
+  const showAdd = repeatable && (maxItems === undefined || instanceCount < maxItems);
+  const showRemove = repeatable && (minItems === undefined || instanceCount > minItems);
+
+  const handleAdd = () => element?.dispatch(new AddItem());
+  const handleRemove = () => element?.dispatch(new RemoveItem());
 
   return (
     <tr
@@ -46,24 +57,38 @@ const TableRow = (props: TableRowProps) => {
       {items.map((cell: any, i: number) => {
         const Comp = getRenderer(cell, mappings);
         const isLast = i === items.length - 1;
+        const colspan = cell.properties?.colspan || cell.colspan;
         const tdClass = `cmp-adaptiveform-tablecell${repeatable && isLast ? ' cmp-adaptiveform-tablecell--with-row-controls' : ''}`;
+
         return (
-          <td key={cell.id} className={tdClass}>
+          <td
+            key={cell.id}
+            className={tdClass}
+            colSpan={colspan ? Number(colspan) : undefined}
+          >
             {Comp ? <Comp {...cell} /> : null}
             {repeatable && isLast && (
               <div className="cmp-adaptiveform-tablerow__runtime-controls" role="group">
-                <button
-                  type="button"
-                  className="cmp-adaptiveform-tablerow__add-button"
-                  title="Add row"
-                  aria-label="Add row"
-                />
-                <button
-                  type="button"
-                  className="cmp-adaptiveform-tablerow__remove-button"
-                  title="Remove row"
-                  aria-label="Remove row"
-                />
+                {showAdd && (
+                  <button
+                    type="button"
+                    className="cmp-adaptiveform-tablerow__add-button"
+                    data-cmp-hook-add-instance={id}
+                    title="Add row"
+                    aria-label="Add row"
+                    onClick={handleAdd}
+                  />
+                )}
+                {showRemove && (
+                  <button
+                    type="button"
+                    className="cmp-adaptiveform-tablerow__remove-button"
+                    data-cmp-hook-remove-instance={id}
+                    title="Remove row"
+                    aria-label="Remove row"
+                    onClick={handleRemove}
+                  />
+                )}
               </div>
             )}
           </td>

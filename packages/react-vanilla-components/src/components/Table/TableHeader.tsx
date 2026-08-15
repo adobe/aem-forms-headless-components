@@ -20,16 +20,21 @@
 import React, { useContext } from 'react';
 import { FormContext, getRenderer } from '@aemforms/af-react-renderer';
 
+type SortDirection = 'asc' | 'desc' | null;
+
 type TableHeaderProps = {
   id: string;
   visible?: boolean;
   enabled?: boolean;
   items?: any[];
   enableSorting?: boolean;
+  sortColIndex?: number;
+  sortDirection?: SortDirection;
+  onSort?: (colIndex: number) => void;
 };
 
 const TableHeader = (props: TableHeaderProps) => {
-  const { id, visible, enabled, items = [], enableSorting } = props;
+  const { id, visible, enabled, items = [], enableSorting, sortColIndex = -1, sortDirection = null, onSort } = props;
   // @ts-ignore
   const { mappings } = useContext(FormContext);
 
@@ -41,23 +46,36 @@ const TableHeader = (props: TableHeaderProps) => {
       data-cmp-visible={visible}
       data-cmp-enabled={enabled}
     >
-      {items.map((cell: any) => {
+      {items.map((cell: any, index: number) => {
         const Comp = getRenderer(cell, mappings);
         const content = Comp ? <Comp key={`${cell.id}-content`} {...cell} /> : null;
+        const colspan = cell.properties?.colspan || cell.colspan;
+        const disableSorting = cell.properties?.disableSorting;
+        const showSort = enableSorting && !disableSorting;
+        const isActive = sortColIndex === index;
+        const sortDir: SortDirection = isActive ? sortDirection : null;
+
         return (
           <th
             key={cell.id}
             className="cmp-adaptiveform-tablehead"
             scope="col"
+            colSpan={colspan ? Number(colspan) : undefined}
             data-cmp-hook-tablehead="header"
           >
-            {enableSorting ? (
+            {showSort ? (
               <div className="cmp-adaptiveform-table__sort-header-inner">
-                <div className="cell-wrapper">{content}</div>
+                {content}
                 <button
                   type="button"
-                  className="cmp-adaptiveform-table__sort-button"
+                  className={[
+                    'cmp-adaptiveform-table__sort-button',
+                    sortDir === 'asc' ? 'cmp-adaptiveform-table__sort-button--asc' : '',
+                    sortDir === 'desc' ? 'cmp-adaptiveform-table__sort-button--desc' : '',
+                  ].filter(Boolean).join(' ')}
+                  data-cmp-hook-table-sort={index}
                   aria-label="Sort column"
+                  onClick={() => onSort?.(index)}
                 />
               </div>
             ) : (

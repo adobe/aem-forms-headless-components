@@ -18,18 +18,70 @@
 //  ******************************************************************************
 
 import React from 'react';
+import { FormContext } from '@aemforms/af-react-renderer';
 import { withRuleEnginePanel } from '../../utils/withRuleEngine';
 import { PROPS_PANEL } from '../../utils/type';
-import LabelWithDescription from '../common/LabelWithDescription';
 import TableHeader from './TableHeader';
 import TableRow from './TableRow';
+
+type SortDirection = 'asc' | 'desc' | null;
+
+type SortState = {
+  colIndex: number;
+  direction: SortDirection;
+};
 
 const Table = (props: PROPS_PANEL) => {
   const { items, id, visible, enabled, label, appliedCssClassNames } = props;
   const enableSorting = (props as any).enableSorting as boolean;
+  const columnWidth = ((props as any).columnWidth
+    || (props as any).properties?.['fd:dor']?.columnWidth) as string | undefined;
+
+  // @ts-ignore
+  const { form } = React.useContext(FormContext);
 
   const headerItems = items.filter((item: any) => item[':type'] === 'table-header');
-  const rowItems = items.filter((item: any) => item[':type'] === 'table-row');
+  const rawRowItems = items.filter((item: any) => item[':type'] === 'table-row');
+
+  const [sortState, setSortState] = React.useState<SortState>({ colIndex: -1, direction: null });
+
+  const handleSort = React.useCallback((colIndex: number) => {
+    setSortState(prev => {
+      if (prev.colIndex !== colIndex) return { colIndex, direction: 'asc' };
+      return { colIndex, direction: prev.direction === 'asc' ? 'desc' : 'asc' };
+    });
+  }, []);
+
+  const getLiveCellValue = React.useCallback((rowId: string, colIndex: number): string => {
+    const rowEl = form?.getElement(rowId);
+    if (!rowEl) return '';
+    const rowState = rowEl.getState();
+    const cell = rowState.items?.[colIndex];
+    if (!cell) return '';
+    const val = cell.value ?? cell.default ?? '';
+    return String(val).toLowerCase();
+  }, [form]);
+
+  const rowItems = React.useMemo(() => {
+    if (!sortState.direction || sortState.colIndex < 0) return rawRowItems;
+    return [...rawRowItems].sort((a: any, b: any) => {
+      const av = getLiveCellValue(a.id, sortState.colIndex);
+      const bv = getLiveCellValue(b.id, sortState.colIndex);
+      const cmp = av.localeCompare(bv, undefined, { numeric: true, sensitivity: 'base' });
+      return sortState.direction === 'asc' ? cmp : -cmp;
+    });
+  }, [rawRowItems, sortState, getLiveCellValue]);
+
+  // Parse "1,2,1" into percentage widths: total=4, cols=[25%, 50%, 25%]
+  const colWidths: string[] = React.useMemo(() => {
+    if (!columnWidth) return [];
+    const parts = columnWidth.split(',').map((s: string) => Number(s.trim())).filter(Boolean);
+    if (!parts.length) return [];
+    const total = parts.reduce((a: number, b: number) => a + b, 0);
+    return parts.map((w: number) => `${((w / total) * 100).toFixed(2)}%`);
+  }, [columnWidth]);
+
+  const tableStyle = columnWidth ? { tableLayout: 'fixed' as const, width: '100%' } : undefined;
 
   return (
     <div
@@ -40,20 +92,51 @@ const Table = (props: PROPS_PANEL) => {
       data-cmp-enabled={enabled}
       data-cmp-sorting-enabled={enableSorting ? 'true' : 'false'}
     >
-      <LabelWithDescription
-        bemBlock="cmp-adaptiveform-table"
-        label={label}
-        id={id}
-        tooltip={props.tooltip}
-        description={props.description}
-      />
+      {label?.visible !== false && (
+        <div className="cmp-adaptiveform-table__title cmp-container__label">
+          {label?.value}
+        </div>
+      )}
+      <div className="cmp-adaptiveform-table__help-container">
+        {props.tooltip && (
+          <div
+            className="cmp-adaptiveform-table__questionmark"
+            id={`${id}__shortdescription`}
+          >
+            {props.tooltip}
+          </div>
+        )}
+      </div>
+      {props.description && (
+        <div
+          className="cmp-adaptiveform-table__longdescription"
+          id={`${id}__longdescription`}
+        >
+          {props.description}
+        </div>
+      )}
       <table
         className="cmp-adaptiveform-table__widget"
         aria-label={label?.value || ''}
+        style={tableStyle}
       >
+        {colWidths.length > 0 && (
+          <colgroup>
+            {colWidths.map((w, i) => (
+              <col key={i} style={{ width: w }} />
+            ))}
+          </colgroup>
+        )}
         <thead className="cmp-adaptiveform-table__head">
           {headerItems.map((item: any) => (
-            <TableHeader key={item.id} {...item} enableSorting={enableSorting} />
+            <TableHeader
+              key={item.id}
+              {...item}
+              enableSorting={enableSorting}
+              sortColIndex={sortState.colIndex}
+              sortDirection={sortState.direction}
+              onSort={handleSort}
+            />
           ))}
         </thead>
         <tbody className="cmp-adaptiveform-table__body">
