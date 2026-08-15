@@ -14,41 +14,9 @@ Do NOT write any code until you have completed this phase.
 If the user did not provide a component name, ask:
 > What is the component name? (PascalCase, e.g. `RatingInput`, `ColorPicker`, `PhoneInput`)
 
-### 0b — model.json item
+### 0b — Special behaviors
 
-Ask the user to paste the **model.json item** for the component. Explain what this is if they look unsure:
-
-> The model.json is the JSON output AEM Core Components returns when you render a form and call the form's `.model.json` endpoint (e.g. `http://localhost:4502/content/forms/af/<form-name>.model.json`).
->
-> From the response, find the `items` array and paste the single **object that represents this field**. It will look like:
-> ```json
-> {
->   "id": "telephoneinput-abc123",
->   "fieldType": "text-input",
->   ":type": "core/fd/components/form/telephoneinput/v1/telephoneinput",
->   "name": "telephoneInput1",
->   "label": { "value": "Phone Number", "visible": true },
->   "type": "string",
->   "visible": true,
->   "required": false,
->   "enabled": true,
->   "readOnly": false,
->   "constraintMessages": {},
->   "properties": {
->     "afs:layout": { "tooltipVisible": false },
->     "fd:path": "/content/forms/af/myform/jcr:content/guideContainer/telephoneinput"
->   }
-> }
-> ```
->
-> If you don't have access to an AEM instance, describe the component's intended behavior and known properties and I'll infer the field shape.
-
-**If the user provides a model.json item:** proceed to Phase 1.
-**If the user describes the component instead:** construct a best-guess field object, show it to the user, and ask them to confirm or correct it before proceeding.
-
-### 0c — Special behaviors
-
-After receiving the model.json, ask:
+Ask:
 
 > Does this component have any of the following special behaviors? (answer all that apply)
 > - **Modal / dialog** (opens a popup for input — like Scribble's canvas dialog)
@@ -62,7 +30,7 @@ After receiving the model.json, ask:
 
 This determines the component template and which HOC (`withRuleEngine` vs `withRuleEnginePanel`) to use.
 
-### 0d — Reference component
+### 0c — Reference component
 
 Ask:
 > Is there an existing component in this repo that is most similar? (e.g. "similar to DateTimeInput", "similar to Scribble", "similar to DropDown")
@@ -71,15 +39,11 @@ Ask:
 
 Look at `packages/react-vanilla-components/src/components/` and pick the closest existing component as a reference for the implementation style.
 
-### 0e — Read core components HTL for ground-truth markup
+### 0d — Read HTL from core components for ground-truth markup
 
 The HTL template in `aem-core-forms-components` is the authoritative source for BEM class names, `data-cmp-*` attributes, CSS modifier classes, and widget element structure. Read it before writing any code.
 
-Derive the component folder name from the `":type"` resource type path. For example:
-- `":type": "core/fd/components/form/telephoneinput/v1/telephoneinput"` → folder `telephoneinput`
-- `":type": "core/fd/components/form/ratinginput/v1/ratinginput"` → folder `ratinginput`
-
-If `":type"` is absent, derive from the component name lowercased.
+Derive the component folder name from the component name lowercased (e.g. `RatingInput` → `ratinginput`).
 
 **Step 1 — Check for local sibling repo:**
 ```bash
@@ -91,28 +55,19 @@ ls ../aem-core-forms-components/ui.af.apps/src/main/content/jcr_root/apps/core/f
 cat "../aem-core-forms-components/ui.af.apps/src/main/content/jcr_root/apps/core/fd/components/form/{componentfolder}/v1/{componentfolder}/{componentfolder}.html"
 ```
 
-Also read the CRISP JSON (component dialog / schema definition) if present:
-```bash
-cat "../aem-core-forms-components/ui.af.apps/src/main/content/jcr_root/apps/core/fd/components/form/{componentfolder}/v1/{componentfolder}/.content.xml" 2>/dev/null
-# or look for _cq_dialog or model JSON files in the component folder
-ls "../aem-core-forms-components/ui.af.apps/src/main/content/jcr_root/apps/core/fd/components/form/{componentfolder}/"
-```
-
 **Step 2b — If local repo does not exist, fetch from GitHub:**
 ```bash
 gh api "repos/adobe/aem-core-forms-components/contents/ui.af.apps/src/main/content/jcr_root/apps/core/fd/components/form/{componentfolder}/v1/{componentfolder}/{componentfolder}.html" \
   --jq '.content' | base64 -d
 ```
 
-If `gh` is unavailable, fall back to listing the folder to find the right filename:
+If `gh` is unavailable, list the folder first:
 ```bash
 gh api "repos/adobe/aem-core-forms-components/contents/ui.af.apps/src/main/content/jcr_root/apps/core/fd/components/form/{componentfolder}/v1/{componentfolder}" \
   --jq '.[].name'
 ```
 
 **Step 3 — Extract from HTL:**
-
-Read the HTL output and extract:
 
 | HTL element | What to record |
 |---|---|
@@ -121,37 +76,128 @@ Read the HTL output and extract:
 | All `data-cmp-*` attributes | Any beyond the standard five — note names and values |
 | State modifier classes | `--filled`/`--empty`, `--checked`/`--unchecked`, `--disabled`, custom |
 | Widget element | Tag name, nesting depth, wrapper divs, class names |
-| Extra wrapper divs | e.g. `__input-wrapper`, `__options-wrapper` present in DateTimeInput |
+| Extra wrapper divs | e.g. `__input-wrapper`, `__options-wrapper` |
 | CSS custom properties | Any `--cmp-*` CSS variables set inline |
 
-If the HTL file is not found (new/private component), fall back to inferring BEM names from the model.json `fieldType` and component name. State this explicitly in the Phase 1 confirmation.
+If HTL not found (new/private component), fall back to inferring BEM from component name. State this explicitly.
 
-**Step 4 — Read the existing headless implementation if any:**
+### 0e — Read Sling Model from core components for ground-truth schema
 
-Check if a reference headless component for this field type already exists (e.g. a partial or older implementation):
+The Sling Model interface is the authoritative source for what properties, constraints, and `fieldType`/`":type"` the component exports to JSON. This replaces asking the user for form-specific model.json.
+
+**Step 1 — Find the Java model interface:**
+
+```bash
+# Local repo
+find ../aem-core-forms-components/core/src/main/java -name "{ComponentName}.java" 2>/dev/null
+# or
+ls ../aem-core-forms-components/core/src/main/java/com/adobe/cq/forms/core/components/models/form/ 2>/dev/null | grep -i {componentfolder}
+```
+
+If local repo absent, fetch from GitHub:
+```bash
+gh api "repos/adobe/aem-core-forms-components/contents/core/src/main/java/com/adobe/cq/forms/core/components/models/form" \
+  --jq '.[].name' | grep -i {componentfolder}
+```
+
+Then read the interface file:
+```bash
+gh api "repos/adobe/aem-core-forms-components/contents/core/src/main/java/com/adobe/cq/forms/core/components/models/form/{ComponentName}.java" \
+  --jq '.content' | base64 -d
+```
+
+**Step 2 — Also read the Sling Model implementation:**
+
+```bash
+# Local
+find ../aem-core-forms-components/core/src/main/java -name "{ComponentName}Impl.java" 2>/dev/null | head -3
+```
+
+Or from GitHub:
+```bash
+gh api "repos/adobe/aem-core-forms-components/contents/core/src/main/java/com/adobe/cq/forms/core/components/internal/models/v1/form/{ComponentName}Impl.java" \
+  --jq '.content' | base64 -d
+```
+
+**Step 3 — Extract from Sling Model:**
+
+| Java annotation / method | What to record |
+|---|---|
+| `@Model` `resourceType` | The `":type"` string registered in mappings |
+| Methods returning `String fieldType()` | The `fieldType` key for mappings |
+| `@Default` on getters | Default values for props |
+| Getter return types | Prop types (`String`, `Boolean`, `Number`, `String[]`) |
+| Methods named `getMinimum`, `getMaximum`, `getMinLength`, etc. | Active constraints |
+| `getType()` / `getFormat()` | Data type and format — determines HTML input type |
+| `getEnum()` / `getEnumNames()` | Present → select-type component |
+| `getItems()` | Present → container component |
+| `getProperties()` | Extra properties passed through `afs:layout` |
+
+**Step 4 — Read component `.content.xml` for `fieldType` and `resourceType` if not in Java:**
+
+```bash
+# Local
+cat "../aem-core-forms-components/ui.af.apps/src/main/content/jcr_root/apps/core/fd/components/form/{componentfolder}/v1/{componentfolder}/.content.xml" 2>/dev/null
+```
+
+Or GitHub:
+```bash
+gh api "repos/adobe/aem-core-forms-components/contents/ui.af.apps/src/main/content/jcr_root/apps/core/fd/components/form/{componentfolder}/v1/{componentfolder}/.content.xml" \
+  --jq '.content' | base64 -d
+```
+
+**Step 5 — Construct the minimal field object from code:**
+
+Using what you read from HTL + Sling Model, construct the field schema. This is NOT form-specific — it is the canonical shape of what the component exports:
+
+```json
+{
+  "fieldType": "<from Sling Model / .content.xml>",
+  ":type": "core/fd/components/form/{componentfolder}/v1/{componentfolder}",
+  "type": "<string|number|integer|boolean>",
+  "format": "<date|date-time|time|email|uri|tel — if applicable>",
+  "name": "{componentfolder}1",
+  "label": { "value": "<ComponentName>", "visible": true },
+  "visible": true,
+  "required": false,
+  "enabled": true,
+  "readOnly": false,
+  "constraintMessages": {}
+  // add minimum, maximum, minLength, maxLength, pattern, enum, enumNames
+  // only if Sling Model exposes those getters
+}
+```
+
+If the Sling Model / HTL files are not found, ask:
+> I couldn't find the component in `aem-core-forms-components`. Do you have a model.json item from an AEM instance, or can you describe the component's properties?
+
+Only fall back to user-provided model.json when the code is genuinely unavailable.
+
+**Step 6 — Read the existing headless implementation if any:**
+
 ```bash
 ls packages/react-vanilla-components/src/components/ | grep -i {componentfolder}
 ```
 
 ---
 
-## Phase 1 — Analyze the model.json (before writing code)
+## Phase 1 — Analyze the component schema (before writing code)
 
-Extract and verify these fields from the model.json item. Show your analysis to the user before proceeding.
+Using the field schema derived from code (Phase 0e), show your analysis to the user before proceeding.
 
 ### 1a — Key fields to extract
 
-| model.json field | What to derive |
+| Schema field | What to derive |
 |---|---|
 | `fieldType` | Primary key in `mappings.ts` |
-| `":type"` | Secondary key in `mappings.ts` (resource type string) — may be absent if custom |
+| `":type"` | Secondary key in `mappings.ts` (resource type string) |
 | `type` + `format` | HTML element and input type (see table below) |
-| `enum` / `enumNames` | Indicates select-type component |
+| `enum` / `enumNames` present | Select-type component |
 | `items` present | Container component — use `withRuleEnginePanel` |
-| `minimum` / `maximum` | Check type compatibility (see af-core contract) |
+| `minimum` / `maximum` getters | Check type compatibility (see af-core contract) |
 | `constraintMessages` | Lists which constraints are active |
-| `properties['afs:layout']` | Layout side-channel keys the author already uses |
-| `default` | Becomes `props.value` on first render — check format compatibility |
+| `properties['afs:layout']` | Layout side-channel keys |
+| `default` getter | Becomes `props.value` on first render — check format compatibility |
 
 ### 1b — `type` + `format` → HTML element
 
@@ -171,7 +217,7 @@ Extract and verify these fields from the model.json item. Show your analysis to 
 
 ### 1c — Naming derivations
 
-Use values read from the HTL template (Phase 0e) as the authoritative source. Fall back to inference only when HTL was unavailable.
+Use values read from the HTL template (Phase 0d) as the authoritative source. Fall back to inference only when HTL was unavailable.
 
 - **BEM block**: read from HTL root `<div>` class — e.g. `cmp-adaptiveform-telephoneinput`
 - **`data-cmp-is`**: read from HTL `data-cmp-is` attribute — e.g. `adaptiveFormTelephoneInput`
@@ -179,7 +225,7 @@ Use values read from the HTL template (Phase 0e) as the authoritative source. Fa
 - **State modifier classes**: use exactly the modifiers from HTL (`--filled`/`--empty`, `--checked`, etc.)
 - **File name**: `{ComponentName}.tsx`
 
-If HTL was not available, infer: BEM block = `cmp-adaptiveform-{lowercasename}`, `data-cmp-is` = `adaptiveForm{PascalName}`, and flag this in the confirmation.
+If HTL was not available, infer: BEM block = `cmp-adaptiveform-{lowercasename}`, `data-cmp-is` = `adaptiveForm{PascalName}`, and flag this.
 
 ### 1d — Show analysis and confirm
 
@@ -188,24 +234,25 @@ Before writing any code, output a confirmation block like this:
 ```
 Component: RatingInput
 File: src/components/RatingInput.tsx
-fieldType: "rating-input"
-":type": "core/fd/components/form/ratinginput/v1/ratinginput"  (or absent)
+fieldType: "rating-input"                              ← from Sling Model / .content.xml
+":type": "core/fd/components/form/ratinginput/v1/ratinginput"   ← from Sling Model resourceType
 HTML element: <input type="number">
-BEM block: cmp-adaptiveform-ratinginput          ← from HTL (or inferred)
-data-cmp-is: adaptiveFormRatingInput             ← from HTL (or inferred)
-Extra wrappers: none                             ← or e.g. "__input-wrapper div present"
-State modifiers: --filled / --empty              ← from HTL
+BEM block: cmp-adaptiveform-ratinginput               ← from HTL
+data-cmp-is: adaptiveFormRatingInput                  ← from HTL
+Extra wrappers: none
+State modifiers: --filled / --empty                   ← from HTL
 HOC: withRuleEngine
 Reference component: NumberField.tsx
 
-Constraints present: minimum, maximum
+Constraints present in Sling Model: minimum, maximum
 Constraints af-core may clear: none for type=number
 Value normalisation needed: no
 afs:layout side-channel needed: no
 
 Special behaviors: none
 
-HTL source: local sibling repo  (or: GitHub fetch, or: not found — inferred)
+Schema source: Sling Model (local repo)  [or: GitHub, or: not found — inferred]
+HTL source: local sibling repo           [or: GitHub, or: not found — inferred]
 
 Does this look right? Any corrections before I proceed?
 ```
@@ -216,14 +263,14 @@ Does this look right? Any corrections before I proceed?
 
 ## Phase 2 — af-core state check
 
-Run this check to confirm which fields actually reach props at runtime (af-core shapes the state — it is not a raw copy of model.json):
+Run this check to confirm which fields actually reach props at runtime (af-core shapes the state — it is not a raw pass-through of the JSON):
 
 ```bash
 cd packages/react-vanilla-components
 node -e "
 const {createFormInstance} = require('@aemforms/af-core');
 const form = createFormInstance({items:[
-  /* paste the model.json item here */
+  /* paste the minimal field object constructed in Phase 0e Step 5 */
 ]});
 console.log(JSON.stringify(form.items[0].getState(), null, 2));
 "
@@ -266,11 +313,11 @@ Name custom keys clearly (e.g. `sliderMin`, not `min`) to distinguish from stand
 
 Report to the user:
 - Which fields are present in state and their actual types/values
-- Which fields from model.json are absent from state
+- Which fields from the constructed schema are absent from state
 - Whether value normalisation is needed
 - Whether any constraints need the `afs:layout` side-channel
 
-**If the state check output contradicts the model.json analysis, update Phase 1 confirmation before generating code.**
+**If the state check output contradicts the schema analysis, update Phase 1 confirmation before generating code.**
 
 ---
 
@@ -278,7 +325,7 @@ Report to the user:
 
 File: `packages/react-vanilla-components/src/components/{ComponentName}.tsx`
 
-Use the **exact** BEM block, `data-cmp-is`, wrapper div structure, and state modifier classes extracted from the HTL in Phase 0e. Do not invent or guess these — they must match the core components markup so that the existing core component CSS applies correctly to the headless output.
+Use the **exact** BEM block, `data-cmp-is`, wrapper div structure, and state modifier classes extracted from the HTL in Phase 0d. Do not invent or guess these — they must match the core components markup so that the existing core component CSS applies correctly to the headless output.
 
 ### License header (always include)
 
@@ -427,7 +474,7 @@ export default withRuleEngine({ComponentName});
 - Map `minLength`, `maxLength`, `rows`, `cols` from state
 - `dispatchChange(event.target.value)`
 
-**Container components** (model.json has `items` array):
+**Container components** (Sling Model has `getItems()`):
 - Import and use `withRuleEnginePanel` instead of `withRuleEngine`
 - Accept `PROPS_PANEL` type instead of `PROPS`
 - Render children via the AEM renderer — use `Panel.tsx` or `Accordion/Accordion.tsx` as reference
@@ -456,8 +503,8 @@ import {ComponentName} from '../components/{ComponentName}';
 Add entries in the `mappings` object:
 ```ts
 '{fieldType}': {ComponentName},
-// If model.json has a ":type" resource type string:
-'{":type" value}': {ComponentName},
+// Resource type string from Sling Model @Model resourceType:
+'core/fd/components/form/{componentfolder}/v1/{componentfolder}': {ComponentName},
 ```
 
 Keep simple `fieldType` keys grouped; resource-type strings grouped — match existing file structure.
@@ -513,8 +560,8 @@ Only test constraints confirmed by state check. For constraints read from `props
 **5. Value normalisation**
 If the component normalises the value, write a dedicated test: pass the raw af-core format, assert the HTML input shows the normalised form.
 
-**6. Use the model.json item as `fullField`**
-Use the exact model.json item provided by the user as the `fullField` object. This is the most realistic test fixture — it mirrors what AEM will actually send.
+**6. `fullField` — use the canonical schema constructed from code**
+`fullField` is the minimal field object constructed in Phase 0e Step 5, not a user-pasted form-specific JSON. This keeps tests stable across different AEM form instances.
 
 ### Test template
 
@@ -541,17 +588,29 @@ const field = {
   label: { value: '{Human Readable Label}', visible: true },
   fieldType: '{fieldType}',
   type: '{type}',
-  // format: '{format}',  // include if present in model.json
+  // format: '{format}',  // include if present in schema
   visible: true,
   required: true,
   enabled: true,
   readOnly: false,
 };
 
-// Full field — exact model.json item as provided by the user.
-// This is what AEM will actually send at runtime.
+// Full field — canonical schema derived from Sling Model + HTL.
+// Stable across form instances — not a user-pasted model.json snippet.
 const fullField = {
-  // paste model.json item here exactly
+  fieldType: '{fieldType}',
+  ':type': 'core/fd/components/form/{componentfolder}/v1/{componentfolder}',
+  name: '{fieldName}',
+  label: { value: '{Human Readable Label}', visible: true },
+  type: '{type}',
+  // format: '{format}',
+  visible: true,
+  required: false,
+  enabled: true,
+  readOnly: false,
+  constraintMessages: {},
+  // include only constraints confirmed by Sling Model getters + state check:
+  // minimum: ..., maximum: ..., minLength: ..., maxLength: ..., pattern: ...
 };
 
 const helper = renderComponent({ComponentName});
@@ -631,7 +690,7 @@ describe('{ComponentName}', () => {
   // - Value normalisation: pass raw af-core value, assert input.value shows normalised form
   // - afs:layout side-channel: pass properties['afs:layout'] key, assert HTML attribute is set
 
-  test('full model.json field renders without errors', async () => {
+  test('full canonical schema field renders without errors', async () => {
     const { renderResponse } = await helper(fullField);
     expect(renderResponse.container.querySelector('input[type="{htmlInputType}"]')).not.toBeNull();
     expect(renderResponse.queryByText('{Human Readable Label}')).not.toBeNull();
@@ -666,20 +725,20 @@ Fix all errors before reporting done. Common failures and their causes:
 
 ## Checklist before finishing
 
-- [ ] model.json item analysed and confirmed with user before writing any code
-- [ ] af-core state check run — props match actual state, not raw model.json
-- [ ] BEM block: `cmp-adaptiveform-{lowercasename}` — `data-cmp-is`: `adaptiveForm{PascalName}`
+- [ ] Component schema derived from Sling Model + HTL, NOT from user-pasted model.json
+- [ ] af-core state check run using the code-derived minimal field — props match actual state
+- [ ] BEM block and `data-cmp-is` read from HTL (not inferred), or flagged as inferred if HTL unavailable
 - [ ] Outer `<div>` has all five `data-cmp-*` attributes
-- [ ] Widget element (`input`/`select`/`textarea`/custom) has `id="${id}-widget"`, `aria-label`, `aria-invalid`, `aria-describedby`
+- [ ] Widget element has `id="${id}-widget"`, `aria-label`, `aria-invalid`, `aria-describedby`
 - [ ] `FieldWrapper` receives `bemBlock`, `label`, `id`, `tooltip`, `description`, `isError`, `errorMessage`
 - [ ] Typed constraint props destructured from `props`; runtime-only ones via `(props as any).X` or `props.layout.X`
 - [ ] `dispatchBlur` called correctly — with value for text-like inputs, without for others
 - [ ] Default export is `withRuleEngine({ComponentName})` (or `withRuleEnginePanel` for containers), not the bare function
-- [ ] `mappings.ts` has entries for `fieldType` and `":type"` resource type (if present in model.json)
+- [ ] `mappings.ts` has entries for `fieldType` and resource type string from Sling Model `@Model` annotation
 - [ ] `src/index.ts` imports and re-exports the component
 - [ ] Value normalisation applied if state check showed format mismatch
 - [ ] Test uses correct input method per input type
 - [ ] Test label/input linking: `input.id === label.for` (no manual `-widget` suffix)
-- [ ] `fullField` in tests uses the exact model.json item provided by the user
+- [ ] `fullField` in tests uses canonical schema from code, not a form-specific model.json snippet
 - [ ] `npm run build` clean — run from inside package dir
 - [ ] All Jest tests pass — run from inside package dir
