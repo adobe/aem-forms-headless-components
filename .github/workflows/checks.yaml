@@ -12,7 +12,7 @@ jobs:
     
     steps:
     - name: "Block Fork PRs"
-      if: github.event.pull_request.head.repo.fork == true
+      if: github.event.pull_request.head.repo.full_name != github.repository
       run: |
         echo "PRs from forked repositories are not allowed."
         exit 1
