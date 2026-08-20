@@ -12,10 +12,13 @@ jobs:
     
     steps:
     - name: "Block Fork PRs"
+      env:
+        HEAD_REPO: ${{ github.event.pull_request.head.repo.full_name }}
+        BASE_REPO: ${{ github.repository }}
       run: |
-        echo "Head repo: ${{ github.event.pull_request.head.repo.full_name }}"
-        echo "Base repo: ${{ github.repository }}"
-        if [ "${{ github.event.pull_request.head.repo.full_name }}" != "${{ github.repository }}" ]; then
+        echo "Head repo: $HEAD_REPO"
+        echo "Base repo: $BASE_REPO"
+        if [ "$HEAD_REPO" != "$BASE_REPO" ]; then
           echo "PRs from forked repositories are not allowed."
           exit 1
         fi
