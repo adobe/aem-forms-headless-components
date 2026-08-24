@@ -34,6 +34,9 @@ const TermsAndConditions = (props: PROPS_PANEL) => {
   const textIntersectId = `${props.id}-text-intersect`;
   const closeIconLabel = i18n.formatMessage({ id: 'termsAndConditions.closeButton.ariaLabel', defaultMessage: 'Close terms and conditions document' });
 
+  const getElementByFieldType = (fieldType: string) => items.find(item => item.fieldType === fieldType);
+  const getElementsByFieldType = (fieldType: string) => items.filter(item => item.fieldType === fieldType);
+
   useEffect(() => {
     const textItem = getElementByFieldType('plain-text');
     if (!textItem) { return; }
@@ -51,9 +54,9 @@ const TermsAndConditions = (props: PROPS_PANEL) => {
             if(itemInForm) {
               form.getElement(checkbox.id).enabled = true;
             }          
-            observer.unobserve(node);
           }
         });
+        observer.unobserve(node);
       }
     }, { threshold: 1 });
 
@@ -61,10 +64,8 @@ const TermsAndConditions = (props: PROPS_PANEL) => {
     return () => observer.disconnect();
   }, [items, textIntersectId, enabled, readOnly]);
 
-  const getElementByFieldType = (fieldType: string) => items.find(item => item.fieldType === fieldType);
-  const getElementsByFieldType = (fieldType: string) => items.filter(item => item.fieldType === fieldType);
   const approvalCheckboxItem = getElementByFieldType('checkbox');
-
+  
   const toggleModal = useCallback((show: boolean) => {
     if (hasModal) {
       const item: any = getElementByFieldType('checkbox');
@@ -119,13 +120,11 @@ const TermsAndConditions = (props: PROPS_PANEL) => {
             items.map((item: any, index) => {
               // text or link render below 
               const classSuffix = item.fieldType === 'plain-text' ? 'text' : item.fieldType === 'checkbox-group' ? 'link' : null;
-              {
                 return (classSuffix && (<div key={item.id}
                   className={`cmp-adaptiveform-termsandcondition__${classSuffix}`}>
                   {getChild(item, index, mappings)}
                   {classSuffix === 'text' && (<div id={`${props.id}-text-intersect`} className="cmp-adaptiveform-termsandcondition__text-intersect"></div>)}
                 </div>));
-              }
             })
           }
         </div>

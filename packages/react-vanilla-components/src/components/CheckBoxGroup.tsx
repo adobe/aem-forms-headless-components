@@ -27,7 +27,7 @@ const CheckBoxGroup = (props: PROPS) => {
   const { id, label, required, enumNames, enum: enums, value, name, readOnly, visible, enabled, appliedCssClassNames, valid } = props;
   const options = enumNames && enumNames.length ? enumNames : enums || [];
   const orientation = props.layout?.orientation.toUpperCase();
-  const isToggleableLink = props[':type'].includes('toggleablelink');
+  const isToggleableLink = props[':type']?.includes('toggleablelink');
 
   const getValue = useCallback((value: any) => {
     if (value) {
@@ -107,6 +107,7 @@ const CheckBoxGroup = (props: PROPS) => {
                     target='_blank'
                     href={enums![index]}
                     title={item || ''}
+                    rel='noopener noreferrer'
                     onClick={()=>linkClickHandler(index)}
                   >{richTextString(item)}</a> : richTextString(item)
                 }
