@@ -18,7 +18,6 @@
 //  ******************************************************************************
 
 import React, { useContext } from 'react';
-import { AddItem, RemoveItem } from '@aemforms/af-core';
 import { FormContext, getRenderer } from '@aemforms/af-react-renderer';
 
 type TableRowProps = {
@@ -26,24 +25,19 @@ type TableRowProps = {
   visible?: boolean;
   enabled?: boolean;
   readOnly?: boolean;
-  repeatable?: boolean;
-  minItems?: number;
-  maxItems?: number;
   items?: any[];
+  onAdd?: () => void;
+  onRemove?: () => void;
+  showAdd?: boolean;
+  showRemove?: boolean;
 };
 
 const TableRow = (props: TableRowProps) => {
-  const { id, visible, enabled, readOnly, repeatable, minItems, maxItems, items = [] } = props;
+  const { id, visible, enabled, readOnly, items = [], onAdd, onRemove, showAdd, showRemove } = props;
   // @ts-ignore
-  const { mappings, form } = useContext(FormContext);
+  const { mappings } = useContext(FormContext);
 
-  const element = repeatable ? form?.getElement(id) : null;
-  const instanceCount = element ? element.getState().items?.length ?? 1 : 1;
-  const showAdd = repeatable && (maxItems === undefined || instanceCount < maxItems);
-  const showRemove = repeatable && (minItems === undefined || instanceCount > minItems);
-
-  const handleAdd = () => element?.dispatch(new AddItem());
-  const handleRemove = () => element?.dispatch(new RemoveItem());
+  const isRepeatable = !!(onAdd || onRemove);
 
   return (
     <tr
@@ -58,7 +52,7 @@ const TableRow = (props: TableRowProps) => {
         const Comp = getRenderer(cell, mappings);
         const isLast = i === items.length - 1;
         const colspan = cell.properties?.colspan || cell.colspan;
-        const tdClass = `cmp-adaptiveform-tablecell${repeatable && isLast ? ' cmp-adaptiveform-tablecell--with-row-controls' : ''}`;
+        const tdClass = `cmp-adaptiveform-tablecell${isRepeatable && isLast ? ' cmp-adaptiveform-tablecell--with-row-controls' : ''}`;
 
         return (
           <td
@@ -67,7 +61,7 @@ const TableRow = (props: TableRowProps) => {
             colSpan={colspan ? Number(colspan) : undefined}
           >
             {Comp ? <Comp {...cell} /> : null}
-            {repeatable && isLast && (
+            {isRepeatable && isLast && (
               <div className="cmp-adaptiveform-tablerow__runtime-controls" role="group">
                 {showAdd && (
                   <button
@@ -76,7 +70,7 @@ const TableRow = (props: TableRowProps) => {
                     data-cmp-hook-add-instance={id}
                     title="Add row"
                     aria-label="Add row"
-                    onClick={handleAdd}
+                    onClick={onAdd}
                   />
                 )}
                 {showRemove && (
@@ -86,7 +80,7 @@ const TableRow = (props: TableRowProps) => {
                     data-cmp-hook-remove-instance={id}
                     title="Remove row"
                     aria-label="Remove row"
-                    onClick={handleRemove}
+                    onClick={onRemove}
                   />
                 )}
               </div>

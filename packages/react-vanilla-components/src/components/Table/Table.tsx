@@ -23,6 +23,7 @@ import { withRuleEnginePanel } from '../../utils/withRuleEngine';
 import { PROPS_PANEL } from '../../utils/type';
 import TableHeader from './TableHeader';
 import TableRow from './TableRow';
+import RepeatableTableRow from './RepeatableTableRow';
 
 type SortDirection = 'asc' | 'desc' | null;
 
@@ -41,7 +42,11 @@ const Table = (props: PROPS_PANEL) => {
   const { form } = React.useContext(FormContext);
 
   const headerItems = items.filter((item: any) => item[':type'] === 'table-header');
-  const rawRowItems = items.filter((item: any) => item[':type'] === 'table-row');
+  // Static rows have :type 'table-row'; repeatable rows are wrapped by af-core into
+  // a generated array-type panel with :type 'panel' and type 'array'.
+  const rawRowItems = items.filter((item: any) =>
+    item[':type'] === 'table-row' || item.type === 'array'
+  );
 
   const [sortState, setSortState] = React.useState<SortState>({ colIndex: -1, direction: null });
 
@@ -140,9 +145,11 @@ const Table = (props: PROPS_PANEL) => {
           ))}
         </thead>
         <tbody className="cmp-adaptiveform-table__body">
-          {rowItems.map((item: any) => (
-            <TableRow key={item.id} {...item} />
-          ))}
+          {rowItems.map((item: any) =>
+            item.type === 'array'
+              ? <RepeatableTableRow key={item.id} {...item} />
+              : <TableRow key={item.id} {...item} />
+          )}
         </tbody>
       </table>
     </div>
