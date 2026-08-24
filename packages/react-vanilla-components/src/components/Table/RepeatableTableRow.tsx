@@ -33,19 +33,21 @@ const RepeatableTableRow = (props: PROPS_PANEL) => {
   const showAdd = instances.length !== props.maxItems;
   const showRemove = instances.length !== props.minItems;
 
-  const handleAdd = () => element.dispatch(new AddItem());
-  const handleRemove = () => element.dispatch(new RemoveItem());
+  return instances.map((instance: any, index: number) => {
+    const handleAdd = () => element.dispatch(new AddItem(index + 1));
+    const handleRemove = () => element.dispatch(new RemoveItem(index));
 
-  return instances.map((instance: any) => (
-    <TableRow
-      key={instance.id}
-      {...instance}
-      onAdd={handleAdd}
-      onRemove={handleRemove}
-      showAdd={showAdd}
-      showRemove={showRemove}
-    />
-  ));
+    return (
+      <TableRow
+        key={instance.id}
+        {...instance}
+        onAdd={handleAdd}
+        onRemove={handleRemove}
+        showAdd={showAdd}
+        showRemove={showRemove}
+      />
+    );
+  });
 };
 
 export default withRuleEnginePanel(RepeatableTableRow);
