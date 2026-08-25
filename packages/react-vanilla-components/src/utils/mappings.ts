@@ -30,6 +30,7 @@ import Wizard from '../components/Wizard';
 import Accordion from '../components/Accordion/Accordion';
 import HorizontalTab from '../components/tabs/HorizontalTab';
 import Email from '../components/Email';
+import Password from '../components/Password';
 import VerticalTab from '../components/tabs/VerticalTab';
 import Form from '../components/Form';
 import PlainText from '../components/PlainText';
@@ -53,6 +54,7 @@ const mappings = {
   checkbox: CheckBox,
   'file-input': FileUpload,
   email: Email,
+  'password-input': Password,
   'multiline-input': TextFieldArea,
   'core/fd/components/form/wizard/v1/wizard': Wizard,
   'core/fd/components/form/accordion/v1/accordion': Accordion,

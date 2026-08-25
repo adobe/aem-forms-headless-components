@@ -23,6 +23,7 @@ import Accordion from './components/Accordion/Accordion';
 import HorizontalTab from './components/tabs/HorizontalTab';
 import VerticalTab from './components/tabs/VerticalTab';
 import Email from './components/Email';
+import Password from './components/Password';
 import PlainText from './components/PlainText';
 import Switch from './components/Switch';
 import TelephoneInput from './components/TelephoneInput';
@@ -50,6 +51,7 @@ export {
   TextFieldArea,
   Panel,
   Email,
+  Password,
   PlainText,
   Wizard,
   Accordion,
