@@ -65,6 +65,7 @@ const TermsAndConditions = (props: PROPS_PANEL) => {
   }, [items, textIntersectId, enabled, readOnly]);
 
   const approvalCheckboxItem = getElementByFieldType('checkbox');
+  const approvalCheckboxIndex = items.findIndex(item => item.fieldType === 'checkbox');
   
   const toggleModal = useCallback((show: boolean) => {
     if (hasModal) {
@@ -134,7 +135,7 @@ const TermsAndConditions = (props: PROPS_PANEL) => {
     <div
       className='cmp-adaptiveform-termsandcondition__approvalcheckbox'
       onClick={handleApprovalCheckboxClick}>
-      {approvalCheckboxItem && getChild(approvalCheckboxItem, 1, mappings)}
+      {approvalCheckboxItem && getChild(approvalCheckboxItem, approvalCheckboxIndex, mappings)}
     </div>
   </div>);
 };
