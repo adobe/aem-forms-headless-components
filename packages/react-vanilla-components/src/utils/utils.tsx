@@ -1,3 +1,6 @@
+import React from 'react';
+import { getRenderer } from '@aemforms/af-react-renderer';
+
 export const formatBytes = (bytes: number, decimals = 0) => {
     if (!+bytes) {
       return '0 Bytes';
@@ -8,9 +11,9 @@ export const formatBytes = (bytes: number, decimals = 0) => {
     const i = Math.floor(Math.log(bytes) / Math.log(k));
 
     return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`;
-  };
+};
 
-  export const syncAriaDescribedBy = (id: string, tooltip?: string, description?: string, error?: string) => {
+export const syncAriaDescribedBy = (id: string, tooltip?: string, description?: string, error?: string) => {
     const descriptions = [];
 
     if (description) {
@@ -24,4 +27,9 @@ export const formatBytes = (bytes: number, decimals = 0) => {
     }
 
     return descriptions.join(' ');
+};
+
+export const getChild = (child: any, index: number, mappings: any) => {
+    const Comp = getRenderer(child,mappings );
+    return Comp ? <Comp key={`${child.id}_${index}`}{...child} /> : null;
 };

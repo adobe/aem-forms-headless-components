@@ -10,8 +10,8 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import CheckBoxGroup from '../../src/components/CheckBoxGroup';
 import { createForm, Provider, renderComponent } from '../utils';
-import userEvent from "@testing-library/user-event";
-import "@testing-library/jest-dom/extend-expect"
+import userEvent from '@testing-library/user-event';
+import '@testing-library/jest-dom/extend-expect';
 
 const field = {
   name: 'checkbox',
@@ -135,7 +135,7 @@ describe('Checkbox Group', () => {
   test('enum names should render correctly under a non-default locale', async () => {
     const f = {
       ...field,
-      enumNames: ['case à cocher 1', 'case à cocher 2', 'case à cocher 3'],
+      enumNames: ['case à cocher 1', 'case à cocher 2', 'case à cocher 3']
     };
     const form = createForm(f);
     const component = <CheckBoxGroup {...form.items[0].getState()} />;
@@ -145,5 +145,24 @@ describe('Checkbox Group', () => {
     expect(getByText('case à cocher 1')).not.toBeNull();
     expect(getByText('case à cocher 2')).not.toBeNull();
     expect(getByText('case à cocher 3')).not.toBeNull();
+  });
+
+  test('should render as anchor tag with checkbox hidden for toggleablelink', async () => {
+  
+    const field = {
+      id: 'toggleablelink-abcd',
+      name: 'link1234',
+      visible: true,
+      fieldType: 'checkbox-group',
+      ':type': 'core/fd/components/form/toggleablelink/v1/toggleablelink',
+      enum: ['https://www.adobe.com'],
+      enumNames: ['label for the link']
+    };
+    const { renderResponse } = await helper(field);
+    const anchor = renderResponse.container.querySelector('a.cmp-adaptiveform-checkboxgroup__links');
+    const checkboxInput = renderResponse.container.querySelector(`[name=${field.name}]`);
+    
+    expect(anchor).toHaveAttribute('href', field.enum[0]);
+    expect(checkboxInput).toHaveStyle('display: none');
   });
 });
