@@ -96,6 +96,8 @@ I want to add a RatingInput component. Here is the CRISP JSON:
 { ... }
 ```
 
+Context gathering (model.json + HTL markup) is delegated to the `core-component-context` subagent (`.claude/agents/core-component-context.md`), which falls back through aemcomponents.dev → the `aem-core-forms-components` repo → local test fixtures. After codegen, build, and tests pass, the `component-validator` subagent (`.claude/agents/component-validator.md`) runs a 15-check structural/markup review against the generated files and the skill applies fixes iteratively (up to 3 passes).
+
 The skill generates:
 - `src/components/{ComponentName}.tsx` — component following BEM + `withRuleEngine` patterns
 - `__tests__/components/{ComponentName}.test.tsx` — test suite covering value binding, visibility, errors, a11y
