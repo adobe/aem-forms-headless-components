@@ -27,6 +27,7 @@ const CheckBoxGroup = (props: PROPS) => {
   const { id, label, required, enumNames, enum: enums, value, name, readOnly, visible, enabled, appliedCssClassNames, valid } = props;
   const options = enumNames && enumNames.length ? enumNames : enums || [];
   const orientation = props.layout?.orientation.toUpperCase();
+  const isToggleableLink = props[':type']?.includes('toggleablelink');
 
   const getValue = useCallback((value: any) => {
     if (value) {
@@ -40,9 +41,8 @@ const CheckBoxGroup = (props: PROPS) => {
 
   const newVal = getValue(value);
 
-  const changeHandler = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    const val = event.target.value;
-    const checked = event.target.checked;
+  const toggleValue = useCallback((val: string, checked: boolean) => {
+    if(readOnly) { return; }
     let valAdded = [...newVal];
     if (checked) {
       valAdded.push(val);
@@ -51,7 +51,16 @@ const CheckBoxGroup = (props: PROPS) => {
       valAdded = valAdded.filter((item) => item != val);
     }
     props.dispatchChange(valAdded);
-  }, [props.dispatchChange, newVal]);
+  }, [props.dispatchChange, newVal, readOnly]);
+
+  const changeHandler = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+    toggleValue(event.target.value, event.target.checked);    
+  }, [toggleValue]);
+
+  const linkClickHandler = useCallback((index: number) => {
+    let valAdded = [...newVal];
+    toggleValue(enums![index],!valAdded.includes(enums![index]));
+  },[toggleValue, enums]);
 
   return (
     <div
@@ -88,10 +97,20 @@ const CheckBoxGroup = (props: PROPS) => {
                   value={enums![index]}
                   onChange={changeHandler}
                   readOnly={readOnly}
-                  checked={value?.includes(enums?.[index])}
+                  checked={!!value?.includes(enums?.[index])}
                   aria-invalid={!valid}
+                  disabled={!enabled || readOnly}
+                  style={isToggleableLink ? {display: 'none'}: undefined}
                 />
-                {richTextString(item)}
+                {isToggleableLink ? 
+                  <a className='cmp-adaptiveform-checkboxgroup__links'
+                    target='_blank'
+                    href={enums![index]}
+                    title={item || ''}
+                    rel='noopener noreferrer'
+                    onClick={()=>linkClickHandler(index)}
+                  >{richTextString(item)}</a> : richTextString(item)
+                }
               </label>
             </div>
           ))}

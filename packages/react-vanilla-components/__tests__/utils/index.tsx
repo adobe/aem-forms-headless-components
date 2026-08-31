@@ -46,7 +46,7 @@ export const Provider =
     };
 
 export const renderComponent = function <T>(Component: JSXElementConstructor<any>) {
-  const test = (field: any, operation?: any) => {
+  const test = (field: any, operation?: any, mappings = {}) => {
     const form = createForm(field);
     if (operation) {
       operation(form, form.items[0]);
@@ -54,7 +54,7 @@ export const renderComponent = function <T>(Component: JSXElementConstructor<any
     const e = form.items[0].getState();
     //@ts-ignore
     let component = <Component {...e} />;
-    const wrapper = Provider(form);
+    const wrapper = Provider(form,mappings);
     const renderResponse = render(component, { wrapper });
     return {
       renderResponse,

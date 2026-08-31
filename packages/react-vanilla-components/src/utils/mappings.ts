@@ -42,6 +42,7 @@ import Scribble from '../components/Scribble';
 import Table from '../components/Table/Table';
 import TableHeader from '../components/Table/TableHeader';
 import TableRow from '../components/Table/TableRow';
+import TermsAndConditions from '../components/TermsAndConditions';
 
 const mappings = {
   'text-input': TextField,
@@ -67,6 +68,7 @@ const mappings = {
   'core/fd/components/form/telephoneinput/v1/telephoneinput': TelephoneInput,
   'core/fd/components/form/switch/v1/switch': Switch,
   'core/fd/components/form/hcaptcha/v1/hcaptcha': HCaptcha,
+  'core/fd/components/form/termsandconditions/v1/termsandconditions': TermsAndConditions, 
   captcha: ReCaptcha,
   image: Image,
   signature: Scribble,
