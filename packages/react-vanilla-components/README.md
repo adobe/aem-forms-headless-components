@@ -28,6 +28,7 @@ The document provides detailed information on React Vanilla Components(HTML5 bas
   - ReCAPTCHA
   - Scribble (Signature)
   - Switch
+  - Table
   - Telephone Input
   - Text Area Field
   - Text Field
