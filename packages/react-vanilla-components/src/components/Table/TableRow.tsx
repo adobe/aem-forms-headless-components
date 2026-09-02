@@ -30,10 +30,11 @@ type TableRowProps = {
   onRemove?: () => void;
   showAdd?: boolean;
   showRemove?: boolean;
+  headerLabels?: string[];
 };
 
 const TableRow = (props: TableRowProps) => {
-  const { id, visible, enabled, readOnly, items = [], onAdd, onRemove, showAdd, showRemove } = props;
+  const { id, visible, enabled, readOnly, items = [], onAdd, onRemove, showAdd, showRemove, headerLabels } = props;
   // @ts-ignore
   const { mappings } = useContext(FormContext);
 
@@ -59,6 +60,7 @@ const TableRow = (props: TableRowProps) => {
             key={cell.id}
             className={tdClass}
             colSpan={colspan ? Number(colspan) : undefined}
+            data-label={headerLabels?.[i]}
           >
             {Comp ? <Comp {...cell} /> : null}
             {isRepeatable && isLast && (

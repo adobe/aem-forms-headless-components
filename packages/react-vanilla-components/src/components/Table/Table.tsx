@@ -24,6 +24,7 @@ import { PROPS_PANEL } from '../../utils/type';
 import TableHeader from './TableHeader';
 import TableRow from './TableRow';
 import RepeatableTableRow from './RepeatableTableRow';
+import TableMobileBar from './TableMobileBar';
 
 type SortDirection = 'asc' | 'desc' | null;
 
@@ -50,12 +51,20 @@ const Table = (props: PROPS_PANEL) => {
 
   const [sortState, setSortState] = React.useState<SortState>({ colIndex: -1, direction: null });
 
-  const handleSort = React.useCallback((colIndex: number) => {
+  const handleSort = React.useCallback((colIndex: number, forceDir?: SortDirection) => {
+    if (forceDir) {
+      setSortState({ colIndex, direction: forceDir });
+      return;
+    }
     setSortState(prev => {
       if (prev.colIndex !== colIndex) return { colIndex, direction: 'asc' };
       return { colIndex, direction: prev.direction === 'asc' ? 'desc' : 'asc' };
     });
   }, []);
+
+  const columnLabels: string[] = React.useMemo(() => (
+    ((headerItems[0] as any)?.items || []).map((cell: any) => cell.label?.value ?? cell.value ?? '')
+  ), [headerItems]);
 
   const getLiveCellValue = React.useCallback((rowId: string, colIndex: number): string => {
     const rowEl = form?.getElement(rowId);
@@ -120,6 +129,12 @@ const Table = (props: PROPS_PANEL) => {
           {props.description}
         </div>
       )}
+      <TableMobileBar
+        columnLabels={columnLabels}
+        enableSorting={enableSorting}
+        sortState={sortState}
+        onSort={handleSort}
+      />
       <table
         className="cmp-adaptiveform-table__widget"
         aria-label={label?.value || ''}
@@ -147,8 +162,8 @@ const Table = (props: PROPS_PANEL) => {
         <tbody className="cmp-adaptiveform-table__body">
           {rowItems.map((item: any) =>
             item.type === 'array'
-              ? <RepeatableTableRow key={item.id} {...item} />
-              : <TableRow key={item.id} {...item} />
+              ? <RepeatableTableRow key={item.id} {...item} headerLabels={columnLabels} />
+              : <TableRow key={item.id} {...item} headerLabels={columnLabels} />
           )}
         </tbody>
       </table>

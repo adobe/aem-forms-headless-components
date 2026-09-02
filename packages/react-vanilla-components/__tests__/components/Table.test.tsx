@@ -9,7 +9,7 @@
  */
 
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, fireEvent } from '@testing-library/react';
 import Table from '../../src/components/Table/Table';
 import { createForm, Provider, renderComponent } from '../utils';
 import '@testing-library/jest-dom/extend-expect';
@@ -200,5 +200,77 @@ describe('Table', () => {
     expect(container.querySelector('table')).not.toBeNull();
     expect(container.querySelector('thead')).not.toBeNull();
     expect(container.querySelector('tbody')).not.toBeNull();
+  });
+
+  test('data-label on <td> matches its column header text', () => {
+    const { renderResponse } = helper(tableField);
+    const cells = renderResponse.container.querySelectorAll('tbody td');
+    expect(cells[0].getAttribute('data-label')).toBe('Column 1');
+    expect(cells[1].getAttribute('data-label')).toBe('Column 2');
+  });
+
+  test('mobile bar renders with Sort and Filter buttons', () => {
+    const { renderResponse } = helper(tableField);
+    const sortBtn = renderResponse.container.querySelector('.cmp-adaptiveform-table__mobile-bar-btn--sort');
+    const filterBtn = renderResponse.container.querySelector('.cmp-adaptiveform-table__mobile-bar-btn--filter');
+    expect(sortBtn).not.toBeNull();
+    expect(filterBtn).not.toBeNull();
+  });
+
+  test('mobile Sort button disabled when enableSorting is false', () => {
+    const { renderResponse } = helper({ ...tableField, enableSorting: false });
+    const sortBtn = renderResponse.container.querySelector('.cmp-adaptiveform-table__mobile-bar-btn--sort');
+    expect(sortBtn).toBeDisabled();
+  });
+
+  test('mobile Sort button enabled when enableSorting is true', () => {
+    const { renderResponse } = helper({ ...tableField, enableSorting: true });
+    const sortBtn = renderResponse.container.querySelector('.cmp-adaptiveform-table__mobile-bar-btn--sort');
+    expect(sortBtn).not.toBeDisabled();
+  });
+
+  test('opening sort sheet lists one option per column', () => {
+    const { renderResponse } = helper({ ...tableField, enableSorting: true });
+    const sortBtn = renderResponse.container.querySelector('.cmp-adaptiveform-table__mobile-bar-btn--sort') as HTMLButtonElement;
+    fireEvent.click(sortBtn);
+    const options = renderResponse.container.querySelectorAll('.cmp-adaptiveform-table__sort-option');
+    expect(options.length).toBe(2);
+  });
+
+  test('selecting a sort option closes the sheet and marks it selected', () => {
+    const { renderResponse } = helper({ ...tableField, enableSorting: true });
+    const sortBtn = renderResponse.container.querySelector('.cmp-adaptiveform-table__mobile-bar-btn--sort') as HTMLButtonElement;
+    fireEvent.click(sortBtn);
+    const firstOption = renderResponse.container.querySelector('[data-col-index="0"]') as HTMLElement;
+    fireEvent.click(firstOption);
+    expect(renderResponse.container.querySelector('.cmp-adaptiveform-table__sort-scrim')).toBeNull();
+  });
+
+  test('opening filter sheet and selecting Ascending closes the sheet', () => {
+    const { renderResponse } = helper({ ...tableField, enableSorting: true });
+    const filterBtn = renderResponse.container.querySelector('.cmp-adaptiveform-table__mobile-bar-btn--filter') as HTMLButtonElement;
+    fireEvent.click(filterBtn);
+    const ascOption = renderResponse.container.querySelector('[data-dir="asc"]') as HTMLElement;
+    expect(ascOption).not.toBeNull();
+    fireEvent.click(ascOption);
+    expect(renderResponse.container.querySelector('.cmp-adaptiveform-table__sort-scrim')).toBeNull();
+  });
+
+  test('Escape key closes an open sheet', () => {
+    const { renderResponse } = helper({ ...tableField, enableSorting: true });
+    const sortBtn = renderResponse.container.querySelector('.cmp-adaptiveform-table__mobile-bar-btn--sort') as HTMLButtonElement;
+    fireEvent.click(sortBtn);
+    expect(renderResponse.container.querySelector('.cmp-adaptiveform-table__sort-scrim')).not.toBeNull();
+    fireEvent.keyDown(renderResponse.container.querySelector('.cmp-adaptiveform-table__sort-scrim') as HTMLElement, { key: 'Escape' });
+    expect(renderResponse.container.querySelector('.cmp-adaptiveform-table__sort-scrim')).toBeNull();
+  });
+
+  test('clicking scrim background closes the sheet', () => {
+    const { renderResponse } = helper({ ...tableField, enableSorting: true });
+    const sortBtn = renderResponse.container.querySelector('.cmp-adaptiveform-table__mobile-bar-btn--sort') as HTMLButtonElement;
+    fireEvent.click(sortBtn);
+    const scrim = renderResponse.container.querySelector('.cmp-adaptiveform-table__sort-scrim') as HTMLElement;
+    fireEvent.click(scrim);
+    expect(renderResponse.container.querySelector('.cmp-adaptiveform-table__sort-scrim')).toBeNull();
   });
 });

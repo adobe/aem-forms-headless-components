@@ -24,7 +24,7 @@ import { withRuleEnginePanel } from '../../utils/withRuleEngine';
 import { PROPS_PANEL } from '../../utils/type';
 import TableRow from './TableRow';
 
-const RepeatableTableRow = (props: PROPS_PANEL) => {
+const RepeatableTableRow = (props: PROPS_PANEL & { headerLabels?: string[] }) => {
   // @ts-ignore
   const { form } = useContext(FormContext);
   const element = form.getElement(props.id);
@@ -45,6 +45,7 @@ const RepeatableTableRow = (props: PROPS_PANEL) => {
         onRemove={handleRemove}
         showAdd={showAdd}
         showRemove={showRemove}
+        headerLabels={props.headerLabels}
       />
     );
   });
