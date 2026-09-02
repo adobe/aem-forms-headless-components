@@ -31,6 +31,9 @@ import mappings from './utils/mappings';
 import ReCaptcha from './components/ReCaptcha';
 import Image from './components/Image';
 import Scribble from './components/Scribble';
+import Table from './components/Table/Table';
+import TableHeader from './components/Table/TableHeader';
+import TableRow from './components/Table/TableRow';
 
 export * from './utils/withRuleEngine';
 export * from './utils/type';
@@ -60,5 +63,8 @@ export {
   ReCaptcha,
   Image,
   Scribble,
-  Form
+  Form,
+  Table,
+  TableHeader,
+  TableRow
 };

@@ -39,6 +39,9 @@ import ReCaptcha from '../components/ReCaptcha';
 import HCaptcha from '../components/HCaptcha';
 import Image from '../components/Image';
 import Scribble from '../components/Scribble';
+import Table from '../components/Table/Table';
+import TableHeader from '../components/Table/TableHeader';
+import TableRow from '../components/Table/TableRow';
 import TermsAndConditions from '../components/TermsAndConditions';
 
 const mappings = {
@@ -69,7 +72,10 @@ const mappings = {
   captcha: ReCaptcha,
   image: Image,
   signature: Scribble,
-  form: Form
+  form: Form,
+  table: Table,
+  'table-header': TableHeader,
+  'table-row': TableRow
 };
 
 export default mappings;
