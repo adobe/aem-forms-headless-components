@@ -54,7 +54,7 @@ const mappings = {
   checkbox: CheckBox,
   'file-input': FileUpload,
   email: Email,
-  'password-input': Password,
+  password: Password,
   'multiline-input': TextFieldArea,
   'core/fd/components/form/wizard/v1/wizard': Wizard,
   'core/fd/components/form/accordion/v1/accordion': Accordion,
