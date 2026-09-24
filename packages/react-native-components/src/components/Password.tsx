@@ -2,7 +2,7 @@
 * ADOBE CONFIDENTIAL
 * ___________________
 *
-* Copyright 2023 Adobe
+* Copyright 2026 Adobe
 * All Rights Reserved.
 *
 * NOTICE: All information contained herein is, and remains
@@ -18,13 +18,17 @@
 * the terms of the Adobe license agreement accompanying it.
 *************************************************************************/
 
-import React, { useCallback } from 'react';
-import { Input, TextArea, FormControl } from 'native-base';
+import React, { useCallback, useState } from 'react';
+import { Input, FormControl, Pressable, Text } from 'native-base';
 import { PROPS, INPUT } from '../utils/types';
 import withRuleEngine from '../shared/withRuleEngine';
 
-const TextFieldComponent = function (props: PROPS) {
+const PasswordComponent = function (props: PROPS) {
   const { isError, required, label, errorMessage, description } = props;
+  const [revealed, setRevealed] = useState(false);
+
+  // Mirrors PasswordInput.isShowHidePasswordEnabled() (default true) from the core component.
+  const showHidePasswordEnabled = (props as any).properties?.['fd:showHidePassword'] !== false;
 
   const changeHandler = useCallback((event: any) => {
     props.dispatchChange(event);
@@ -37,6 +41,8 @@ const TextFieldComponent = function (props: PROPS) {
   const focusHandler = useCallback((event: any) => {
     props.dispatchFocus(event);
   }, [props.dispatchFocus]);
+
+  const toggleLabel = revealed ? 'Hide password' : 'Show password';
 
   const inputProps: INPUT = {
     placeholder: props.placeholder || '',
@@ -51,18 +57,30 @@ const TextFieldComponent = function (props: PROPS) {
     maxLength: props.maxLength,
     minLength: props.minLength,
     pattern: props.pattern,
-    type: 'text'
+    type: revealed ? 'text' : 'password'
   };
-  const Comp = props.fieldType === 'multiline-input' ? TextArea: Input;
 
   return (
     <FormControl isInvalid={isError} isRequired={required} {...props.layout}>
       {label?.visible && <FormControl.Label>{label?.value}</FormControl.Label>}
-      <Comp {...inputProps as any} />
+      <Input
+        {...inputProps as any}
+        InputRightElement={showHidePasswordEnabled ? (
+          <Pressable
+            onPress={() => setRevealed((prev) => !prev)}
+            accessibilityRole="button"
+            accessibilityLabel={toggleLabel}
+            accessibilityState={{ selected: revealed }}
+            testID={`${props.id}-toggle`}
+          >
+            <Text mx={3}>{toggleLabel}</Text>
+          </Pressable>
+        ) : undefined}
+      />
       {errorMessage && <FormControl.ErrorMessage testID={`${props.id}-error`}>{errorMessage}</FormControl.ErrorMessage>}
       {description && !errorMessage && <FormControl.HelperText testID={`${props.id}-description`}>{description}</FormControl.HelperText>}
     </FormControl>
   );
 };
 
-export default withRuleEngine(TextFieldComponent);
+export default withRuleEngine(PasswordComponent);

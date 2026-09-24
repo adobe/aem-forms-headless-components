@@ -23,6 +23,7 @@ The document provides detailed information on React Vanilla Components(HTML5 bas
   - Image
   - Number Field
   - Panel
+  - Password
   - Plain Text
   - Radio Group
   - ReCAPTCHA

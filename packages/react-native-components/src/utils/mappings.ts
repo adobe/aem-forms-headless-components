@@ -20,6 +20,7 @@
 
 import Form from '../components/Form';
 import TextField from '../components/TextField';
+import Password from '../components/Password';
 import NumberField from '../components/NumberField';
 import Panel from '../components/Panel';
 import Button from '../components/Button';
@@ -44,7 +45,7 @@ export default {
   'checkbox-group': CheckboxGroup,
   'radio-group': RadioGroup,
   'drop-down': DropDown,
-  'password-input': TextField,
+  password: Password,
   'plain-text': PlainText,
   'file-input': FileUpload,
   'date-input': DatePicker
