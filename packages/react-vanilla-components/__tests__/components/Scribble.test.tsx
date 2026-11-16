@@ -246,6 +246,30 @@ describe('Scribble', () => {
     }
   });
 
+  test('should keep save and clear disabled when only spaces are typed in text mode', async () => {
+    const f = { ...field };
+    const { renderResponse } = await helper(f);
+    userEvent.click(renderResponse.container.querySelector(`.${BEM}__canvas-signed-container`)!);
+    userEvent.click(renderResponse.getByRole('button', { name: 'Text sign' }));
+    const textInput = renderResponse.getByRole('textbox', { name: 'Signature text' });
+    await userEvent.type(textInput, '   ');
+    expect(renderResponse.getByRole('button', { name: 'Save' })).toBeDisabled();
+    expect(renderResponse.getByRole('button', { name: 'Clear' })).toBeDisabled();
+  });
+
+  test('should disable save again when text is replaced by spaces only', async () => {
+    const f = { ...field };
+    const { renderResponse } = await helper(f);
+    userEvent.click(renderResponse.container.querySelector(`.${BEM}__canvas-signed-container`)!);
+    userEvent.click(renderResponse.getByRole('button', { name: 'Text sign' }));
+    const textInput = renderResponse.getByRole('textbox', { name: 'Signature text' });
+    await userEvent.type(textInput, 'a');
+    expect(renderResponse.getByRole('button', { name: 'Save' })).toBeEnabled();
+    userEvent.clear(textInput);
+    await userEvent.type(textInput, '  ');
+    expect(renderResponse.getByRole('button', { name: 'Save' })).toBeDisabled();
+  });
+
   test('should not render when visible is false', async () => {
     const f = { ...field, visible: false };
     const { renderResponse } = await helper(f);

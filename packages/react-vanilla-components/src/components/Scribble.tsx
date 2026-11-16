@@ -234,7 +234,7 @@ const Scribble = (props: PROPS) => {
   const handleSave = useCallback(() => {
     if (textMode) {
       const textVal = keyboardInputRef.current?.value;
-      if (!textVal) {return;}
+      if (!textVal || !textVal.trim()) {return;}
       const canvas = canvasRef.current;
       if (!canvas) {return;}
       canvas.style.display = '';
@@ -381,7 +381,7 @@ const Scribble = (props: PROPS) => {
 
   const handleKeyboardInput = useCallback(() => {
     const val = keyboardInputRef.current?.value;
-    setHasContent(!!val);
+    setHasContent(!!val?.trim());
   }, []);
 
   const openModal = useCallback(() => {
