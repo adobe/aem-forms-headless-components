@@ -49,6 +49,7 @@ const Scribble = (props: PROPS) => {
   const [message, setMessage] = useState('');
   const [hasContent, setHasContent] = useState(false);
   const [showClearConfirm, setShowClearConfirm] = useState(false);
+  const [viewOnly, setViewOnly] = useState(false);
 
   const drawingRef = useRef(false);
   const brushSizeRef = useRef(brushSize);
@@ -99,13 +100,29 @@ const Scribble = (props: PROPS) => {
     }
   }, []);
 
+  const drawSignedImage = useCallback((dataUrl: string) => {
+    const img = new Image();
+    img.onload = () => {
+      const canvas = canvasRef.current;
+      const ctx = canvas?.getContext('2d', { willReadFrequently: true });
+      if (!canvas || !ctx || !img.width || !img.height) {return;}
+      const rect = canvas.getBoundingClientRect();
+      const scale = Math.min(rect.width / img.width, rect.height / img.height);
+      ctx.drawImage(img, 0, 0, img.width * scale, img.height * scale);
+    };
+    img.src = dataUrl;
+  }, []);
+
   useEffect(() => {
     if (modalOpen && !textMode) {
       requestAnimationFrame(() => {
         initCanvas();
+        if (viewOnly && signatureDataUrl) {
+          drawSignedImage(signatureDataUrl);
+        }
       });
     }
-  }, [modalOpen, textMode, initCanvas]);
+  }, [modalOpen, textMode, initCanvas, viewOnly, signatureDataUrl, drawSignedImage]);
 
   useEffect(() => {
     if (modalOpen && modalRef.current) {
@@ -138,6 +155,7 @@ const Scribble = (props: PROPS) => {
 
   const startDrawing = useCallback((e: React.MouseEvent | React.TouchEvent) => {
     e.preventDefault();
+    if (viewOnly) {return;}
     const coords = getCoordinates(e);
     if (!coords) {return;}
     const canvas = canvasRef.current;
@@ -147,7 +165,7 @@ const Scribble = (props: PROPS) => {
     ctx.beginPath();
     ctx.moveTo(coords.x, coords.y);
     drawingRef.current = true;
-  }, []);
+  }, [viewOnly]);
 
   const draw = useCallback((e: React.MouseEvent | React.TouchEvent) => {
     e.preventDefault();
@@ -234,7 +252,7 @@ const Scribble = (props: PROPS) => {
   const handleSave = useCallback(() => {
     if (textMode) {
       const textVal = keyboardInputRef.current?.value;
-      if (!textVal) {return;}
+      if (!textVal || !textVal.trim()) {return;}
       const canvas = canvasRef.current;
       if (!canvas) {return;}
       canvas.style.display = '';
@@ -381,11 +399,12 @@ const Scribble = (props: PROPS) => {
 
   const handleKeyboardInput = useCallback(() => {
     const val = keyboardInputRef.current?.value;
-    setHasContent(!!val);
+    setHasContent(!!val?.trim());
   }, []);
 
   const openModal = useCallback(() => {
     if (!enabled) {return;}
+    setViewOnly(!!signatureDataUrl);
     setModalOpen(true);
     setHasContent(false);
     setTextMode(false);
@@ -393,7 +412,7 @@ const Scribble = (props: PROPS) => {
     canvasDrawnRef.current = false;
     clearMessageTimer();
     setMessage('');
-  }, [enabled]);
+  }, [enabled, signatureDataUrl]);
 
   const isFilled = !!signatureDataUrl;
 
@@ -550,8 +569,9 @@ const Scribble = (props: PROPS) => {
               <div className={`${BEM}__controls`}>
                 <button
                   type="button"
-                  className={`${BEM}__control-brush ${BEM}__button`}
+                  className={`${BEM}__control-brush ${BEM}__button ${viewOnly ? 'disable_button' : ''}`}
                   aria-label="Brushes"
+                  disabled={viewOnly}
                   onClick={handleBrushMode}
                 />
 
@@ -589,23 +609,25 @@ const Scribble = (props: PROPS) => {
 
                 <button
                   type="button"
-                  className={`${BEM}__control-clear ${BEM}__button ${!hasContent ? 'disable_button' : ''}`}
+                  className={`${BEM}__control-clear ${BEM}__button ${viewOnly || !hasContent ? 'disable_button' : ''}`}
                   aria-label="Clear"
-                  disabled={!hasContent}
+                  disabled={viewOnly || !hasContent}
                   onClick={eraseCanvas}
                 />
 
                 <button
                   type="button"
-                  className={`${BEM}__control-geo ${BEM}__button`}
+                  className={`${BEM}__control-geo ${BEM}__button ${viewOnly ? 'disable_button' : ''}`}
                   aria-label="Geolocation"
+                  disabled={viewOnly}
                   onClick={handleGeolocation}
                 />
 
                 <button
                   type="button"
-                  className={`${BEM}__control-text ${BEM}__button`}
+                  className={`${BEM}__control-text ${BEM}__button ${viewOnly ? 'disable_button' : ''}`}
                   aria-label="Text sign"
+                  disabled={viewOnly}
                   onClick={handleTextSign}
                 />
 
@@ -624,10 +646,10 @@ const Scribble = (props: PROPS) => {
                   Close
                 </button>
                 <button
-                  className={`${BEM}__save-button ${!hasContent ? 'disable_button' : ''}`}
+                  className={`${BEM}__save-button ${viewOnly || !hasContent ? 'disable_button' : ''}`}
                   type="button"
                   aria-label="Save"
-                  disabled={!hasContent}
+                  disabled={viewOnly || !hasContent}
                   onClick={handleSave}
                 >
                   Save

@@ -246,6 +246,58 @@ describe('Scribble', () => {
     }
   });
 
+  test('should keep save and clear disabled when only spaces are typed in text mode', async () => {
+    const f = { ...field };
+    const { renderResponse } = await helper(f);
+    userEvent.click(renderResponse.container.querySelector(`.${BEM}__canvas-signed-container`)!);
+    userEvent.click(renderResponse.getByRole('button', { name: 'Text sign' }));
+    const textInput = renderResponse.getByRole('textbox', { name: 'Signature text' });
+    await userEvent.type(textInput, '   ');
+    expect(renderResponse.getByRole('button', { name: 'Save' })).toBeDisabled();
+    expect(renderResponse.getByRole('button', { name: 'Clear' })).toBeDisabled();
+  });
+
+  test('should disable save again when text is replaced by spaces only', async () => {
+    const f = { ...field };
+    const { renderResponse } = await helper(f);
+    userEvent.click(renderResponse.container.querySelector(`.${BEM}__canvas-signed-container`)!);
+    userEvent.click(renderResponse.getByRole('button', { name: 'Text sign' }));
+    const textInput = renderResponse.getByRole('textbox', { name: 'Signature text' });
+    await userEvent.type(textInput, 'a');
+    expect(renderResponse.getByRole('button', { name: 'Save' })).toBeEnabled();
+    userEvent.clear(textInput);
+    await userEvent.type(textInput, '  ');
+    expect(renderResponse.getByRole('button', { name: 'Save' })).toBeDisabled();
+  });
+
+  test('should disable all controls when opening an already signed scribble', async () => {
+    const restore = mockCanvas2D();
+    try {
+      const { renderResponse } = await helper({ ...field });
+      const trigger = () => renderResponse.container.querySelector(`.${BEM}__canvas-signed-container`)!;
+      userEvent.click(trigger());
+      userEvent.click(renderResponse.getByRole('button', { name: 'Text sign' }));
+      await userEvent.type(renderResponse.getByRole('textbox', { name: 'Signature text' }), 'test');
+      userEvent.click(renderResponse.getByRole('button', { name: 'Save' }));
+      userEvent.click(trigger());
+      ['Brushes', 'Clear', 'Geolocation', 'Text sign', 'Save'].forEach((name) => {
+        expect(renderResponse.getByRole('button', { name })).toBeDisabled();
+      });
+      expect(renderResponse.getByRole('button', { name: 'Close' })).toBeEnabled();
+    } finally {
+      restore();
+    }
+  });
+
+  test('should keep brush, geolocation and text sign enabled when opening an unsigned scribble', async () => {
+    const f = { ...field };
+    const { renderResponse } = await helper(f);
+    userEvent.click(renderResponse.container.querySelector(`.${BEM}__canvas-signed-container`)!);
+    ['Brushes', 'Geolocation', 'Text sign'].forEach((name) => {
+      expect(renderResponse.getByRole('button', { name })).toBeEnabled();
+    });
+  });
+
   test('should not render when visible is false', async () => {
     const f = { ...field, visible: false };
     const { renderResponse } = await helper(f);
