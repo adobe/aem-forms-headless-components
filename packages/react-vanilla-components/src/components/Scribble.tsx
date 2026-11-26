@@ -264,14 +264,18 @@ const Scribble = (props: PROPS) => {
       const fontStyle = 'italic';
       let fontSize = 10;
       ctx.font = `${fontStyle} ${fontSize}rem ${fontFamily}`;
-      let textWidth = ctx.measureText(textVal).width;
+      let metrics = ctx.measureText(textVal);
+      let textOffset = Math.max(0, metrics.actualBoundingBoxLeft || 0);
+      let textWidth = textOffset + Math.max(metrics.width, metrics.actualBoundingBoxRight || 0);
       while (fontSize > 1 && textWidth > rect.width) {
         fontSize -= 0.5;
         ctx.font = `${fontStyle} ${fontSize}rem ${fontFamily}`;
-        textWidth = ctx.measureText(textVal).width;
+        metrics = ctx.measureText(textVal);
+        textOffset = Math.max(0, metrics.actualBoundingBoxLeft || 0);
+        textWidth = textOffset + Math.max(metrics.width, metrics.actualBoundingBoxRight || 0);
       }
       ctx.textBaseline = 'middle';
-      ctx.fillText(textVal, 0, rect.height / 2);
+      ctx.fillText(textVal, textOffset, rect.height / 2);
       canvasDrawnRef.current = true;
     }
 
