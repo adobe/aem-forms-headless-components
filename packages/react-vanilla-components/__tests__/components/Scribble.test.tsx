@@ -246,6 +246,44 @@ describe('Scribble', () => {
     }
   });
 
+  test.each([
+    { text: 'j', width: 40, left: 12, right: 35, fontSize: 10 },
+    { text: 'jj', width: 80, left: 12, right: 75, fontSize: 10 },
+    { text: 'j very long signature', width: 190, left: 12, right: 195, fontSize: 9.5 },
+    { text: 'right overhang', width: 190, left: 0, right: 215, fontSize: 9 },
+    { text: 'no left overhang', width: 80, left: -5, right: 70, fontSize: 10 },
+    { text: 'legacy metrics', width: 50, left: undefined, right: undefined, fontSize: 10 }
+  ])('should fit and position "$text" using painted glyph bounds when saving', async ({ text, width, left, right, fontSize }) => {
+    const restore = mockCanvas2D();
+    try {
+      const { renderResponse, element } = await helper({ ...field });
+      userEvent.click(renderResponse.container.querySelector(`.${BEM}__canvas-signed-container`)!);
+      userEvent.click(renderResponse.getByRole('button', { name: 'Text sign' }));
+      const canvas = renderResponse.container.querySelector<HTMLCanvasElement>(`.${BEM}__canvas`)!;
+      const ctx = canvas.getContext('2d')!;
+      (ctx.measureText as jest.Mock).mockImplementation(() => {
+        const scale = parseFloat(ctx.font.replace('italic ', '')) / 10;
+        return {
+          width: width * scale,
+          actualBoundingBoxLeft: left === undefined ? undefined : left * scale,
+          actualBoundingBoxRight: right === undefined ? undefined : right * scale
+        };
+      });
+      await userEvent.type(renderResponse.getByRole('textbox', { name: 'Signature text' }), text);
+      userEvent.click(renderResponse.getByRole('button', { name: 'Save' }));
+
+      expect(ctx.font).toBe(`italic ${fontSize}rem sans-serif, Georgia`);
+      expect(ctx.fillText).toHaveBeenCalledWith(text, expect.any(Number), 50);
+      expect((ctx.fillText as jest.Mock).mock.calls[0][1]).toBeCloseTo(Math.max(0, left || 0) * fontSize / 10);
+      expect(ctx.measureText).toHaveBeenCalledTimes((10 - fontSize) / 0.5 + 1);
+      expect(canvas.toDataURL).toHaveBeenCalledWith('image/png');
+      expect(renderResponse.container.querySelector(`.${BEM}__canvas-signed-image`)).toHaveAttribute('src', element?.value);
+      expect(element?.value).toMatch(/^data:image\/png;name=fd_type_signature\.png;base64/);
+    } finally {
+      restore();
+    }
+  });
+
   test('should keep save and clear disabled when only spaces are typed in text mode', async () => {
     const f = { ...field };
     const { renderResponse } = await helper(f);
